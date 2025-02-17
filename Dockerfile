@@ -18,25 +18,35 @@
 
 # Option 2 without nginx
 # Build stage
+#FROM node:lts-alpine AS build-stage
+#WORKDIR /app
+#COPY package*.json ./
+#RUN npm install
+#COPY . .
+#RUN npm run build
+
+# Run stage
+#FROM node:lts-alpine AS lunch-stage
+#WORKDIR /app
+# Install serve to serve the static files
+#RUN npm install -g serve
+# Copy the build output from the previous stage
+#COPY --from=build-stage /app/dist .
+#COPY --from=build-stage /app/images ./images
+#EXPOSE 8080
+#CMD ["serve", "-s", ".", "-l", "8080"]
+
 FROM node:lts-alpine AS build-stage
+
+# Install Bash (and potentially other utilities if needed)
+RUN apk add --no-cache bash curl openssh-client git
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
-
-# Run stage
-FROM node:lts-alpine AS lunch-stage
-WORKDIR /app
-# Install serve to serve the static files
-RUN npm install -g serve
-# Copy the build output from the previous stage
-COPY --from=build-stage /app/dist .
-COPY --from=build-stage /app/images ./images
 EXPOSE 8080
-CMD ["serve", "-s", ".", "-l", "8080"]
-
-
+CMD ["npm", "run", "serve"]
 #At some point upgrade everything in package.json and generally upgrade react
 #npm install -g npm-check-updates
 #ncu -u
