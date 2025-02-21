@@ -38,7 +38,6 @@
 
 FROM node:lts-alpine AS build-stage
 
-# Install Bash (and potentially other utilities if needed)
 RUN apk add --no-cache bash curl openssh-client git
 
 WORKDIR /app
