@@ -1,0 +1,28 @@
+.ingredientitem {
+  width: 100%;
+  color: #353935;
+  font-size: 16px;
+  margin: 0 auto;
+}
+
+.ingredientitemname {
+  padding: 5px;
+  overflow-wrap: anywhere;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.line {
+  border: 1px solid #d5d5d5;
+}
+
+.deletebutton {
+  float: right;
+  padding: 10px 15px;
+  border: none;
+  background-color: #82b366;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
