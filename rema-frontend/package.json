@@ -1,6 +1,6 @@
 {
-  "name": "rema",
-  "description": "ReMa",
+  "name": "rema-frontend",
+  "description": "This is the frontend service of rema",
   "private": true,
   "type": "module",
   "scripts": {
