@@ -1,8 +1,7 @@
 {
   "name": "rema",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "frontend",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },
@@ -14,12 +13,17 @@
       "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
     }
   },
-  "runArgs": ["--init", "-p", "8080:8080"], // Expose Vite port
-  "workspaceFolder": "/app",
+  "remoteUser": "node",
+  "containerUser": "node",
+  "workspaceFolder": "/workspace",
   "mounts": [
     "source=${localEnv:USERPROFILE}\\.ssh,target=/root/.ssh,type=bind,consistency=cached"
   ],
   "remoteEnv": {
     "GIT_SSH_COMMAND": "ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no -o IdentitiesOnly=yes"
-  }
+  },
+  "postCreateCommand": [
+    "cd /workspace/rema-frontend && npm install",
+    "cd /workspace/rema-backend && npm install"
+  ]
 }
