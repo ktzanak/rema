@@ -1,0 +1,25 @@
+{
+  "name": "rema",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "git.path": "/usr/bin/git"
+      },
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    }
+  },
+  "runArgs": ["--init", "-p", "8080:8080"], // Expose Vite port
+  "workspaceFolder": "/app",
+  "mounts": [
+    "source=${localEnv:USERPROFILE}\\.ssh,target=/root/.ssh,type=bind,consistency=cached"
+  ],
+  "remoteEnv": {
+    "GIT_SSH_COMMAND": "ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no -o IdentitiesOnly=yes"
+  }
+}
