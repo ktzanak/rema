@@ -6,5 +6,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 8000
-
+USER node
 CMD ["npm", "start"]
