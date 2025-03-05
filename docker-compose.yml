@@ -1,33 +1,4 @@
 services:
-  frontend:
-    build:
-      context: ./rema-frontend
-      dockerfile: Dockerfile
-    container_name: rema-frontend-container
-    depends_on:
-      - backend
-    ports:
-      - 8080:8080
-    volumes: #for real time code changes
-      - ./rema-frontend:/app/rema-frontend
-    networks:
-      - customnetwork
-
-  backend:
-    build:
-      context: ./rema-backend
-      dockerfile: Dockerfile
-    container_name: rema-backend-container
-    ports:
-      - 8000:8000
-    volumes: #for real time code changes
-      - ./rema-backend:/app/rema-backend
-    user: "node"
-    networks:
-      - customnetwork
-    env_file:
-      - .env
-
   mysql_db:
     image: mysql:latest
     container_name: rema-mysql-container
@@ -44,6 +15,53 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       #- ./mysql-init-scripts:/docker-entrypoint-initdb.d  # Mount initialization scripts such as creating tables from folder mysql-init-scripts outside of the container
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "-uroot",
+          "-p${DB_PASSWORD}",
+          "ping",
+          "-h",
+          "localhost",
+        ]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+      timeout: 5s
+
+  backend:
+    build:
+      context: ./rema-backend
+      dockerfile: Dockerfile
+    container_name: rema-backend-container
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    volumes: #for real time code changes
+      - ./rema-backend:/app/rema-backend
+    user: "node"
+    networks:
+      - customnetwork
+    env_file:
+      - .env
+
+  frontend:
+    build:
+      context: ./rema-frontend
+      dockerfile: Dockerfile
+    container_name: rema-frontend-container
+    depends_on:
+      - backend
+    ports:
+      - 8080:8080
+    volumes: #for real time code changes
+      - ./rema-frontend:/app/rema-frontend
+    networks:
+      - customnetwork
 
 networks:
   customnetwork:
