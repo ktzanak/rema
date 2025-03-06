@@ -1,7 +1,4 @@
-# ReMa
+# ReMa - frontend
 
-A simple application for creating recipes. It can be used for any type of recipe, main courses, cocktails, desserts and many more!
-
-You simply clone the repository and run:
-docker compose build --no-cache
-docker compose up -d
+This is the frontend service of ReMa.
+You can use docker exec -it rema-frontend-container to connect to the frontend container.
