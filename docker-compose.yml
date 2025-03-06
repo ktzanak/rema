@@ -41,8 +41,8 @@ services:
         condition: service_healthy
     ports:
       - 8000:8000
-    volumes: #for real time code changes
-      - ./rema-backend:/app/rema-backend
+    #volumes: #for real time code changes
+    #  - ./rema-backend:/app/rema-backend
     user: "node"
     networks:
       - customnetwork
@@ -58,8 +58,8 @@ services:
       - backend
     ports:
       - 8080:8080
-    volumes: #for real time code changes
-      - ./rema-frontend:/app/rema-frontend
+    #volumes: #for real time code changes
+    #  - ./rema-frontend:/app/rema-frontend
     networks:
       - customnetwork
 
