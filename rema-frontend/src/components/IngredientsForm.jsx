@@ -1,0 +1,37 @@
+import { useState } from "react";
+import styles from "../css/ingredientsform.module.css";
+
+export default function IngredientsInstructionsForm({
+  ingredients,
+  setIngredients,
+}) {
+  const [ingredient, setIngredient] = useState({
+    name: "",
+    id: "",
+  });
+
+  function handleSubmit1(e) {
+    e.preventDefault();
+    setIngredient({ name: "", id: "" });
+    setIngredients([...ingredients, ingredient]);
+  }
+  return (
+    <form className={styles.ingredientsform} onSubmit={handleSubmit1}>
+      <div className={styles.inputcontainer}>
+        <input
+          required
+          className={styles.moderninput}
+          onChange={(e) =>
+            setIngredient({ name: e.target.value, id: Date.now() })
+          }
+          type="text"
+          value={ingredient.name}
+          placeholder="Add each ingredient and quantity"
+        />
+        <button className={styles.modernbutton} type="submit">
+          Add
+        </button>
+      </div>
+    </form>
+  );
+}
