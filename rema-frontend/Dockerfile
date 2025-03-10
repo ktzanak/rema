@@ -14,7 +14,7 @@ COPY nginx.conf /temp/nginx.conf
 RUN envsubst /app < /temp/nginx.conf > /etc/nginx/conf.d/default.conf
 # Copy dist folder
 COPY --from=build-stage /app/rema-frontend/dist /usr/share/nginx/html
-EXPOSE 8080
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 #For development
