@@ -1,15 +1,19 @@
 import Header from "./components/Header";
-import IngredientsInstructions from "./components/IngredientsInstructions";
+import AddRecipe from "./components/AddRecipe";
+import ListRecipes from "./components/ListRecipes";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./css/app.css";
 
 function App() {
   return (
-    <div>
+    <Router>
       <Header />
-      <br />
-      <br />
-      <IngredientsInstructions />
-    </div>
+      <Routes>
+        {/*<Route path="/" element={<Home />} for future purposes/>*/}
+        <Route path="/add" element={<AddRecipe />} />
+        <Route path="/list" element={<ListRecipes />} />
+      </Routes>
+    </Router>
   );
 }
 
