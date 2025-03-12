@@ -6,8 +6,9 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
+import bwLogo from "../assets/bw_remalogo.png";
 
-function PdfDocu(recipeinfoingredientsinstuctions) {
+function PdfDocu(recipeinfoingredientsinstructions) {
   const styles = StyleSheet.create({
     page: { backgroundColor: "white", margin: 10, fontFamily: "Times-Roman" },
     section: { color: "black", textAlign: "center" },
@@ -87,21 +88,21 @@ function PdfDocu(recipeinfoingredientsinstuctions) {
         <View style={styles.section}>
           <View style={styles.inlinetop1}>
             <Text style={styles.inlinetop2}>
-              <Image style={styles.image} src="/images/bw_remalogo.png" />
+              <Image style={styles.image} src={bwLogo} />
             </Text>
             <View style={styles.inlinetop2}>
               <Text style={styles.title}>
-                {recipeinfoingredientsinstuctions.recipeinfo.name}
+                {recipeinfoingredientsinstructions.recipeinfo.name}
               </Text>
               <Text style={styles.textdescription}>
-                {recipeinfoingredientsinstuctions.recipeinfo.description}
+                {recipeinfoingredientsinstructions.recipeinfo.description}
               </Text>
               <Text style={styles.texttimeportions}>
                 <Text style={{ fontFamily: "Times-Bold" }}>Time: </Text>
-                {recipeinfoingredientsinstuctions.recipeinfo.totaltime}
+                {recipeinfoingredientsinstructions.recipeinfo.totaltime}
                 {"                       "}
                 <Text style={{ fontFamily: "Times-Bold" }}>Portions: </Text>
-                {recipeinfoingredientsinstuctions.recipeinfo.nrportions}
+                {recipeinfoingredientsinstructions.recipeinfo.nrportions}
               </Text>
             </View>
           </View>
@@ -109,7 +110,7 @@ function PdfDocu(recipeinfoingredientsinstuctions) {
           <View style={styles.inlinedown1}>
             <View style={styles.inlinedown2left}>
               <Text style={styles.textlabelleft}>Ingredients</Text>
-              {recipeinfoingredientsinstuctions.ingredients.map(
+              {recipeinfoingredientsinstructions.ingredients.map(
                 (ingredient) => (
                   <Text style={styles.textingredients} key={ingredient.id}>
                     {ingredient.name}
@@ -119,7 +120,7 @@ function PdfDocu(recipeinfoingredientsinstuctions) {
             </View>
             <View style={styles.inlinedown2right}>
               <Text style={styles.textlabelright}>Instructions</Text>
-              {recipeinfoingredientsinstuctions.instructions.map(
+              {recipeinfoingredientsinstructions.instructions.map(
                 (instruction, index) => (
                   <Text style={styles.textinstructions} key={instruction.id}>
                     {index + 1}
