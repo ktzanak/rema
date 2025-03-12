@@ -14,7 +14,7 @@ services:
       - .env
     volumes:
       - mysql_data:/var/lib/mysql
-      #- ./mysql-init-scripts:/docker-entrypoint-initdb.d  # Mount initialization scripts such as creating tables from folder mysql-init-scripts outside of the container
+      - ${SQL_SCRIPT}:/docker-entrypoint-initdb.d # Mounting initialization script (create tables) from folder mysql-init-scripts outside of the container
     healthcheck:
       test:
         [
