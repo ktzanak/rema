@@ -6,7 +6,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // Middleware to parse JSON
+app.use(express.json());
 
 // MySQL Connection
 const db = mysql.createConnection({
@@ -31,8 +31,8 @@ app.get("/", (req, res) => {
 });
 
 // Fetch data
-app.get("/items", (req, res) => {
-  db.query("SELECT * FROM items", (err, results) => {
+app.get("/listrecipes", (req, res) => {
+  db.query("SELECT * FROM recipes", (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -42,17 +42,21 @@ app.get("/items", (req, res) => {
 });
 
 // Submit data
-app.post("/items", (req, res) => {
+app.post("/addrecipes", (req, res) => {
   const { name } = req.body;
   if (!name) return res.status(400).json({ error: "Name is required" });
 
-  db.query("INSERT INTO items (name) VALUES (?)", [name], (err, results) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ id: results.insertId, name });
+  db.query(
+    "INSERT INTO recipes (id,title,description,cooking_time,portions,created_at) VALUES (?,?,?,?,?,?)",
+    [id, title, description, cooking_time, portions, created_at],
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.json({ id: results.insertId, name });
+      }
     }
-  });
+  );
 });
 
 // Start server
