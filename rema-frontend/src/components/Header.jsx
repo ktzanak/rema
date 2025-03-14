@@ -17,6 +17,9 @@ export default function Header() {
         </div>
       </div>
       <div className={styles.navLinks}>
+        {/*<Link to="/home" className={styles.navLink}>
+          Home
+        </Link>*/}
         <Link to="/add" className={styles.navLink}>
           Add Recipe
         </Link>
