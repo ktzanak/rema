@@ -5,7 +5,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
-    restart: always
     ports:
       - "3307:3306"
     networks:
@@ -14,7 +13,7 @@ services:
       - .env
     volumes:
       - mysql_data:/var/lib/mysql
-      - ${SQL_SCRIPT}:/docker-entrypoint-initdb.d # Mounting initialization script (create tables) from folder mysql-init-scripts outside of the container
+      - ${SQL_SCRIPT}:/docker-entrypoint-initdb.d # Mounting local folder (outside of the container) with initialization script (create_tables.sql)
     healthcheck:
       test:
         [
@@ -27,8 +26,8 @@ services:
           "localhost",
         ]
       interval: 10s
-      retries: 5
-      start_period: 20s
+      retries: 10
+      start_period: 30s
       timeout: 5s
 
   backend:
