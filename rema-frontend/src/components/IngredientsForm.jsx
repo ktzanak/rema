@@ -12,6 +12,7 @@ export default function IngredientsInstructionsForm({
 
   function handleSubmit1(e) {
     e.preventDefault();
+    if (!ingredient.name.trim()) return; // Prevent adding empty ingredients
     setIngredient({ name: "", id: "" });
     setIngredients([...ingredients, ingredient]);
   }
