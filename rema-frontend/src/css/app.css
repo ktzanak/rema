@@ -1,4 +1,25 @@
+html {
+  overflow-y: scroll;
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  scrollbar-color: darkgrey #f1f1f1; /* thumb color, track color */
+}
+
 body {
   margin: 0;
   font-family: sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 8px; /* Adjust the width of the vertical scrollbar */
+  height: 8px; /* Adjust the height of the horizontal scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey; /* Color of the draggable part */
+  border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background color of the scrollbar track */
+  border-radius: 10px; /* Rounded corners */
 }
