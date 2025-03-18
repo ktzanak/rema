@@ -15,15 +15,15 @@
   },
   "remoteUser": "node",
   "containerUser": "node",
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/app",
   "mounts": [
-    "source=${localEnv:USERPROFILE}\\.ssh,target=/root/.ssh,type=bind,consistency=cached"
+    "source=${localEnv:USERPROFILE}\\.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
   ],
   "remoteEnv": {
     "GIT_SSH_COMMAND": "ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no -o IdentitiesOnly=yes"
   },
   "postCreateCommand": [
-    "cd /workspace/rema-frontend && npm install",
-    "cd /workspace/rema-backend && npm install"
+    "cd /app/rema-frontend && npm install",
+    "cd /app/rema-backend && npm install"
   ]
 }
