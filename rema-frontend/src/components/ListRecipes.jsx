@@ -4,12 +4,11 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Paper,
 } from "@mui/material";
 
-export default function ListRecipes() {
+export default function ListRecipes(recipes) {
   return (
     <Container>
       <TableContainer
@@ -18,9 +17,9 @@ export default function ListRecipes() {
       >
         <Table>
           <TableBody>
-            {recipes.map((recipe, index) => (
+            {/*   {recipes.map((recipe, index) => (
               <TableRow key={index} hover>
-                <TableCell>1{/*one var*/}</TableCell>
+                <TableCell>1</TableCell>
                 <TableCell>
                   <span
                     style={{
@@ -30,12 +29,12 @@ export default function ListRecipes() {
                       borderRadius: "4px",
                     }}
                   >
-                    2{/*one var*/}
+                    2
                   </span>
                 </TableCell>
-                <TableCell>3{/*one var*/}</TableCell>
+                <TableCell>3</TableCell>
               </TableRow>
-            ))}
+            ))}*/}
           </TableBody>
         </Table>
       </TableContainer>
