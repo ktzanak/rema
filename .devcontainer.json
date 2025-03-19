@@ -2,9 +2,6 @@
   "name": "rema",
   "dockerComposeFile": "./docker-compose.yml",
   "service": "frontend",
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
-  },
   "customizations": {
     "vscode": {
       "settings": {
