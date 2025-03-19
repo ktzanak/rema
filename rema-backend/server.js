@@ -8,7 +8,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Retry count
 let retryCount = 0;
 const maxRetries = 3;
 
@@ -45,10 +44,9 @@ function handleDatabaseConnection() {
 
 const db = handleDatabaseConnection();
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Frontend, backend and database are running!");
-});
+//app.get("/", (req, res) => {
+//  res.send("Frontend, backend and database are running!");
+//});
 
 // Fetch data
 app.get("/listrecipes", (req, res) => {
