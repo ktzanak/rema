@@ -1,6 +1,12 @@
 # For production
 # Build stage
 FROM node:lts-alpine AS build-stage
+RUN set -ex && \
+    apk add --no-cache \
+    bash \
+    curl \
+    openssh-client \
+    git
 WORKDIR /app/rema-frontend
 COPY package*.json ./
 RUN npm install
