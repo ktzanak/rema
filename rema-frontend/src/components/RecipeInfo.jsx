@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import styles from "../css/recipeinfo.module.css";
 
-export default function RecipeInfo(recipeinfo) {
+export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
   //console.log(recipeinfo);
   return (
     <Row className={styles.inputcontainer}>
@@ -14,13 +14,13 @@ export default function RecipeInfo(recipeinfo) {
               required
               className={styles.moderninput}
               onChange={(e) =>
-                recipeinfo.setRecipeinfo({
-                  ...recipeinfo.recipeinfo,
+                setRecipeinfo({
+                  ...recipeinfo,
                   name: e.target.value,
                 })
               }
               type="text"
-              value={recipeinfo.name}
+              value={recipeinfo?.name || ""}
               placeholder="Add a title"
             />
           </div>
@@ -31,13 +31,13 @@ export default function RecipeInfo(recipeinfo) {
             <input
               className={styles.moderninput}
               onChange={(e) =>
-                recipeinfo.setRecipeinfo({
-                  ...recipeinfo.recipeinfo,
+                setRecipeinfo({
+                  ...recipeinfo,
                   description: e.target.value,
                 })
               }
               type="text"
-              value={recipeinfo.description}
+              value={recipeinfo?.description || ""}
               placeholder="Add a description (optional)"
             />
           </div>
@@ -50,13 +50,13 @@ export default function RecipeInfo(recipeinfo) {
             <input
               className={styles.moderninput}
               onChange={(e) =>
-                recipeinfo.setRecipeinfo({
-                  ...recipeinfo.recipeinfo,
+                setRecipeinfo({
+                  ...recipeinfo,
                   totaltime: e.target.value,
                 })
               }
               type="text"
-              value={recipeinfo.totaltime}
+              value={recipeinfo?.totaltime || ""}
               placeholder="Add time in total (optional)"
             />
           </div>
@@ -67,13 +67,13 @@ export default function RecipeInfo(recipeinfo) {
             <input
               className={styles.moderninput}
               onChange={(e) =>
-                recipeinfo.setRecipeinfo({
-                  ...recipeinfo.recipeinfo,
+                setRecipeinfo({
+                  ...recipeinfo,
                   nrportions: e.target.value,
                 })
               }
               type="text"
-              value={recipeinfo.nrportions}
+              value={recipeinfo?.nrportions || ""}
               placeholder="Add number of portions (optional)"
             />
           </div>
