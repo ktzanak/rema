@@ -33,6 +33,13 @@ export default function AddRecipe() {
     saveAs(blob, fileName);
   };
 
+  const saveRecipe = async () => {
+    if (!recipeinfo.name.trim()) {
+      alert("Title is required for saving the recipe!");
+      return;
+    }
+  };
+
   return (
     <Container>
       <RecipeInfo recipeinfo={recipeinfo} setRecipeinfo={setRecipeinfo} />
@@ -83,6 +90,12 @@ export default function AddRecipe() {
       <br />
       <br />
       <Row className={styles.inputcontainerbutton}>
+        <Col className={styles.ingredientsinstructionsbutton}>
+          <button onClick={saveRecipe} className={styles.modernbuttonsave}>
+            Save
+          </button>
+        </Col>
+        <span className={styles.orText}>-or-</span>
         <Col className={styles.ingredientsinstructionsbutton}>
           <button onClick={downloadPdf} className={styles.modernbuttonexport}>
             Export to pdf
