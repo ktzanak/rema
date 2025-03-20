@@ -1,7 +1,7 @@
 {
   "name": "rema",
   "dockerComposeFile": "./docker-compose.yml",
-  "service": "frontend",
+  "service": "backend",
   "customizations": {
     "vscode": {
       "settings": {
@@ -10,17 +10,15 @@
       "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
     }
   },
-  "remoteUser": "node",
-  "containerUser": "node",
   "workspaceFolder": "/app",
   "mounts": [
     "source=${localEnv:USERPROFILE}\\.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
   ],
+  "runServices": ["backend", "frontend"],
   "remoteEnv": {
     "GIT_SSH_COMMAND": "ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no -o IdentitiesOnly=yes"
   },
   "postCreateCommand": [
-    "cd /app/rema-frontend && npm install",
-    "cd /app/rema-backend && npm install"
+    "npm install && cd .. && cd rema-frontend && npm install && cd .."
   ]
 }
