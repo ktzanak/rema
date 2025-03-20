@@ -60,7 +60,7 @@ app.get("/listrecipes", (req, res) => {
 });
 
 // Submit data
-app.post("/addrecipes", (req, res) => {
+app.post("/addrecipe", (req, res) => {
   const { title, description, cooking_time, portions, created_at } = req.body;
 
   db.query(
