@@ -11,7 +11,6 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
           <span className={styles.recipeinfolabel}>Title</span>
           <div className={styles.inputcontainer}>
             <input
-              required
               className={styles.moderninput}
               onChange={(e) =>
                 setRecipeinfo({
