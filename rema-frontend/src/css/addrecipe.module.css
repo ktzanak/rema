@@ -34,7 +34,7 @@
   display: inline-block;
   border: none;
   border-radius: 4px;
-  background-color: #6c8ebf /*#b85450*/;
+  background-color: #b85450 /*#b85450*/;
   padding: 12px 20px;
   color: white;
   cursor: pointer;
@@ -43,10 +43,25 @@
 .inputcontainerbutton {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .ingredientsinstructionsbutton {
   display: flex;
   justify-content: center;
-  width: 20%;
+  width: auto;
+}
+
+.modernbuttonsave {
+  display: inline-block;
+  border: none;
+  border-radius: 4px;
+  background-color: #6c8ebf /*#b85450*/;
+  padding: 12px 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.orText {
+  margin: 0 15px; /* Add horizontal spacing */
 }
