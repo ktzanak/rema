@@ -12,6 +12,7 @@ import styles from "../css/addrecipe.module.css";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 export default function AddRecipe() {
+  const [saveStatus, setSaveStatus] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [recipeinfo, setRecipeinfo] = useState({
@@ -35,8 +36,33 @@ export default function AddRecipe() {
 
   const saveRecipe = async () => {
     if (!recipeinfo.name.trim()) {
-      alert("Title is required for saving the recipe!");
+      setSaveStatus("Title is required for saving the recipe!");
       return;
+    }
+
+    const recipeData = {
+      title: recipeinfo.name,
+      description: recipeinfo.description,
+      cooking_time: recipeinfo.totaltime,
+      portions: recipeinfo.nrportions,
+      created_at: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/addrecipe", {
+        method: "POST",
+        body: JSON.stringify(recipeData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSaveStatus("Recipe saved successfully!");
+      } else {
+        setSaveStatus(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      setSaveStatus("Failed to save the recipe. Please try again later.");
     }
   };
 
@@ -101,6 +127,7 @@ export default function AddRecipe() {
             Export to pdf
           </button>
         </Col>
+        {saveStatus && <p>{saveStatus}</p>}
       </Row>
       <br />
     </Container>
