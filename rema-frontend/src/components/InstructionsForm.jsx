@@ -12,7 +12,7 @@ export default function IngredientsInstructionsForm({
 
   function handleSubmit2(e) {
     e.preventDefault();
-    if (!instruction.name.trim()) return; // Prevent adding empty instructions
+    if (!instruction.name.trim()) return;
     setInstruction({ name: "", id: "" });
     setInstructions([...instructions, instruction]);
   }
