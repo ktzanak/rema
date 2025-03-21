@@ -13,8 +13,11 @@ export default function IngredientsInstructionsForm({
   function handleSubmit2(e) {
     e.preventDefault();
     if (!instruction.name.trim()) return;
+    setInstructions([
+      ...instructions,
+      { name: instruction.name, id: Date.now() },
+    ]);
     setInstruction({ name: "", id: "" });
-    setInstructions([...instructions, instruction]);
   }
   return (
     <form className={styles.instructionsform} onSubmit={handleSubmit2}>
@@ -23,7 +26,7 @@ export default function IngredientsInstructionsForm({
           required
           className={styles.moderninput}
           onChange={(e) =>
-            setInstruction({ name: e.target.value, id: Date.now() })
+            setInstruction({ name: e.target.value, id: instruction.id })
           }
           type="text"
           value={instruction.name}
