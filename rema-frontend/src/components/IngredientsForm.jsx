@@ -13,8 +13,8 @@ export default function IngredientsInstructionsForm({
   function handleSubmit1(e) {
     e.preventDefault();
     if (!ingredient.name.trim()) return;
+    setIngredients([...ingredients, { name: ingredient.name, id: Date.now() }]);
     setIngredient({ name: "", id: "" });
-    setIngredients([...ingredients, ingredient]);
   }
   return (
     <form className={styles.ingredientsform} onSubmit={handleSubmit1}>
@@ -23,7 +23,7 @@ export default function IngredientsInstructionsForm({
           required
           className={styles.moderninput}
           onChange={(e) =>
-            setIngredient({ name: e.target.value, id: Date.now() })
+            setIngredient({ name: e.target.value, id: ingredient.id })
           }
           type="text"
           value={ingredient.name}
