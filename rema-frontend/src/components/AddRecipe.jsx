@@ -12,7 +12,7 @@ import styles from "../css/addrecipe.module.css";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 export default function AddRecipe() {
-  const [saveStatus, setSaveStatus] = useState("");
+  const [saveStatus, setSaveStatus] = useState({ message: "", type: "" });
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [recipeinfo, setRecipeinfo] = useState({
@@ -36,7 +36,10 @@ export default function AddRecipe() {
 
   const saveRecipe = async () => {
     if (!recipeinfo.name.trim()) {
-      setSaveStatus("Title is required for saving the recipe!");
+      setSaveStatus({
+        message: "Title is required for saving the recipe!",
+        type: "error",
+      });
       return;
     }
 
@@ -49,7 +52,7 @@ export default function AddRecipe() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/addrecipe", {
+      const response = await fetch("http://localhost:8000/addrecipe", {
         method: "POST",
         body: JSON.stringify(recipeData),
       });
@@ -57,12 +60,18 @@ export default function AddRecipe() {
       const data = await response.json();
 
       if (response.ok) {
-        setSaveStatus("Recipe saved successfully!");
+        setSaveStatus({
+          message: "Recipe saved successfully!",
+          type: "success",
+        });
       } else {
-        setSaveStatus(`Error: ${data.error}`);
+        setSaveStatus({ message: `Error: ${data.error}`, type: "error" });
       }
     } catch (error) {
-      setSaveStatus("Failed to save the recipe. Please try again later.");
+      setSaveStatus({
+        message: "Failed to save the recipe. Please try again later.",
+        type: "error",
+      });
     }
   };
 
@@ -127,9 +136,22 @@ export default function AddRecipe() {
             Export to pdf
           </button>
         </Col>
-        {saveStatus && <p>{saveStatus}</p>}
       </Row>
-      <br />
+      <Row className={styles.saveStatusContainer}>
+        <Col className="text-center">
+          {saveStatus.message && (
+            <p
+              className={
+                saveStatus.type === "success"
+                  ? styles.saveStatusSuccess
+                  : styles.saveStatusError
+              }
+            >
+              {saveStatus.message}
+            </p>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 }
