@@ -65,3 +65,22 @@
 .orText {
   margin: 0 15px;
 }
+
+.saveStatusContainer {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  width: 100%;
+  margin-top: 15px; /* Gives some space between the buttons and status */
+}
+
+.saveStatusSuccess {
+  color: green;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.saveStatusError {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
