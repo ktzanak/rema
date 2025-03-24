@@ -61,17 +61,109 @@ app.get("/listrecipes", (req, res) => {
 
 // Submit data
 app.post("/addrecipe", (req, res) => {
-  const { title, description, cooking_time, portions, created_at } = req.body;
+  const {
+    title,
+    description,
+    cooking_time,
+    portions,
+    ingredients = [],
+    instructions = [],
+    categories = [],
+    tags = [],
+  } = req.body;
 
   db.query(
-    "INSERT INTO recipes (id,title,description,cooking_time,portions,created_at) VALUES (?,?,?,?,?,?)",
-    [id, title, description, cooking_time, portions, created_at],
+    "INSERT INTO recipes (title,description,cooking_time,portions,created_at) VALUES (?,?,?,?,NOW())",
+    [title, description, cooking_time, portions],
     (err, results) => {
       if (err) {
         res.status(500).json({ error: err.message });
-      } else {
-        res.json({ id: results.insertId, title });
       }
+
+      const recipeId = results.insertId;
+
+      // Insert ingredients into the `ingredients` table
+      ingredients.forEach((ingredient) => {
+        db.query(
+          "INSERT INTO ingredients (recipe_id, ingredient) VALUES (?, ?)",
+          [recipeId, ingredient],
+          (err) => {
+            if (err) {
+              return res.status(500).json({ error: err.message });
+            }
+          }
+        );
+      });
+
+      // Insert instructions into the `instructions` table
+      instructions.forEach((instruction, index) => {
+        db.query(
+          "INSERT INTO instructions (recipe_id, step_number, instruction) VALUES (?, ?, ?)",
+          [recipeId, index + 1, instruction],
+          (err) => {
+            if (err) {
+              return res.status(500).json({ error: err.message });
+            }
+          }
+        );
+      });
+
+      // Insert categories into the `categories` table and link them to the recipe
+      categories.forEach((category) => {
+        db.query(
+          "INSERT INTO categories (name) VALUES (?) ON DUPLICATE KEY UPDATE id=id",
+          [category],
+          (err, categoryResult) => {
+            if (err) {
+              return res.status(500).json({ error: err.message });
+            }
+
+            const categoryId = categoryResult.insertId || categoryResult[0].id; // Get the existing or new category ID
+            db.query(
+              "INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)",
+              [recipeId, categoryId],
+              (err) => {
+                if (err) {
+                  return res.status(500).json({ error: err.message });
+                }
+              }
+            );
+          }
+        );
+      });
+
+      // Insert tags into the `tags` table and link them to the recipe
+      tags.forEach((tag) => {
+        db.query(
+          "INSERT INTO tags (name) VALUES (?) ON DUPLICATE KEY UPDATE id=id",
+          [tag],
+          (err, tagResult) => {
+            if (err) {
+              return res.status(500).json({ error: err.message });
+            }
+
+            const tagId = tagResult.insertId || tagResult[0].id; // Get the existing or new tag ID
+            db.query(
+              "INSERT INTO recipe_tags (recipe_id, tag_id) VALUES (?, ?)",
+              [recipeId, tagId],
+              (err) => {
+                if (err) {
+                  return res.status(500).json({ error: err.message });
+                }
+              }
+            );
+          }
+        );
+      });
+
+      // Return the recipe data along with the recipeId
+      res.json({
+        id: recipeId,
+        title,
+        description,
+        cooking_time,
+        portions,
+      });
     }
   );
 });
