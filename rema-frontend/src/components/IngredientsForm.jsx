@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import styles from "../css/ingredientsform.module.css";
 
 export default function IngredientsInstructionsForm({
@@ -13,7 +14,7 @@ export default function IngredientsInstructionsForm({
   function handleSubmit1(e) {
     e.preventDefault();
     if (!ingredient.name.trim()) return;
-    setIngredients([...ingredients, { name: ingredient.name, id: Date.now() }]);
+    setIngredients([...ingredients, { name: ingredient.name, id: uuidv4() }]);
     setIngredient({ name: "", id: "" });
   }
   return (
