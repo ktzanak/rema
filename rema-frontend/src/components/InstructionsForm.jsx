@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import styles from "../css/instructionsform.module.css";
 
 export default function IngredientsInstructionsForm({
@@ -15,7 +16,7 @@ export default function IngredientsInstructionsForm({
     if (!instruction.name.trim()) return;
     setInstructions([
       ...instructions,
-      { name: instruction.name, id: Date.now() },
+      { name: instruction.name, id: uuidv4() },
     ]);
     setInstruction({ name: "", id: "" });
   }
