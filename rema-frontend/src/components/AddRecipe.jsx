@@ -54,6 +54,9 @@ export default function AddRecipe() {
     try {
       const response = await fetch("http://localhost:8000/addrecipe", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(recipeData),
       });
 
