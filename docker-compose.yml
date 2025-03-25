@@ -13,7 +13,7 @@ services:
       - .env
     volumes:
       - mysql_data:/var/lib/mysql
-      - ${SQL_SCRIPT}:/docker-entrypoint-initdb.d # Mounting local folder (outside of the container) with initialization script (create_tables.sql)
+      - ${SQL_SCRIPT}:/docker-entrypoint-initdb.d
     healthcheck:
       test:
         [
@@ -42,6 +42,7 @@ services:
       - 8000:8000
     volumes: # uncomment only for real time code changes
       - ./rema-backend:/app/rema-backend
+      - /app/rema-backend/node_modules
     user: "node"
     networks:
       - customnetwork
@@ -56,9 +57,10 @@ services:
     depends_on:
       - backend
     ports:
-      - 8080:80
+      - 8080:8080 # change the port to 8080:8080 for real time changes and 8080:80 for production
     volumes: # uncomment only for real time code changes
       - ./rema-frontend:/app/rema-frontend
+      - /app/rema-frontend/node_modules
     networks:
       - customnetwork
 
