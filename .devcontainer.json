@@ -11,11 +11,14 @@
     }
   },
   "workspaceFolder": "/app",
+  "overrideCommand": false,
   "mounts": [
-    "source=${localEnv:USERPROFILE}\\.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
+    "source=${localEnv:USERPROFILE}\\.ssh,target=/root/.ssh,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/rema-backend,target=/app/rema-backend,type=bind,consistency=cached"
   ],
   "runServices": ["backend", "frontend"],
   "remoteEnv": {
     "GIT_SSH_COMMAND": "ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no -o IdentitiesOnly=yes"
-  }
+  },
+  "postCreateCommand": "cd rema-frontend && npm install && cd ../rema-backend && npm install && cd .."
 }
