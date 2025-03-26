@@ -23,13 +23,17 @@ COPY --from=build-stage /app/rema-frontend/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
-#For development
+#For devcontainer
 #FROM node:lts-alpine
-#RUN apk add --no-cache bash curl openssh-client git
+#RUN set -ex && \
+#    apk add --no-cache \
+#    bash \
+#    curl \
+#    openssh-client \
+#    git
 #WORKDIR /app/rema-frontend
 #COPY package*.json ./
 #RUN npm install
 #COPY . .
 #EXPOSE 8080
-#USER node
 #CMD ["npm", "run", "dev"]
