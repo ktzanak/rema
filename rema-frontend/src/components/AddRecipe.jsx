@@ -15,6 +15,8 @@ export default function AddRecipe() {
   const [saveStatus, setSaveStatus] = useState({ message: "", type: "" });
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [recipeinfo, setRecipeinfo] = useState({
     name: "",
     description: "",
@@ -49,10 +51,14 @@ export default function AddRecipe() {
       cooking_time: recipeinfo.totaltime,
       portions: recipeinfo.nrportions,
       created_at: new Date().toISOString(),
+      ingredients: ingredients,
+      instructions: instructions,
+      categories: categories,
+      tags: tags,
     };
 
     try {
-      const response = await fetch("http://localhost:8000/addrecipe", {
+      const response = await fetch("http://localhost:8000/api/addrecipe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
