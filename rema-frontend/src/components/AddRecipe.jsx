@@ -15,8 +15,8 @@ export default function AddRecipe() {
   const [saveStatus, setSaveStatus] = useState({ message: "", type: "" });
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [categories, setCategories] = useState([]);
+  //const [tags, setTags] = useState([]);
+  //const [categories, setCategories] = useState([]);
   const [recipeinfo, setRecipeinfo] = useState({
     name: "",
     description: "",
@@ -53,8 +53,8 @@ export default function AddRecipe() {
       created_at: new Date().toISOString(),
       ingredients: ingredients,
       instructions: instructions,
-      categories: categories,
-      tags: tags,
+      //categories: categories,
+      //tags: tags,
     };
 
     try {
