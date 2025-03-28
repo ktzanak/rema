@@ -14,7 +14,14 @@
   "overrideCommand": false,
   "mounts": [
     "source=${localEnv:USERPROFILE}\\.ssh,target=/root/.ssh,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/rema-backend,target=/app/rema-backend,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/rema-backend,target=/app/rema-backend,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.git,target=/app/.git,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.gitignore,target=/app/.gitignore,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.devcontainer.json,target=/app/.devcontainer.json,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/createtables.sql,target=/app/createtables.sql,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/docker-compose.yml,target=/app/docker-compose.yml,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/README.md,target=/app/README.md,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/.eslintrc.cjs,target=/app/.eslintrc.cjs,type=bind,consistency=cached"
   ],
   "runServices": ["backend", "frontend"],
   "remoteEnv": {
