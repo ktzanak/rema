@@ -1,7 +1,7 @@
 import pool from "../config/databaseconn.js";
 
 // Fetch all recipes
-export const listRecipes = async (req, res) => {
+export const listrecipes = async (req, res) => {
   try {
     const [results] = await pool.query("SELECT * FROM recipes");
     res.status(200).json(results);
@@ -12,16 +12,17 @@ export const listRecipes = async (req, res) => {
 };
 
 // Add a recipe and insert into recipe, ingredients, instructions, categories, tags, and their relationships within a transaction
-export const addRecipe = async (req, res) => {
+export const addrecipe = async (req, res) => {
   const {
     title,
     description,
     cooking_time,
     portions,
+    created_at,
     ingredients,
     instructions,
-    categories,
-    tags,
+    //categories,
+    //tags,
   } = req.body;
 
   const connection = await pool.getConnection();
@@ -32,8 +33,8 @@ export const addRecipe = async (req, res) => {
 
     // Step 1: Insert the recipe into the 'recipes' table
     const [recipeResult] = await connection.query(
-      "INSERT INTO recipes (title, description, cooking_time, portions, created_at) VALUES (?, ?, ?, ?, NOW())",
-      [title, description, cooking_time, portions]
+      "INSERT INTO recipes (title, description, cooking_time, portions, created_at) VALUES (?, ?, ?, ?, ?)",
+      [title, description, cooking_time, portions, created_at]
     );
     const recipeId = recipeResult.insertId;
 
@@ -41,7 +42,7 @@ export const addRecipe = async (req, res) => {
     for (const ingredient of ingredients) {
       await connection.query(
         "INSERT INTO ingredients (recipe_id, ingredient) VALUES (?, ?)",
-        [recipeId, ingredient]
+        [recipeId, ingredient.name]
       );
     }
 
@@ -49,7 +50,7 @@ export const addRecipe = async (req, res) => {
     for (const instruction of instructions) {
       await connection.query(
         "INSERT INTO instructions (recipe_id, instruction) VALUES (?, ?)",
-        [recipeId, instruction]
+        [recipeId, instruction.name]
       );
     }
 
