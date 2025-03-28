@@ -8,7 +8,7 @@ docker compose up -d
 
 Open your browser and go to http://localhost:8080/add
 
-#######################################################################################################
+#######################################################################################
 
 In case you want to contribute to development, make sure to:
 
