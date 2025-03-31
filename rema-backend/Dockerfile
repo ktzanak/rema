@@ -14,4 +14,9 @@ COPY . .
 
 EXPOSE 8000
 USER node
+
+#For production
 CMD ["npm", "start"]
+
+#For development
+#CMD ["npm","dev"]
