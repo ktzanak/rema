@@ -50,7 +50,7 @@ export default function AddRecipe() {
       description: recipeinfo.description,
       cooking_time: recipeinfo.totaltime,
       portions: recipeinfo.nrportions,
-      created_at: new Date().toISOString(),
+      created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       ingredients: ingredients,
       instructions: instructions,
       //categories: categories,
