@@ -16,9 +16,13 @@ export default function IngredientsInstructionsForm({
     if (!instruction.name.trim()) return;
     setInstructions([
       ...instructions,
-      { name: instruction.name, id: uuidv4() },
+      {
+        step_number: instructions.length + 1,
+        name: instruction.name,
+        id: uuidv4(),
+      },
     ]);
-    setInstruction({ name: "", id: "" });
+    setInstruction({ step_number: "", name: "", id: "" });
   }
   return (
     <form className={styles.instructionsform} onSubmit={handleSubmit2}>
