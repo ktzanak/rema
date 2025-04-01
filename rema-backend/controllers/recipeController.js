@@ -49,8 +49,8 @@ export const addrecipe = async (req, res) => {
     // Step 3: Insert instructions for the recipe into the 'instructions' table
     for (const instruction of instructions) {
       await connection.query(
-        "INSERT INTO instructions (recipe_id, instruction) VALUES (?, ?)",
-        [recipeId, instruction.name]
+        "INSERT INTO instructions (recipe_id, step_number, instruction) VALUES (?, ?, ?)",
+        [recipeId, instruction.step_number, instruction.name]
       );
     }
 
