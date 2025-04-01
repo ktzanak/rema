@@ -3,7 +3,6 @@ import { Row, Col } from "react-bootstrap";
 import styles from "../css/recipeinfo.module.css";
 
 export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
-  //console.log(recipeinfo);
   return (
     <Row className={styles.inputcontainer}>
       <Col className={styles.recipeinfocol1}>
