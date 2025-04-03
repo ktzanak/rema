@@ -1,12 +1,15 @@
-.headerdeco {
+.wholeheaderdeco {
   font-family: cursive;
   background-color: #ffe6cc;
   text-align: center;
   font-weight: bold;
   height: 100%;
-  padding: 0px 20px 35px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   position: relative;
+}
+
+.headerdeco {
+  padding: 0px 20px 55px;
 }
 
 .headersize {
@@ -28,8 +31,8 @@
 
 .imgpos {
   /*margin-left: 3%;*/
-  width: 130px;
-  height: 115px;
+  width: 120px;
+  height: 106px;
   opacity: 0.4;
 }
 
