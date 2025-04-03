@@ -93,3 +93,33 @@ export const addrecipe = async (req, res) => {
     connection.release();
   }
 };
+
+export const deleterecipe = async (req, res) => {
+  const { id } = req.params;
+  const connection = await pool.getConnection();
+
+  try {
+    // Start a transaction
+    await connection.beginTransaction();
+
+    // Delete the recipe by ID
+    const [result] = await connection.query(
+      "DELETE FROM recipes WHERE id = ?",
+      [id]
+    );
+
+    // Commit the transaction
+    await connection.commit();
+    res.status(200).json({ message: "Recipe deleted successfully." });
+  } catch (error) {
+    // Rollback the transaction in case of error
+    await connection.rollback();
+    console.error("Error deleting recipe:", error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while deleting the recipe." });
+  } finally {
+    // Release the connection back to the pool
+    connection.release();
+  }
+};
