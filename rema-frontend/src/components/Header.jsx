@@ -4,10 +4,10 @@ import bwLogo from "../assets/bw_remalogo.png";
 
 export default function Header() {
   return (
-    <div className={styles.headerdeco}>
+    <div className={styles.wholeheaderdeco}>
       <div className={styles.parentdiv}>
         <img className={styles.imgpos} src={bwLogo} />
-        <div>
+        <div className={styles.headerdeco}>
           <div className={styles.headersize}>Welcome to ReMa!</div>
           <hr className={styles.line} />
           <div className={styles.subheadersize}>
