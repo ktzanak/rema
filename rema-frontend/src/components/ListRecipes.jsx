@@ -13,6 +13,7 @@ import {
   TableContainer,
   TableRow,
   TablePagination,
+  TableFooter,
   Paper,
   Button,
 } from "@mui/material";
@@ -22,7 +23,17 @@ export default function ListRecipes() {
   const [openDialog, setOpenDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   const handleDeleteClick = (id) => {
     setSelectedRecipeId(id);
     setOpenDialog(true);
@@ -31,8 +42,13 @@ export default function ListRecipes() {
     setOpenDialog(false);
     setSelectedRecipeId(null);
   };
+
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const displayedRecipes = filteredRecipes.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
   );
 
   useEffect(() => {
@@ -86,15 +102,10 @@ export default function ListRecipes() {
         component={Paper}
         sx={{ width: "80%", margin: "auto", mt: 4, boxShadow: 3 }}
       >
-        <Card className="text-center mt-4">
-          <Card.Body>
-            <Card.Title>No recipes yet</Card.Title>
-            <Card.Text>Add some recipes to see them listed here.</Card.Text>
-          </Card.Body>
-        </Card>
+        {/*No recipes yet*/}
         <Table>
           <TableBody>
-            {filteredRecipes.map((recipe) => (
+            {displayedRecipes.map((recipe) => (
               <TableRow key={recipe.id} hover>
                 <TableCell sx={{ width: "70%" }}>
                   <Typography variant="h5">{recipe.title}</Typography>
@@ -142,15 +153,25 @@ export default function ListRecipes() {
                 <TableCell>3</TableCell>
               </TableRow>
             ))}*/}
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
-              showFirstButton
-              showLastButton
-              //count={pageCount || 0}
-              //rowsPerPage={pagination?.pageSize || 10}
-              //page={pagination?.pageIndex || 0}
-            />
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 20]}
+                count={filteredRecipes.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                showFirstButton
+                showLastButton
+                labelRowsPerPage="Recipes per page"
+                labelDisplayedRows={({ from, to, count }) =>
+                  `Showing ${from}-${to} of ${count}`
+                }
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
       <Dialog
