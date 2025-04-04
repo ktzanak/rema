@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import { Typography } from "@mui/material";
-import { Container } from "react-bootstrap";
+import { Container, InputGroup, FormControl, Card } from "react-bootstrap";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
+  TablePagination,
   Paper,
   Button,
 } from "@mui/material";
@@ -19,6 +20,7 @@ import {
 export default function ListRecipes() {
   const [recipes, setRecipes] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
 
   const handleDeleteClick = (id) => {
@@ -29,6 +31,9 @@ export default function ListRecipes() {
     setOpenDialog(false);
     setSelectedRecipeId(null);
   };
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     fetchRecipes();
@@ -70,13 +75,26 @@ export default function ListRecipes() {
 
   return (
     <Container>
+      <InputGroup className="mb-3">
+        <FormControl
+          placeholder="Search recipes..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </InputGroup>
       <TableContainer
         component={Paper}
         sx={{ width: "80%", margin: "auto", mt: 4, boxShadow: 3 }}
       >
+        <Card className="text-center mt-4">
+          <Card.Body>
+            <Card.Title>No recipes yet</Card.Title>
+            <Card.Text>Add some recipes to see them listed here.</Card.Text>
+          </Card.Body>
+        </Card>
         <Table>
           <TableBody>
-            {recipes.map((recipe) => (
+            {filteredRecipes.map((recipe) => (
               <TableRow key={recipe.id} hover>
                 <TableCell sx={{ width: "70%" }}>
                   <Typography variant="h5">{recipe.title}</Typography>
@@ -124,6 +142,14 @@ export default function ListRecipes() {
                 <TableCell>3</TableCell>
               </TableRow>
             ))}*/}
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 20]}
+              showFirstButton
+              showLastButton
+              //count={pageCount || 0}
+              //rowsPerPage={pagination?.pageSize || 10}
+              //page={pagination?.pageIndex || 0}
+            />
           </TableBody>
         </Table>
       </TableContainer>
