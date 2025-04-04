@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, InputGroup, FormControl, Card } from "react-bootstrap";
+import { Row, Container, InputGroup, FormControl, Card } from "react-bootstrap";
 import {
   Dialog,
   DialogActions,
@@ -91,13 +91,8 @@ export default function ListRecipes() {
 
   return (
     <Container>
-      <InputGroup className="mb-3">
-        <FormControl
-          placeholder="Search recipes..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </InputGroup>
+      {/*place search field in table="Search a recipe..."*/}
+
       <TableContainer
         component={Paper}
         sx={{ width: "80%", margin: "auto", mt: 4, boxShadow: 3 }}
