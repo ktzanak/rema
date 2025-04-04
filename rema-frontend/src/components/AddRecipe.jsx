@@ -73,6 +73,14 @@ export default function AddRecipe() {
           message: "Recipe saved successfully!",
           type: "success",
         });
+        setRecipeinfo({
+          name: "",
+          description: "",
+          totaltime: "",
+          nrportions: "",
+        });
+        setIngredients([]);
+        setInstructions([]);
       } else {
         setSaveStatus({ message: `Error: ${data.error}`, type: "error" });
       }
@@ -87,9 +95,7 @@ export default function AddRecipe() {
   return (
     <Container>
       <RecipeInfo recipeinfo={recipeinfo} setRecipeinfo={setRecipeinfo} />
-      <br />
-      <br />
-      <br />
+      <div className={styles.spacer}></div>
       <Row className={styles.inputcontainer}>
         <Col className={styles.ingredientsinstructionslabelcol}>
           <span className={styles.ingredientsinstructionslabel}>
