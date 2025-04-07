@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Row, Container, InputGroup, FormControl, Card } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import {
   Dialog,
   DialogActions,
@@ -16,11 +16,12 @@ import {
   TableFooter,
   Paper,
   Button,
+  TextField,
 } from "@mui/material";
 
 export default function ListRecipes() {
   const [recipes, setRecipes] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [page, setPage] = useState(0);
@@ -34,18 +35,28 @@ export default function ListRecipes() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const handleDeleteClick = (id) => {
+  const handleDelete = (id) => {
     setSelectedRecipeId(id);
-    setOpenDialog(true);
+    setOpenDeleteDialog(true);
   };
   const handleDeleteCancel = () => {
-    setOpenDialog(false);
+    setOpenDeleteDialog(false);
     setSelectedRecipeId(null);
   };
 
-  const filteredRecipes = recipes.filter((recipe) =>
-    recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredRecipes = recipes.filter((recipe) => {
+    const lowerSearch = searchTerm.toLowerCase();
+    return (
+      recipe.title.toLowerCase().includes(lowerSearch) ||
+      recipe.ingredients.some((ingredient) =>
+        ingredient.toLowerCase().includes(lowerSearch)
+      ) ||
+      recipe.description?.toLowerCase().includes(lowerSearch)
+      //recipe.tags?.some((tag) => tag.toLowerCase().includes(lowerSearch)) ||
+      //recipe.categories?.some((category) => category.toLowerCase().includes(lowerSearch)) ||
+    );
+  });
+
   const displayedRecipes = filteredRecipes.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
@@ -84,70 +95,66 @@ export default function ListRecipes() {
     } catch (error) {
       console.error("Error deleting recipe:", error);
     } finally {
-      setOpenDialog(false);
+      setOpenDeleteDialog(false);
       setSelectedRecipeId(null);
     }
   };
 
   return (
     <Container>
-      {/*place search field in table="Search a recipe..."*/}
+      <TextField
+        label="Search recipes by title, description or ingredient"
+        variant="outlined"
+        fullWidth
+        sx={{ width: "80%", margin: "2rem auto", display: "block" }}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
       <TableContainer
         component={Paper}
         sx={{ width: "80%", margin: "auto", mt: 4, boxShadow: 3 }}
       >
-        {/*No recipes yet*/}
         <Table>
           <TableBody>
-            {displayedRecipes.map((recipe) => (
-              <TableRow key={recipe.id} hover>
-                <TableCell sx={{ width: "70%" }}>
-                  <Typography variant="h5">{recipe.title}</Typography>
-                  <div>{recipe.description}</div>
-                  <div style={{ marginTop: "4px", color: "gray" }}>
-                    Time: {recipe.cooking_time} | Portions: {recipe.portions}
-                  </div>
-                </TableCell>
-                <TableCell sx={{ width: "10%" }}>
-                  <Button variant="contained" color="primary">
-                    Edit
-                  </Button>
-                </TableCell>
-                <TableCell sx={{ width: "10%" }}>
-                  <Button variant="contained" color="secondary">
-                    AI
-                  </Button>
-                </TableCell>
-                <TableCell sx={{ width: "10%" }}>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => handleDeleteClick(recipe.id)}
-                  >
-                    Delete
-                  </Button>
+            {displayedRecipes.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  No recipes...
                 </TableCell>
               </TableRow>
-            ))}
-            {/*   {recipes.map((recipe, index) => (
-              <TableRow key={index} hover>
-                <TableCell>1</TableCell>
-                <TableCell>
-                  <span
-                    style={{
-                      background: "#2196F3",
-                      color: "white",
-                      padding: "4px 8px",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    2
-                  </span>
-                </TableCell>
-                <TableCell>3</TableCell>
-              </TableRow>
-            ))}*/}
+            ) : (
+              displayedRecipes.map((recipe) => (
+                <TableRow key={recipe.id} hover>
+                  <TableCell sx={{ width: "70%" }}>
+                    <Typography variant="h6">{recipe.title}</Typography>
+                    <div style={{ marginTop: "4px", color: "gray" }}>
+                      Cooking Time: {recipe.cooking_time} | Portions:{" "}
+                      {recipe.portions}
+                    </div>
+                  </TableCell>
+                  <TableCell sx={{ width: "10%" }}>
+                    <Button variant="contained" color="primary">
+                      Edit
+                    </Button>
+                  </TableCell>
+                  <TableCell sx={{ width: "10%" }}>
+                    <Button variant="contained" color="secondary">
+                      AI
+                    </Button>
+                  </TableCell>
+                  <TableCell sx={{ width: "10%" }}>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleDelete(recipe.id)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
@@ -169,8 +176,9 @@ export default function ListRecipes() {
           </TableFooter>
         </Table>
       </TableContainer>
+
       <Dialog
-        open={openDialog}
+        open={openDeleteDialog}
         onClose={handleDeleteCancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
