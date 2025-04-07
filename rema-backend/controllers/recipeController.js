@@ -3,8 +3,31 @@ import pool from "../config/databaseconn.js";
 // Fetch all recipes
 export const listrecipes = async (req, res) => {
   try {
-    const [results] = await pool.query("SELECT * FROM recipes");
-    res.status(200).json(results);
+    const [recipes] = await pool.query("SELECT * FROM recipes");
+    const recipeIds = recipes.map((r) => r.id);
+
+    const [ingredients] = await pool.query(
+      "SELECT recipe_id, ingredient FROM ingredients WHERE recipe_id IN (?)",
+      [recipeIds]
+    );
+    const [instructions] = await pool.query(
+      "SELECT recipe_id, step_number, instruction FROM instructions WHERE recipe_id IN (?)",
+      [recipeIds]
+    );
+
+    // Map ingredients and instructions to their recipes
+    const recipesWithDetails = recipes.map((recipe) => {
+      return {
+        ...recipe,
+        ingredients: ingredients
+          .filter((ing) => ing.recipe_id === recipe.id)
+          .map((i) => i.ingredient),
+        instructions: instructions
+          .filter((ins) => ins.recipe_id === recipe.id)
+          .sort((a, b) => a.step_number - b.step_number),
+      };
+    });
+    res.status(200).json(recipesWithDetails);
   } catch (err) {
     console.error("Error fetching recipes:", err.message);
     res.status(500).json({ error: err.message });
