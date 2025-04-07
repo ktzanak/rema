@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import EditRecipe from "./EditRecipe";
 import {
   Dialog,
   DialogActions,
@@ -22,10 +23,12 @@ import {
 export default function ListRecipes() {
   const [recipes, setRecipes] = useState([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -42,6 +45,17 @@ export default function ListRecipes() {
   const handleDeleteCancel = () => {
     setOpenDeleteDialog(false);
     setSelectedRecipeId(null);
+  };
+  const handleEdit = (recipe) => {
+    setSelectedRecipe(recipe);
+    setOpenEditDialog(true);
+  };
+
+  const updateLocalRecipe = (updatedRecipe) => {
+    const updatedRecipes = recipes.map((recipe) =>
+      recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+    );
+    setRecipes(updatedRecipes);
   };
 
   const filteredRecipes = recipes.filter((recipe) => {
@@ -65,6 +79,26 @@ export default function ListRecipes() {
   useEffect(() => {
     fetchRecipes();
   }, []);
+
+  const handleSaveEditedRecipe = async (updatedRecipe) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/updaterecipe/${updatedRecipe.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedRecipe),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update recipe");
+
+      fetchRecipes();
+      setOpenEditDialog(false);
+    } catch (error) {
+      console.error("Edit failed:", error);
+    }
+  };
 
   const fetchRecipes = async () => {
     try {
@@ -134,7 +168,11 @@ export default function ListRecipes() {
                     </div>
                   </TableCell>
                   <TableCell sx={{ width: "10%" }}>
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleEdit(recipe)}
+                    >
                       Edit
                     </Button>
                   </TableCell>
@@ -176,7 +214,14 @@ export default function ListRecipes() {
           </TableFooter>
         </Table>
       </TableContainer>
-
+      {selectedRecipe && (
+        <EditRecipe
+          open={openEditDialog}
+          recipe={selectedRecipe}
+          onClose={() => setOpenEditDialog(false)}
+          onSave={handleSaveEditedRecipe}
+        />
+      )}
       <Dialog
         open={openDeleteDialog}
         onClose={handleDeleteCancel}
