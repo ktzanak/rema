@@ -146,3 +146,66 @@ export const deleterecipe = async (req, res) => {
     connection.release();
   }
 };
+
+export const updaterecipe = async (req, res) => {
+  const { id } = req.params;
+  const {
+    title,
+    description,
+    cooking_time,
+    portions,
+    ingredients,
+    instructions,
+  } = req.body;
+
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    // 1. Update recipe table
+    await connection.query(
+      `UPDATE recipes 
+       SET title = ?, description = ?, cooking_time = ?, portions = ?
+       WHERE id = ?`,
+      [title, description, cooking_time, portions, id]
+    );
+
+    // 2. Delete existing ingredients
+    await connection.query("DELETE FROM ingredients WHERE recipe_id = ?", [id]);
+
+    // 3. Re-insert updated ingredients
+    for (const ingredient of ingredients) {
+      await connection.query(
+        "INSERT INTO ingredients (recipe_id, ingredient) VALUES (?, ?)",
+        [id, typeof ingredient === "string" ? ingredient : ingredient.name]
+      );
+    }
+
+    // 4. Delete existing instructions
+    await connection.query("DELETE FROM instructions WHERE recipe_id = ?", [
+      id,
+    ]);
+
+    // 5. Re-insert updated instructions
+    for (const instruction of instructions) {
+      await connection.query(
+        "INSERT INTO instructions (recipe_id, step_number, instruction) VALUES (?, ?, ?)",
+        [
+          id,
+          instruction.step_number,
+          instruction.instruction || instruction.name,
+        ]
+      );
+    }
+
+    await connection.commit();
+    res.status(200).json({ message: "Recipe updated successfully." });
+  } catch (error) {
+    await connection.rollback();
+    console.error("Error updating recipe:", error.message);
+    res.status(500).json({ error: error.message });
+  } finally {
+    connection.release();
+  }
+};
