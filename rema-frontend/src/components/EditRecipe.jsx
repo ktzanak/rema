@@ -10,7 +10,11 @@ import {
 } from "@mui/material";
 
 export default function EditRecipe({ open, recipe, onClose, onSave }) {
-  const [editedRecipe, setEditedRecipe] = React.useState(recipe);
+  const [editedRecipe, setEditedRecipe] = React.useState({ ...recipe });
+
+  React.useEffect(() => {
+    setEditedRecipe({ ...recipe });
+  }, [recipe]);
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
