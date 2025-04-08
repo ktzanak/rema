@@ -25,7 +25,8 @@ export default function ListRecipes() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRecipeId, setSelectedRecipeId] = useState(null);
+  const [selectedRecipeIdToDelete, setSelectedRecipeIdToDelete] =
+    useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -39,23 +40,16 @@ export default function ListRecipes() {
     setPage(0);
   };
   const handleDelete = (id) => {
-    setSelectedRecipeId(id);
+    setSelectedRecipeIdToDelete(id);
     setOpenDeleteDialog(true);
   };
   const handleDeleteCancel = () => {
     setOpenDeleteDialog(false);
-    setSelectedRecipeId(null);
+    setSelectedRecipeIdToDelete(null);
   };
   const handleEdit = (recipe) => {
     setSelectedRecipe(recipe);
     setOpenEditDialog(true);
-  };
-
-  const updateLocalRecipe = (updatedRecipe) => {
-    const updatedRecipes = recipes.map((recipe) =>
-      recipe.id === updatedRecipe.id ? updatedRecipe : recipe
-    );
-    setRecipes(updatedRecipes);
   };
 
   const filteredRecipes = recipes.filter((recipe) => {
@@ -113,10 +107,10 @@ export default function ListRecipes() {
     }
   };
 
-  const handleDeleteConfirmation = async (id) => {
+  const handleDeleteConfirmation = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/deleterecipe/${selectedRecipeId}`,
+        `http://localhost:8000/api/deleterecipe/${selectedRecipeIdToDelete}`,
         {
           method: "DELETE",
         }
@@ -130,7 +124,7 @@ export default function ListRecipes() {
       console.error("Error deleting recipe:", error);
     } finally {
       setOpenDeleteDialog(false);
-      setSelectedRecipeId(null);
+      setSelectedRecipeIdToDelete(null);
     }
   };
 
