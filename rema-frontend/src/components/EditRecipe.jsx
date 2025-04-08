@@ -44,6 +44,8 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
       onClose={onClose}
       aria-labelledby="edit-dialog-title"
       aria-describedby="edit-dialog-description"
+      disableEnforceFocus
+      disableRestoreFocus
     >
       <DialogTitle id="edit-dialog-title">Edit Recipe</DialogTitle>
       <DialogContent>
@@ -110,7 +112,11 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
         ))}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="string" variant="contained">
+        <Button
+          onClick={onClose}
+          style={{ backgroundColor: "#E5E5E5", color: "#000000" }}
+          variant="contained"
+        >
           Cancel
         </Button>
         <Button onClick={handleEditSave} color="success" variant="contained">
