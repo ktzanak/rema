@@ -221,6 +221,8 @@ export default function ListRecipes() {
         onClose={handleDeleteCancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        disableEnforceFocus
+        disableRestoreFocus
       >
         <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
         <DialogContent>
@@ -229,10 +231,18 @@ export default function ListRecipes() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary">
+          <Button
+            onClick={handleDeleteCancel}
+            variant="contained"
+            style={{ backgroundColor: "#E5E5E5", color: "#000000" }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleDeleteConfirmation} color="error">
+          <Button
+            onClick={handleDeleteConfirmation}
+            variant="contained"
+            color="error"
+          >
             Delete
           </Button>
         </DialogActions>
