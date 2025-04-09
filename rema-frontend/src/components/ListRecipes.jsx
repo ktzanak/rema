@@ -154,14 +154,19 @@ export default function ListRecipes() {
             ) : (
               displayedRecipes.map((recipe) => (
                 <TableRow key={recipe.id} hover>
-                  <TableCell sx={{ width: "70%" }}>
+                  <TableCell sx={{ width: "68%" }}>
                     <Typography variant="h6">{recipe.title}</Typography>
                     <div style={{ marginTop: "4px", color: "gray" }}>
                       Cooking Time: {recipe.cooking_time} | Portions:{" "}
                       {recipe.portions}
                     </div>
                   </TableCell>
-                  <TableCell sx={{ width: "10%" }}>
+                  <TableCell align="center" sx={{ width: "8%" }}>
+                    <Button variant="contained" color="warning">
+                      View
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center" sx={{ width: "8%" }}>
                     <Button
                       variant="contained"
                       color="primary"
@@ -170,12 +175,12 @@ export default function ListRecipes() {
                       Edit
                     </Button>
                   </TableCell>
-                  <TableCell sx={{ width: "10%" }}>
+                  <TableCell align="center" sx={{ width: "8%" }}>
                     <Button variant="contained" color="secondary">
                       AI
                     </Button>
                   </TableCell>
-                  <TableCell sx={{ width: "10%" }}>
+                  <TableCell align="center" sx={{ width: "8%" }}>
                     <Button
                       variant="contained"
                       color="error"
