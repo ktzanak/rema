@@ -18,16 +18,20 @@
   display: flex;
   justify-content: space-around;
 }
-.recipeinfocol1 {
+.recipeinfocol {
   width: 45%;
 }
-.recipeinfocol2 {
-  width: 45%;
-}
+
 .recipeinfolabel {
   padding: 10px;
 }
-.recipeinforow {
+.recipeinforowright {
+  width: 100%;
+  display: flex;
+  margin: 20px auto;
+  justify-content: space-between;
+}
+.recipeinforowleft {
   width: 100%;
   margin: 20px auto;
 }
