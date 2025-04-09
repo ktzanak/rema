@@ -3,30 +3,48 @@ import pool from "../config/databaseconn.js";
 // Fetch all recipes
 export const listrecipes = async (req, res) => {
   try {
-    const [recipes] = await pool.query("SELECT * FROM recipes");
-    const recipeIds = recipes.map((r) => r.id);
+    const [recipes] = await pool.query(`
+      SELECT 
+        rec.id AS recipe_id, rec.title, rec.description, rec.cooking_time, rec.portions, rec.created_at,
+        ing.ingredient,
+        ins.step_number, ins.instruction
+      FROM recipes rec
+      LEFT JOIN ingredients ing ON rec.id = ing.recipe_id
+      LEFT JOIN instructions ins ON rec.id = ins.recipe_id
+      ORDER BY rec.title
+    `);
 
-    const [ingredients] = await pool.query(
-      "SELECT recipe_id, ingredient FROM ingredients WHERE recipe_id IN (?)",
-      [recipeIds]
-    );
-    const [instructions] = await pool.query(
-      "SELECT recipe_id, step_number, instruction FROM instructions WHERE recipe_id IN (?)",
-      [recipeIds]
-    );
+    const recipeMap = new Map();
 
-    // Map ingredients and instructions to their recipes
-    const recipesWithDetails = recipes.map((recipe) => {
-      return {
-        ...recipe,
-        ingredients: ingredients
-          .filter((ing) => ing.recipe_id === recipe.id)
-          .map((i) => i.ingredient),
-        instructions: instructions
-          .filter((ins) => ins.recipe_id === recipe.id)
-          .sort((a, b) => a.step_number - b.step_number),
-      };
-    });
+    for (const recipe of recipes) {
+      if (!recipeMap.has(recipe.recipe_id)) {
+        recipeMap.set(recipe.recipe_id, {
+          id: recipe.recipe_id,
+          title: recipe.title,
+          description: recipe.description,
+          cooking_time: recipe.cooking_time,
+          portions: recipe.portions,
+          created_at: recipe.created_at,
+          ingredients: [],
+          instructions: [],
+        });
+      }
+
+      const rec = recipeMap.get(recipe.recipe_id);
+
+      if (!rec.ingredients.includes(recipe.ingredient)) {
+        rec.ingredients.push(recipe.ingredient);
+      }
+      if (!rec.instructions.some((i) => i.step_number === recipe.step_number)) {
+        rec.instructions.push({
+          step_number: recipe.step_number,
+          instruction: recipe.instruction,
+        });
+      }
+    }
+
+    const recipesWithDetails = Array.from(recipeMap.values());
+
     res.status(200).json(recipesWithDetails);
   } catch (err) {
     console.error("Error fetching recipes:", err.message);
