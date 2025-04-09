@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import EditRecipe from "./EditRecipe";
+import ViewRecipe from "./Viewrecipe";
 import {
   Dialog,
   DialogActions,
@@ -30,6 +31,7 @@ export default function ListRecipes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -50,6 +52,10 @@ export default function ListRecipes() {
   const handleEdit = (recipe) => {
     setSelectedRecipe(recipe);
     setOpenEditDialog(true);
+  };
+  const handleView = (recipe) => {
+    setSelectedRecipe(recipe);
+    setOpenViewDialog(true);
   };
 
   const filteredRecipes = recipes.filter((recipe) => {
@@ -162,7 +168,11 @@ export default function ListRecipes() {
                     </div>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
-                    <Button variant="contained" color="warning">
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      onClick={() => handleView(recipe)}
+                    >
                       View
                     </Button>
                   </TableCell>
@@ -213,14 +223,18 @@ export default function ListRecipes() {
           </TableFooter>
         </Table>
       </TableContainer>
-      {selectedRecipe && (
-        <EditRecipe
-          open={openEditDialog}
-          recipe={selectedRecipe}
-          onClose={() => setOpenEditDialog(false)}
-          onSave={handleSaveEditedRecipe}
-        />
-      )}
+
+      <EditRecipe
+        open={openEditDialog}
+        recipe={selectedRecipe}
+        onClose={() => setOpenEditDialog(false)}
+        onSave={handleSaveEditedRecipe}
+      />
+      <ViewRecipe
+        open={openViewDialog}
+        onClose={() => setOpenViewDialog(false)}
+        recipe={selectedRecipe}
+      />
       <Dialog
         open={openDeleteDialog}
         onClose={handleDeleteCancel}
