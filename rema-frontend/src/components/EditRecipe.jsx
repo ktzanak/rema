@@ -55,7 +55,7 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
           fullWidth
           margin="normal"
           name="title"
-          value={editedRecipe.title}
+          value={editedRecipe.title || ""}
           onChange={handleEditChange}
         />
         <TextField
@@ -64,7 +64,7 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
           fullWidth
           margin="normal"
           name="description"
-          value={editedRecipe.description}
+          value={editedRecipe.description || ""}
           onChange={handleEditChange}
         />
         <TextField
@@ -73,7 +73,7 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
           fullWidth
           margin="normal"
           name="cooking_time"
-          value={editedRecipe.cooking_time}
+          value={editedRecipe.cooking_time || ""}
           onChange={handleEditChange}
         />
         <TextField
@@ -82,11 +82,11 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
           fullWidth
           margin="normal"
           name="portions"
-          value={editedRecipe.portions}
+          value={editedRecipe.portions || ""}
           onChange={handleEditChange}
         />
         <Typography variant="h6">Ingredients:</Typography>
-        {editedRecipe.ingredients.map((ingredient, index) => (
+        {editedRecipe.ingredients?.map((ingredient, index) => (
           <TextField
             key={`ing-${index}`}
             label="Ingredient"
@@ -99,7 +99,7 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
           />
         ))}
         <Typography variant="h6">Instructions:</Typography>
-        {editedRecipe.instructions.map((instruction, index) => (
+        {editedRecipe.instructions?.map((instruction, index) => (
           <TextField
             key={`ins-${index}`}
             label={`Step ${instruction.step_number}`}
