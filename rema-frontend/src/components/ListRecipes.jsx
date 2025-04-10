@@ -57,6 +57,14 @@ export default function ListRecipes() {
     setSelectedRecipe(recipe);
     setOpenViewDialog(true);
   };
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+    setSelectedRecipe(null);
+  };
+  const handleCloseViewDialog = () => {
+    setOpenViewDialog(false);
+    setSelectedRecipe(null);
+  };
 
   const filteredRecipes = recipes.filter((recipe) => {
     const lowerSearch = searchTerm.toLowerCase();
@@ -97,6 +105,9 @@ export default function ListRecipes() {
       setOpenEditDialog(false);
     } catch (error) {
       console.error("Edit failed:", error);
+    } finally {
+      setOpenEditDialog(false);
+      setSelectedRecipe(null);
     }
   };
 
@@ -227,12 +238,12 @@ export default function ListRecipes() {
       <EditRecipe
         open={openEditDialog}
         recipe={selectedRecipe}
-        onClose={() => setOpenEditDialog(false)}
+        onClose={handleCloseEditDialog}
         onSave={handleSaveEditedRecipe}
       />
       <ViewRecipe
         open={openViewDialog}
-        onClose={() => setOpenViewDialog(false)}
+        onClose={handleCloseViewDialog}
         recipe={selectedRecipe}
       />
       <Dialog
