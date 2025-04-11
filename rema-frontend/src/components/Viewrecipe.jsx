@@ -17,9 +17,14 @@ export default function ViewRecipe({ open, onClose, recipe }) {
     const fileName = "ReMa_recipe.pdf";
     const blob = await pdf(
       <PdfDocu
-        recipeinfo={recipeinfo}
-        ingredients={ingredients}
-        instructions={instructions}
+        recipeinfo={{
+          title: recipe.title,
+          cooking_time: recipe.cooking_time,
+          portions: recipe.portions,
+          description: recipe.description,
+        }}
+        ingredients={recipe.ingredients}
+        instructions={recipe.instructions}
       />
     ).toBlob();
     saveAs(blob, fileName);
