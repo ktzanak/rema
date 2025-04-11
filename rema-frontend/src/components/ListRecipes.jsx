@@ -23,13 +23,11 @@ import {
 
 export default function ListRecipes() {
   const [recipes, setRecipes] = useState([]);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [openViewDialog, setOpenViewDialog] = useState(false);
+  const [dialogMode, setDialogMode] = useState(null); // 'view' | 'edit' | 'delete' | null
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -39,28 +37,13 @@ export default function ListRecipes() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const handleDelete = (recipe) => {
+
+  const handleOpenDialog = (recipe, mode) => {
+    setDialogMode(mode);
     setSelectedRecipe(recipe);
-    setOpenDeleteDialog(true);
   };
-  const handleCloseDeleteDialog = () => {
-    setOpenDeleteDialog(false);
-    setSelectedRecipe(null);
-  };
-  const handleEdit = (recipe) => {
-    setSelectedRecipe(recipe);
-    setOpenEditDialog(true);
-  };
-  const handleView = (recipe) => {
-    setSelectedRecipe(recipe);
-    setOpenViewDialog(true);
-  };
-  const handleCloseEditDialog = () => {
-    setOpenEditDialog(false);
-    setSelectedRecipe(null);
-  };
-  const handleCloseViewDialog = () => {
-    setOpenViewDialog(false);
+  const handleCloseDialog = () => {
+    setDialogMode(null);
     setSelectedRecipe(null);
   };
 
@@ -103,7 +86,6 @@ export default function ListRecipes() {
     } catch (error) {
       console.error("Edit failed:", error);
     } finally {
-      setOpenEditDialog(false);
       setSelectedRecipe(null);
     }
   };
@@ -137,7 +119,6 @@ export default function ListRecipes() {
     } catch (error) {
       console.error("Error deleting recipe:", error);
     } finally {
-      setOpenDeleteDialog(false);
       setSelectedRecipe(null);
     }
   };
@@ -179,7 +160,7 @@ export default function ListRecipes() {
                     <Button
                       variant="contained"
                       color="warning"
-                      onClick={() => handleView(recipe)}
+                      onClick={() => handleOpenDialog(recipe, "view")}
                     >
                       View
                     </Button>
@@ -188,7 +169,7 @@ export default function ListRecipes() {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => handleEdit(recipe)}
+                      onClick={() => handleOpenDialog(recipe, "edit")}
                     >
                       Edit
                     </Button>
@@ -202,7 +183,7 @@ export default function ListRecipes() {
                     <Button
                       variant="contained"
                       color="error"
-                      onClick={() => handleDelete(recipe)}
+                      onClick={() => handleOpenDialog(recipe, "delete")}
                     >
                       Delete
                     </Button>
@@ -232,48 +213,56 @@ export default function ListRecipes() {
         </Table>
       </TableContainer>
 
-      <EditRecipe
-        open={openEditDialog}
-        recipe={selectedRecipe}
-        onClose={handleCloseEditDialog}
-        onSave={handleSaveEditedRecipe}
-      />
-      <ViewRecipe
-        open={openViewDialog}
-        onClose={handleCloseViewDialog}
-        recipe={selectedRecipe}
-      />
-      <Dialog
-        open={openDeleteDialog}
-        onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        disableEnforceFocus
-        disableRestoreFocus
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this recipe?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleCloseDeleteDialog}
-            variant="contained"
-            style={{ backgroundColor: "#E5E5E5", color: "#000000" }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => handleDeleteConfirmation(selectedRecipe)}
-            variant="contained"
-            color="error"
-          >
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {dialogMode === "edit" && (
+        <EditRecipe
+          open={true}
+          recipe={selectedRecipe}
+          onClose={handleCloseDialog}
+          onSave={handleSaveEditedRecipe}
+        />
+      )}
+      {dialogMode === "view" && (
+        <ViewRecipe
+          open={true}
+          onClose={handleCloseDialog}
+          recipe={selectedRecipe}
+        />
+      )}
+      {dialogMode === "delete" && (
+        <Dialog
+          open={true}
+          onClose={handleCloseDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          disableEnforceFocus
+          disableRestoreFocus
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Confirm Deletion"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this recipe?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleCloseDialog}
+              variant="contained"
+              style={{ backgroundColor: "#E5E5E5", color: "#000000" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleDeleteConfirmation(selectedRecipe)}
+              variant="contained"
+              color="error"
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Container>
   );
 }
