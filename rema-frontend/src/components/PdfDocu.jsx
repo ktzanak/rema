@@ -92,17 +92,17 @@ function PdfDocu(recipeinfoingredientsinstructions) {
             </Text>
             <View style={styles.inlinetop2}>
               <Text style={styles.title}>
-                {recipeinfoingredientsinstructions.recipeinfo.name}
+                {recipeinfoingredientsinstructions.recipeinfo.title}
               </Text>
               <Text style={styles.textdescription}>
                 {recipeinfoingredientsinstructions.recipeinfo.description}
               </Text>
               <Text style={styles.texttimeportions}>
                 <Text style={{ fontFamily: "Times-Bold" }}>Time: </Text>
-                {recipeinfoingredientsinstructions.recipeinfo.totaltime}
+                {recipeinfoingredientsinstructions.recipeinfo.cooking_time}
                 {"                       "}
                 <Text style={{ fontFamily: "Times-Bold" }}>Portions: </Text>
-                {recipeinfoingredientsinstructions.recipeinfo.nrportions}
+                {recipeinfoingredientsinstructions.recipeinfo.portions}
               </Text>
             </View>
           </View>
@@ -112,8 +112,11 @@ function PdfDocu(recipeinfoingredientsinstructions) {
               <Text style={styles.textlabelleft}>Ingredients</Text>
               {recipeinfoingredientsinstructions.ingredients.map(
                 (ingredient) => (
-                  <Text style={styles.textingredients} key={ingredient.id}>
-                    {ingredient.name}
+                  <Text
+                    style={styles.textingredients}
+                    key={ingredient.recipe_id}
+                  >
+                    {ingredient}
                   </Text>
                 )
               )}
@@ -121,11 +124,14 @@ function PdfDocu(recipeinfoingredientsinstructions) {
             <View style={styles.inlinedown2right}>
               <Text style={styles.textlabelright}>Instructions</Text>
               {recipeinfoingredientsinstructions.instructions.map(
-                (instruction, index) => (
-                  <Text style={styles.textinstructions} key={instruction.id}>
+                (instructionrow, index) => (
+                  <Text
+                    style={styles.textinstructions}
+                    key={instructionrow.recipe_id}
+                  >
                     {index + 1}
                     {". "}
-                    {instruction.name}
+                    {instructionrow.instruction}
                   </Text>
                 )
               )}
