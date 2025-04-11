@@ -26,12 +26,19 @@ export default function ViewRecipe({ open, onClose, recipe }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{recipe.title}</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      disableEnforceFocus
+      disableRestoreFocus
+    >
+      <DialogTitle>{recipe?.title}</DialogTitle>
       <DialogContent dividers>
         <Box mb={2}>
           <Typography variant="subtitle1" color="textSecondary">
-            Cooking Time: {recipe.cooking_time} | Portions: {recipe.portions}
+            Cooking Time: {recipe?.cooking_time} | Portions: {recipe?.portions}
           </Typography>
         </Box>
 
@@ -40,14 +47,14 @@ export default function ViewRecipe({ open, onClose, recipe }) {
         <Box mb={2}>
           <Typography variant="h6">Description</Typography>
           <Typography variant="body1">
-            {recipe.description || "No description provided."}
+            {recipe?.description || "No description provided."}
           </Typography>
         </Box>
 
         <Box mb={2}>
           <Typography variant="h6">Ingredients</Typography>
           <ul style={{ marginLeft: "1rem" }}>
-            {recipe.ingredients?.map((ing, idx) => (
+            {recipe?.ingredients.map((ing, idx) => (
               <li key={idx}>
                 <Typography variant="body2">{ing}</Typography>
               </li>
@@ -55,7 +62,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
           </ul>
         </Box>
 
-        {recipe.instructions?.length > 0 && (
+        {recipe?.instructions.length > 0 && (
           <Box>
             <Typography variant="h6">Instructions</Typography>
             <ol style={{ marginLeft: "1rem" }}>
