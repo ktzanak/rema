@@ -26,8 +26,6 @@ export default function ListRecipes() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRecipeIdToDelete, setSelectedRecipeIdToDelete] =
-    useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -41,13 +39,13 @@ export default function ListRecipes() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const handleDelete = (id) => {
-    setSelectedRecipeIdToDelete(id);
+  const handleDelete = (recipe) => {
+    setSelectedRecipe(recipe);
     setOpenDeleteDialog(true);
   };
-  const handleDeleteCancel = () => {
+  const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
-    setSelectedRecipeIdToDelete(null);
+    setSelectedRecipe(null);
   };
   const handleEdit = (recipe) => {
     setSelectedRecipe(recipe);
@@ -102,7 +100,6 @@ export default function ListRecipes() {
       if (!response.ok) throw new Error("Failed to update recipe");
 
       fetchRecipes();
-      setOpenEditDialog(false);
     } catch (error) {
       console.error("Edit failed:", error);
     } finally {
@@ -124,10 +121,10 @@ export default function ListRecipes() {
     }
   };
 
-  const handleDeleteConfirmation = async () => {
+  const handleDeleteConfirmation = async (selectedRecipe) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/deleterecipe/${selectedRecipeIdToDelete}`,
+        `http://localhost:8000/api/deleterecipe/${selectedRecipe.id}`,
         {
           method: "DELETE",
         }
@@ -141,7 +138,7 @@ export default function ListRecipes() {
       console.error("Error deleting recipe:", error);
     } finally {
       setOpenDeleteDialog(false);
-      setSelectedRecipeIdToDelete(null);
+      setSelectedRecipe(null);
     }
   };
 
@@ -205,7 +202,7 @@ export default function ListRecipes() {
                     <Button
                       variant="contained"
                       color="error"
-                      onClick={() => handleDelete(recipe.id)}
+                      onClick={() => handleDelete(recipe)}
                     >
                       Delete
                     </Button>
@@ -248,7 +245,7 @@ export default function ListRecipes() {
       />
       <Dialog
         open={openDeleteDialog}
-        onClose={handleDeleteCancel}
+        onClose={handleCloseDeleteDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         disableEnforceFocus
@@ -262,14 +259,14 @@ export default function ListRecipes() {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleDeleteCancel}
+            onClick={handleCloseDeleteDialog}
             variant="contained"
             style={{ backgroundColor: "#E5E5E5", color: "#000000" }}
           >
             Cancel
           </Button>
           <Button
-            onClick={handleDeleteConfirmation}
+            onClick={() => handleDeleteConfirmation(selectedRecipe)}
             variant="contained"
             color="error"
           >
