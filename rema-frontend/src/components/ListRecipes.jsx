@@ -71,7 +71,6 @@ export default function ListRecipes() {
 
   const handleSaveEditedRecipe = async (updatedRecipe) => {
     try {
-      console.log(updatedRecipe);
       const response = await fetch(
         `http://localhost:8000/api/updaterecipe/${updatedRecipe.id}`,
         {
