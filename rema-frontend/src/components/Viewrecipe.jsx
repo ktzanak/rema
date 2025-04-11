@@ -34,11 +34,11 @@ export default function ViewRecipe({ open, onClose, recipe }) {
       disableEnforceFocus
       disableRestoreFocus
     >
-      <DialogTitle>{recipe?.title}</DialogTitle>
+      <DialogTitle>{recipe.title}</DialogTitle>
       <DialogContent dividers>
         <Box mb={2}>
           <Typography variant="subtitle1" color="textSecondary">
-            Cooking Time: {recipe?.cooking_time} | Portions: {recipe?.portions}
+            Cooking Time: {recipe.cooking_time} | Portions: {recipe.portions}
           </Typography>
         </Box>
 
@@ -46,9 +46,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
 
         <Box mb={2}>
           <Typography variant="h6">Description</Typography>
-          <Typography variant="body1">
-            {recipe?.description || "No description provided."}
-          </Typography>
+          <Typography variant="body1">{recipe.description}</Typography>
         </Box>
 
         <Box mb={2}>
@@ -66,9 +64,11 @@ export default function ViewRecipe({ open, onClose, recipe }) {
           <Box>
             <Typography variant="h6">Instructions</Typography>
             <ol style={{ marginLeft: "1rem" }}>
-              {recipe.instructions.map((instruction, idx) => (
+              {recipe.instructions.map((instructionrow, idx) => (
                 <li key={idx}>
-                  <Typography variant="body2">{instruction}</Typography>
+                  <Typography variant="body2">
+                    {instructionrow.instruction}
+                  </Typography>
                 </li>
               ))}
             </ol>
