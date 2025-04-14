@@ -111,8 +111,8 @@ function PdfDocu(recipeinfoingredientsinstructions) {
             <View style={styles.inlinedown2left}>
               <Text style={styles.textlabelleft}>Ingredients</Text>
               {recipeinfoingredientsinstructions.ingredients.map(
-                (ingredient) => (
-                  <Text style={styles.textingredients} key={ingredient.id}>
+                (ingredient, index) => (
+                  <Text style={styles.textingredients} key={index}>
                     {ingredient}
                   </Text>
                 )
@@ -122,7 +122,10 @@ function PdfDocu(recipeinfoingredientsinstructions) {
               <Text style={styles.textlabelright}>Instructions</Text>
               {recipeinfoingredientsinstructions.instructions.map(
                 (instructionrow, index) => (
-                  <Text style={styles.textinstructions} key={instructionrow.id}>
+                  <Text
+                    style={styles.textinstructions}
+                    key={`${index}_${instructionrow.step_number}`}
+                  >
                     {index + 1}
                     {". "}
                     {instructionrow.instruction}
