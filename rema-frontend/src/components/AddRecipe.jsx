@@ -1,15 +1,11 @@
 import { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
-import { pdf } from "@react-pdf/renderer";
-import { saveAs } from "file-saver";
-import PdfDocu from "./PdfDocu";
 import IngredientsForm from "./IngredientsForm";
 import InstructionsForm from "./InstructionsForm";
 import IngredientsList from "./IngredientsList";
 import InstructionsList from "./InstructionsList";
 import RecipeInfo from "./RecipeInfo";
 import styles from "../css/addrecipe.module.css";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 
 export default function AddRecipe() {
   const [saveStatus, setSaveStatus] = useState({ message: "", type: "" });
@@ -23,18 +19,6 @@ export default function AddRecipe() {
     totaltime: "",
     nrportions: "",
   });
-
-  const downloadPdf = async () => {
-    const fileName = "ReMa_recipe.pdf";
-    const blob = await pdf(
-      <PdfDocu
-        recipeinfo={recipeinfo}
-        ingredients={ingredients}
-        instructions={instructions}
-      />
-    ).toBlob();
-    saveAs(blob, fileName);
-  };
 
   const saveRecipe = async () => {
     if (!recipeinfo.name.trim()) {
@@ -157,12 +141,6 @@ export default function AddRecipe() {
         <Col className={styles.ingredientsinstructionsbutton}>
           <button onClick={saveRecipe} className={styles.modernbuttonsave}>
             Save
-          </button>
-        </Col>
-        <span className={styles.orText}>-or-</span>
-        <Col className={styles.ingredientsinstructionsbutton}>
-          <button onClick={downloadPdf} className={styles.modernbuttonexport}>
-            Export to pdf
           </button>
         </Col>
       </Row>
