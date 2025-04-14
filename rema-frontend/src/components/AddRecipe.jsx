@@ -6,6 +6,7 @@ import IngredientsList from "./IngredientsList";
 import InstructionsList from "./InstructionsList";
 import RecipeInfo from "./RecipeInfo";
 import styles from "../css/addrecipe.module.css";
+import Button from "@mui/material/Button";
 
 export default function AddRecipe() {
   const [saveStatus, setSaveStatus] = useState({ message: "", type: "" });
@@ -139,9 +140,18 @@ export default function AddRecipe() {
       </Row>
       <Row className={styles.inputcontainerbutton}>
         <Col className={styles.ingredientsinstructionsbutton}>
-          <button onClick={saveRecipe} className={styles.modernbuttonsave}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={saveRecipe}
+            sx={{
+              paddingX: 3.5,
+              paddingY: 1,
+              borderRadius: 1,
+            }}
+          >
             Save
-          </button>
+          </Button>
         </Col>
       </Row>
     </Container>
