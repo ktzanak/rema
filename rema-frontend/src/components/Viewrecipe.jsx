@@ -70,7 +70,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
             <Typography variant="h6">Instructions</Typography>
             <ol style={{ marginLeft: "1rem" }}>
               {recipe.instructions.map((instructionrow, idx) => (
-                <li key={idx}>
+                <li key={`${idx}_${instructionrow.step_number}`}>
                   <Typography variant="body2">
                     {instructionrow.instruction}
                   </Typography>
