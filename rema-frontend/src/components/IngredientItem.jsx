@@ -16,12 +16,21 @@ export default function IngredientItem({
       <div className={styles.ingredientitemname}>
         {ingredientitem.name}
         <span>
-          <button
+          <Button
             onClick={() => handledelete(ingredientitem)}
-            className={styles.deletebutton}
+            disableElevation
+            variant="contained"
+            color="success"
+            sx={{
+              minWidth: "unset",
+              paddingX: 1.5,
+              paddingY: 0.5,
+              borderRadius: 1,
+              backgroundColor: "#82b366",
+            }}
           >
             x
-          </button>
+          </Button>
         </span>
       </div>
       <hr className={styles.line} />
