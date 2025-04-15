@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "../css/instructionsform.module.css";
+import Button from "@mui/material/Button";
 
 export default function IngredientsInstructionsForm({
   instructions,
@@ -37,9 +38,19 @@ export default function IngredientsInstructionsForm({
           value={instruction.name}
           placeholder="Add each instruction"
         />
-        <button className={styles.modernbutton} type="submit">
+        <Button
+          type="submit"
+          disableElevation
+          variant="contained"
+          color="success"
+          sx={{
+            paddingX: 2,
+            paddingY: 0.6,
+            borderRadius: 1,
+          }}
+        >
           Add
-        </button>
+        </Button>
       </div>
     </form>
   );
