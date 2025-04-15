@@ -1,4 +1,5 @@
 import styles from "../css/instructionitem.module.css";
+import Button from "@mui/material/Button";
 
 export default function InstructionItem({
   instructionitem,
@@ -17,12 +18,21 @@ export default function InstructionItem({
       <div className={styles.instructionitemname}>
         {index}. {instructionitem.name}
         <span>
-          <button
+          <Button
             onClick={() => handledelete(instructionitem)}
-            className={styles.deletebutton}
+            disableElevation
+            variant="contained"
+            color="success"
+            sx={{
+              minWidth: "unset",
+              paddingX: 1.5,
+              paddingY: 0.5,
+              borderRadius: 1,
+              backgroundColor: "#82b366",
+            }}
           >
             x
-          </button>
+          </Button>
         </span>
       </div>
       <hr className={styles.line} />
