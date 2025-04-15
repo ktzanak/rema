@@ -33,16 +33,6 @@
   padding-right: 2%;
 }
 
-.modernbuttonexport {
-  display: inline-block;
-  border: none;
-  border-radius: 4px;
-  background-color: #b85450;
-  padding: 12px 20px;
-  color: white;
-  cursor: pointer;
-}
-
 .inputcontainerbutton {
   display: flex;
   justify-content: center;
@@ -55,25 +45,11 @@
   width: auto;
 }
 
-.modernbuttonsave {
-  display: inline-block;
-  border: none;
-  border-radius: 4px;
-  background-color: #6c8ebf;
-  padding: 12px 20px;
-  color: white;
-  cursor: pointer;
-}
-
-.orText {
-  margin: 0 15px;
-}
-
 .saveStatusContainer {
   display: flex;
-  justify-content: center; /* Centers horizontally */
+  justify-content: center;
   width: 100%;
-  margin-top: 15px; /* Gives some space between the buttons and status */
+  margin-top: 15px;
 }
 
 .saveStatusSuccess {
