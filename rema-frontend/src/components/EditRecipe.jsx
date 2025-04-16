@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   Button,
 } from "@mui/material";
@@ -35,7 +34,6 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
   const handleEditSave = () => {
     // Save the changes to the parent component or API
     onSave(editedRecipe);
-    onClose();
   };
 
   return (
@@ -47,7 +45,6 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
       disableEnforceFocus
       disableRestoreFocus
     >
-      <DialogTitle id="edit-dialog-title">Edit Recipe</DialogTitle>
       <DialogContent>
         <TextField
           label="Title"
@@ -106,8 +103,8 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
             variant="outlined"
             fullWidth
             margin="normal"
-            value={instruction.instruction} // Value for each TextField
-            onChange={(e) => handleInstructionChange(e, index)} // Handle change for each TextField
+            value={instruction.instruction}
+            onChange={(e) => handleInstructionChange(e, index)}
           />
         ))}
       </DialogContent>
