@@ -71,6 +71,7 @@ export default function ListRecipes() {
 
   const handleSaveEditedRecipe = async (updatedRecipe) => {
     try {
+      console.log(updatedRecipe);
       const response = await fetch(
         `http://localhost:8000/api/updaterecipe/${updatedRecipe.id}`,
         {
@@ -86,7 +87,7 @@ export default function ListRecipes() {
     } catch (error) {
       console.error("Edit failed:", error);
     } finally {
-      setSelectedRecipe(null);
+      handleCloseDialog();
     }
   };
 
@@ -119,7 +120,7 @@ export default function ListRecipes() {
     } catch (error) {
       console.error("Error deleting recipe:", error);
     } finally {
-      setSelectedRecipe(null);
+      handleCloseDialog();
     }
   };
 
