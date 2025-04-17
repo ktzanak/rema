@@ -15,14 +15,14 @@ export default function AddRecipe() {
   //const [tags, setTags] = useState([]);
   //const [categories, setCategories] = useState([]);
   const [recipeinfo, setRecipeinfo] = useState({
-    name: "",
+    title: "",
     description: "",
-    totaltime: "",
-    nrportions: "",
+    cooking_time: "",
+    portions: "",
   });
 
   const saveRecipe = async () => {
-    if (!recipeinfo.name.trim()) {
+    if (!recipeinfo.title.trim()) {
       setSaveStatus({
         message: "Title is required for saving the recipe!",
         type: "error",
@@ -31,10 +31,10 @@ export default function AddRecipe() {
     }
 
     const recipeData = {
-      title: recipeinfo.name,
+      title: recipeinfo.title,
       description: recipeinfo.description,
-      cooking_time: recipeinfo.totaltime,
-      portions: recipeinfo.nrportions,
+      cooking_time: recipeinfo.cooking_time,
+      portions: recipeinfo.portions,
       created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       ingredients: ingredients,
       instructions: instructions,
@@ -59,10 +59,10 @@ export default function AddRecipe() {
           type: "success",
         });
         setRecipeinfo({
-          name: "",
+          title: "",
           description: "",
-          totaltime: "",
-          nrportions: "",
+          cooking_time: "",
+          portions: "",
         });
         setIngredients([]);
         setInstructions([]);
