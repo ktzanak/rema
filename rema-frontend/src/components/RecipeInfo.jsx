@@ -21,11 +21,11 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
               onChange={(e) =>
                 setRecipeinfo({
                   ...recipeinfo,
-                  name: e.target.value,
+                  title: e.target.value,
                 })
               }
               type="text"
-              value={recipeinfo?.name || ""}
+              value={recipeinfo?.title || ""}
               placeholder="Add a title"
             />
           </div>
@@ -58,11 +58,11 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
                 onChange={(e) =>
                   setRecipeinfo({
                     ...recipeinfo,
-                    totaltime: e.target.value,
+                    cooking_time: e.target.value,
                   })
                 }
                 type="text"
-                value={recipeinfo?.totaltime || ""}
+                value={recipeinfo?.cooking_time || ""}
                 placeholder="Add time in total (optional)"
               />
             </div>
@@ -95,11 +95,11 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
                 onChange={(e) =>
                   setRecipeinfo({
                     ...recipeinfo,
-                    nrportions: e.target.value,
+                    portions: e.target.value,
                   })
                 }
                 type="text"
-                value={recipeinfo?.nrportions || ""}
+                value={recipeinfo?.portions || ""}
                 placeholder="Add number of portions (optional)"
               />
             </div>
