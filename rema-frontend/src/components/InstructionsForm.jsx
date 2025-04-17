@@ -8,22 +8,22 @@ export default function IngredientsInstructionsForm({
   setInstructions,
 }) {
   const [instruction, setInstruction] = useState({
-    name: "",
+    instruction: "",
     id: "",
   });
 
   function handleSubmit2(e) {
     e.preventDefault();
-    if (!instruction.name.trim()) return;
+    if (!instruction.instruction.trim()) return;
     setInstructions([
       ...instructions,
       {
         step_number: instructions.length + 1,
-        name: instruction.name,
+        instruction: instruction.instruction,
         id: uuidv4(),
       },
     ]);
-    setInstruction({ step_number: "", name: "", id: "" });
+    setInstruction({ step_number: "", instruction: "", id: "" });
   }
   return (
     <form className={styles.instructionsform} onSubmit={handleSubmit2}>
@@ -32,10 +32,10 @@ export default function IngredientsInstructionsForm({
           required
           className={styles.moderninput}
           onChange={(e) =>
-            setInstruction({ name: e.target.value, id: instruction.id })
+            setInstruction({ instruction: e.target.value, id: instruction.id })
           }
           type="text"
-          value={instruction.name}
+          value={instruction.instruction}
           placeholder="Add each instruction"
         />
         <Button
