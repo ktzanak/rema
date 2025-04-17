@@ -15,7 +15,7 @@ export default function IngredientItem({
   return (
     <div className={styles.ingredientitem}>
       <div className={styles.ingredientitemname}>
-        {ingredientitem.name}
+        {ingredientitem.ingredient}
         <span>
           <Button
             onClick={() => handledelete(ingredientitem)}
