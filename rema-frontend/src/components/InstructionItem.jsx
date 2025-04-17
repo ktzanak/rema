@@ -16,7 +16,7 @@ export default function InstructionItem({
   return (
     <div className={styles.instructionitem}>
       <div className={styles.instructionitemname}>
-        {index}. {instructionitem.name}
+        {index}. {instructionitem.instruction}
         <span>
           <Button
             onClick={() => handledelete(instructionitem)}
