@@ -12,7 +12,7 @@ import InstructionsForm from "./InstructionsForm";
 import IngredientsList from "./IngredientsList";
 import InstructionsList from "./InstructionsList";
 import RecipeInfo from "./RecipeInfo";
-import styles from "../css/addrecipe.module.css";
+import styles from "../css/editrecipe.module.css";
 import { Row, Col, Container } from "react-bootstrap";
 
 export default function EditRecipe({ open, recipe, onClose, onSave }) {
