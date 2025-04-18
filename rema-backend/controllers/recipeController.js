@@ -6,8 +6,8 @@ export const listrecipes = async (req, res) => {
     const [recipes] = await pool.query(`
       SELECT 
         rec.id AS recipe_id, rec.title, rec.description, rec.cooking_time, rec.portions, rec.created_at,
-        ing.ingredient,
-        ins.step_number, ins.instruction
+        ing.id AS ingredient_id, ing.ingredient,
+        ins.id AS instruction_id, ins.step_number, ins.instruction
       FROM recipes rec
       LEFT JOIN ingredients ing ON rec.id = ing.recipe_id
       LEFT JOIN instructions ins ON rec.id = ins.recipe_id
@@ -32,11 +32,21 @@ export const listrecipes = async (req, res) => {
 
       const rec = recipeMap.get(recipe.recipe_id);
 
-      if (!rec.ingredients.includes(recipe.ingredient)) {
-        rec.ingredients.push(recipe.ingredient);
+      if (
+        recipe.ingredient_id &&
+        !rec.ingredients.some((i) => i.id === recipe.ingredient_id)
+      ) {
+        rec.ingredients.push({
+          id: recipe.ingredient_id,
+          ingredient: recipe.ingredient,
+        });
       }
-      if (!rec.instructions.some((i) => i.step_number === recipe.step_number)) {
+      if (
+        recipe.instruction_id &&
+        !rec.instructions.some((i) => i.id === recipe.instruction_id)
+      ) {
         rec.instructions.push({
+          id: recipe.instruction_id,
           step_number: recipe.step_number,
           instruction: recipe.instruction,
         });
