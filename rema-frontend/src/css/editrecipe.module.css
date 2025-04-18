@@ -1,0 +1,65 @@
+.inputcontainer {
+  display: flex;
+  justify-content: space-around;
+}
+.spacer {
+  height: 1.8em;
+}
+
+.ingredientsinstructionslabelcol {
+  width: 45%;
+}
+.ingredientsinstructionslabel {
+  padding: 10px;
+}
+
+.ingredientsform {
+  width: 45%;
+  display: flex;
+}
+
+.instructionsform {
+  width: 45%;
+  display: flex;
+}
+
+.ingredientslist {
+  width: 43%;
+  padding-right: 2%;
+}
+
+.instructionslist {
+  width: 43%;
+  padding-right: 2%;
+}
+
+.inputcontainerbutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ingredientsinstructionsbutton {
+  display: flex;
+  justify-content: center;
+  width: auto;
+}
+
+.saveStatusContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.saveStatusSuccess {
+  color: green;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.saveStatusError {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
