@@ -100,7 +100,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              textAlign: "center",
+              textAlign: "left",
             }}
           >
             <Typography variant="h6">Instructions</Typography>
