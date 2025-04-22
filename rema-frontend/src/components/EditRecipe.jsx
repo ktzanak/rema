@@ -195,7 +195,7 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
           />
         ))}*/}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ justifyContent: "center", gap: 4 }}>
         <Button
           onClick={onClose}
           style={{ backgroundColor: "#E5E5E5", color: "#000000" }}
