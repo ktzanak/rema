@@ -34,54 +34,100 @@ export default function ViewRecipe({ open, onClose, recipe }) {
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       disableEnforceFocus
       disableRestoreFocus
     >
-      <DialogTitle>{recipe.title}</DialogTitle>
-      <DialogContent dividers>
-        <Box mb={2}>
+      <DialogTitle
+        sx={{ textAlign: "center", fontWeight: "bold", mb: 0, pb: 0 }}
+      >
+        {recipe.title}
+      </DialogTitle>
+      <Divider sx={{ my: 1 }} />
+      <DialogContent sx={{ pt: 0, mt: 0 }}>
+        <Box mb={2} textAlign="center">
           <Typography variant="subtitle1" color="textSecondary">
-            Cooking Time: {recipe.cooking_time} | Portions: {recipe.portions}
+            Cooking Time: {recipe.cooking_time || "-"}
+            <span style={{ margin: "0 3rem" }}></span>
+            Portions: {recipe.portions || "-"}
           </Typography>
         </Box>
 
-        <Divider sx={{ mb: 2 }} />
-
-        <Box mb={2}>
+        <Box mb={2} textAlign="center">
           <Typography variant="h6">Description</Typography>
-          <Typography variant="body1">{recipe.description}</Typography>
+          {recipe.description ? (
+            <Typography variant="body1">{recipe.description}</Typography>
+          ) : (
+            <Typography
+              variant="body2"
+              fontStyle="italic"
+              color="textSecondary"
+            >
+              No description
+            </Typography>
+          )}
         </Box>
 
-        <Box mb={2}>
-          <Typography variant="h6">Ingredients</Typography>
-          <ul style={{ marginLeft: "1rem" }}>
-            {recipe?.ingredients.map((ing, idx) => (
-              <li key={idx}>
-                <Typography variant="body2">{ing}</Typography>
-              </li>
-            ))}
-          </ul>
-        </Box>
-
-        {recipe?.instructions.length > 0 && (
-          <Box>
-            <Typography variant="h6">Instructions</Typography>
-            <ol style={{ marginLeft: "1rem" }}>
-              {recipe.instructions.map((instructionrow, idx) => (
-                <li key={`${idx}_${instructionrow.step_number}`}>
-                  <Typography variant="body2">
-                    {instructionrow.instruction}
-                  </Typography>
-                </li>
-              ))}
-            </ol>
+        <Divider sx={{ my: 1 }} />
+        <Box display="flex" justifyContent="center" flexWrap="wrap">
+          <Box sx={{ width: "30%" }}>
+            <Typography variant="h6">Ingredients</Typography>
+            {recipe.ingredients?.length > 0 ? (
+              <ul>
+                {recipe?.ingredients.map((ingredientrow, idx) => (
+                  <li key={idx}>
+                    <Typography variant="body2">
+                      {ingredientrow.ingredient}
+                    </Typography>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Typography
+                variant="body2"
+                fontStyle="italic"
+                color="textSecondary"
+              >
+                No ingredients
+              </Typography>
+            )}
           </Box>
-        )}
+
+          <Box
+            sx={{
+              width: "70%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h6">Instructions</Typography>
+            {recipe.instructions?.length > 0 ? (
+              <ol>
+                {recipe.instructions.map((instructionrow, idx) => (
+                  <li key={`${idx}_${instructionrow.step_number}`}>
+                    <Typography variant="body2">
+                      {instructionrow.instruction}
+                    </Typography>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <Typography
+                variant="body2"
+                fontStyle="italic"
+                color="textSecondary"
+              >
+                No instructions
+              </Typography>
+            )}
+          </Box>
+        </Box>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ justifyContent: "center", gap: 4 }}>
         <Button onClick={onClose} variant="contained" color="primary">
           Close
         </Button>
