@@ -203,7 +203,7 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
         >
           Cancel
         </Button>
-        <Button onClick={handleEditSave} color="success" variant="contained">
+        <Button onClick={handleEditSave} variant="contained" color="primary">
           Save
         </Button>
       </DialogActions>
