@@ -27,7 +27,7 @@ export default function ListRecipes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [dialogMode, setDialogMode] = useState(null); // 'view' | 'edit' | 'delete' | null
+  const [dialogMode, setDialogMode] = useState(null); // view, edit delete or null
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

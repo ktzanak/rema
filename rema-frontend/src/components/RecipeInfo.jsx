@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import styles from "../css/recipeinfo.module.css";
 
 export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
