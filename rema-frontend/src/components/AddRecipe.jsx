@@ -140,16 +140,7 @@ export default function AddRecipe() {
       </Row>
       <Row className={styles.inputcontainerbutton}>
         <Col className={styles.ingredientsinstructionsbutton}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={saveRecipe}
-            sx={{
-              paddingX: 3.5,
-              paddingY: 1,
-              borderRadius: 1,
-            }}
-          >
+          <Button variant="contained" color="primary" onClick={saveRecipe}>
             Save
           </Button>
         </Col>
