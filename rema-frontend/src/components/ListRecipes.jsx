@@ -246,7 +246,7 @@ export default function ListRecipes() {
               Are you sure you want to delete this recipe?
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ justifyContent: "center", gap: 4 }}>
             <Button
               onClick={handleCloseDialog}
               variant="contained"
