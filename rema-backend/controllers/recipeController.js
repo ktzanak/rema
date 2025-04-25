@@ -90,18 +90,18 @@ export const addrecipe = async (req, res) => {
     const recipeId = recipeResult.insertId;
 
     // Step 2: Insert ingredients for the recipe into the 'ingredients' table
-    for (const ingredient of ingredients) {
+    for (const ingredientrow of ingredients) {
       await connection.query(
         "INSERT INTO ingredients (recipe_id, ingredient) VALUES (?, ?)",
-        [recipeId, ingredient.name]
+        [recipeId, ingredientrow.ingredient]
       );
     }
 
     // Step 3: Insert instructions for the recipe into the 'instructions' table
-    for (const instruction of instructions) {
+    for (const instructionrow of instructions) {
       await connection.query(
         "INSERT INTO instructions (recipe_id, step_number, instruction) VALUES (?, ?, ?)",
-        [recipeId, instruction.step_number, instruction.name]
+        [recipeId, instructionrow.step_number, instructionrow.instruction]
       );
     }
 
