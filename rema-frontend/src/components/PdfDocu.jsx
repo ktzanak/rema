@@ -72,8 +72,12 @@ function PdfDocu(recipeinfoingredientsinstructions) {
 
     inlinedown2right: {
       flexDirection: "column",
-      textAlign: "center",
       alignItems: "center",
+    },
+    instructionsContainer: {
+      flexDirection: "column",
+      alignItems: "flex-start",
+      textAlign: "left",
     },
     inlinedown2left: {
       flexDirection: "column",
@@ -111,27 +115,29 @@ function PdfDocu(recipeinfoingredientsinstructions) {
             <View style={styles.inlinedown2left}>
               <Text style={styles.textlabelleft}>Ingredients</Text>
               {recipeinfoingredientsinstructions.ingredients.map(
-                (ingredient, index) => (
+                (ingredientrow, index) => (
                   <Text style={styles.textingredients} key={index}>
-                    {ingredient}
+                    {ingredientrow.ingredient}
                   </Text>
                 )
               )}
             </View>
             <View style={styles.inlinedown2right}>
               <Text style={styles.textlabelright}>Instructions</Text>
-              {recipeinfoingredientsinstructions.instructions.map(
-                (instructionrow, index) => (
-                  <Text
-                    style={styles.textinstructions}
-                    key={`${index}_${instructionrow.step_number}`}
-                  >
-                    {index + 1}
-                    {". "}
-                    {instructionrow.instruction}
-                  </Text>
-                )
-              )}
+              <View style={styles.instructionsContainer}>
+                {recipeinfoingredientsinstructions.instructions.map(
+                  (instructionrow, index) => (
+                    <Text
+                      style={styles.textinstructions}
+                      key={`${index}_${instructionrow.step_number}`}
+                    >
+                      {index + 1}
+                      {". "}
+                      {instructionrow.instruction}
+                    </Text>
+                  )
+                )}
+              </View>
             </View>
           </View>
         </View>
