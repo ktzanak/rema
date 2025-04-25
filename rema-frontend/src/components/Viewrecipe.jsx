@@ -75,7 +75,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
             <Typography variant="h6">Ingredients</Typography>
             {recipe.ingredients?.length > 0 ? (
               <ul>
-                {recipe?.ingredients.map((ingredientrow, idx) => (
+                {recipe.ingredients.map((ingredientrow, idx) => (
                   <li key={idx}>
                     <Typography variant="body2">
                       {ingredientrow.ingredient}
