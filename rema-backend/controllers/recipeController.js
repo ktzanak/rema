@@ -146,7 +146,7 @@ export const addrecipe = async (req, res) => {
 };
 
 export const deleterecipe = async (req, res) => {
-  const { id } = req.params;
+  const { recipeid } = req.params;
   const connection = await pool.getConnection();
 
   try {
@@ -156,7 +156,7 @@ export const deleterecipe = async (req, res) => {
     // Delete the recipe by ID
     const [result] = await connection.query(
       "DELETE FROM recipes WHERE id = ?",
-      [id]
+      [recipeid]
     );
 
     // Commit the transaction
@@ -176,7 +176,7 @@ export const deleterecipe = async (req, res) => {
 };
 
 export const updaterecipe = async (req, res) => {
-  const { id } = req.params;
+  const { recipeid } = req.params;
   const {
     title,
     description,
@@ -196,34 +196,32 @@ export const updaterecipe = async (req, res) => {
       `UPDATE recipes 
        SET title = ?, description = ?, cooking_time = ?, portions = ?
        WHERE id = ?`,
-      [title, description, cooking_time, portions, id]
+      [title, description, cooking_time, portions, recipeid]
     );
 
     // 2. Delete existing ingredients
-    await connection.query("DELETE FROM ingredients WHERE recipe_id = ?", [id]);
+    await connection.query("DELETE FROM ingredients WHERE recipe_id = ?", [
+      recipeid,
+    ]);
 
     // 3. Re-insert updated ingredients
-    for (const ingredient of ingredients) {
+    for (const ingredientrow of ingredients) {
       await connection.query(
         "INSERT INTO ingredients (recipe_id, ingredient) VALUES (?, ?)",
-        [id, typeof ingredient === "string" ? ingredient : ingredient.name]
+        [recipeid, ingredientrow.ingredient]
       );
     }
 
     // 4. Delete existing instructions
     await connection.query("DELETE FROM instructions WHERE recipe_id = ?", [
-      id,
+      recipeid,
     ]);
 
     // 5. Re-insert updated instructions
-    for (const instruction of instructions) {
+    for (const instructionrow of instructions) {
       await connection.query(
         "INSERT INTO instructions (recipe_id, step_number, instruction) VALUES (?, ?, ?)",
-        [
-          id,
-          instruction.step_number,
-          instruction.instruction || instruction.name,
-        ]
+        [recipeid, instructionrow.step_number, instructionrow.instruction]
       );
     }
 
