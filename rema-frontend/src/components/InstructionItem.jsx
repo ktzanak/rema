@@ -9,14 +9,22 @@ export default function InstructionItem({
 }) {
   function handledelete(instructionitem) {
     setInstructions(
-      instructions.filter((insitem) => insitem.id !== instructionitem.id)
+      instructions
+        .filter((insitem) => insitem.id !== instructionitem.id)
+        .map((item, idx) => ({
+          ...item,
+          step_number: idx + 1,
+        }))
     );
   }
 
   return (
     <div className={styles.instructionitem}>
       <div className={styles.instructionitemname}>
-        {index}. {instructionitem.instruction}
+        {instructionitem.step_number != null
+          ? instructionitem.step_number
+          : index}
+        . {instructionitem.instruction}
         <span>
           <Button
             onClick={() => handledelete(instructionitem)}
