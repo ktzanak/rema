@@ -11,6 +11,7 @@ import {
 import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import PdfDocu from "./PdfDocu";
+import styles from "../css/viewrecipe.module.css";
 
 export default function ViewRecipe({ open, onClose, recipe }) {
   const downloadPdf = async () => {
@@ -105,15 +106,18 @@ export default function ViewRecipe({ open, onClose, recipe }) {
           >
             <Typography variant="h6">Instructions</Typography>
             {recipe.instructions?.length > 0 ? (
-              <ol>
-                {recipe.instructions.map((instructionrow, idx) => (
-                  <li key={`${idx}_${instructionrow.step_number}`}>
-                    <Typography variant="body2">
-                      {instructionrow.instruction}
-                    </Typography>
-                  </li>
-                ))}
-              </ol>
+              <ul className={styles.nobullets}>
+                {recipe.instructions
+                  .sort((a, b) => a.step_number - b.step_number)
+                  .map((instructionrow, idx) => (
+                    <li key={`${idx}_${instructionrow.step_number}`}>
+                      <Typography variant="body2">
+                        {instructionrow.step_number}.{" "}
+                        {instructionrow.instruction}
+                      </Typography>
+                    </li>
+                  ))}
+              </ul>
             ) : (
               <Typography
                 variant="body2"
