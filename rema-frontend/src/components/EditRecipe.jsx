@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogActions, DialogContent, Button } from "@mui/material";
 import IngredientsForm from "./IngredientsForm";
 import InstructionsForm from "./InstructionsForm";
@@ -9,13 +9,22 @@ import styles from "../css/editrecipe.module.css";
 import { Row, Col, Container } from "react-bootstrap";
 
 export default function EditRecipe({ open, recipe, onClose, onSave }) {
-  const [editedRecipe, setEditedRecipe] = React.useState({ ...recipe });
+  const [editedRecipe, setEditedRecipe] = useState({ ...recipe });
+  const [saveStatus, setSaveStatus] = useState({ message: "", type: "error" });
 
-  React.useEffect(() => {
+  useEffect(() => {
     setEditedRecipe({ ...recipe });
   }, [recipe]);
 
   const handleEditSave = () => {
+    if (!editedRecipe.title.trim()) {
+      setSaveStatus({
+        message: "Title is required for saving the recipe!",
+        type: "error",
+      });
+      return;
+    }
+    setSaveStatus({ message: "", type: "" });
     onSave(editedRecipe);
   };
 
@@ -105,6 +114,20 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
                   }))
                 }
               />
+            </Col>
+          </Row>
+          <br />
+          <Row className={styles.saveStatusContainer}>
+            <Col className="text-center">
+              {saveStatus.message && (
+                <Row className="text-center mt-3">
+                  <Col>
+                    <p className={styles.saveStatusError}>
+                      {saveStatus.message}
+                    </p>
+                  </Col>
+                </Row>
+              )}
             </Col>
           </Row>
         </Container>
