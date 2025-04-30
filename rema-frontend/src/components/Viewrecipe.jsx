@@ -45,6 +45,11 @@ export default function ViewRecipe({ open, onClose, recipe }) {
       >
         {recipe.title}
       </DialogTitle>
+      {recipe.description && (
+        <Typography sx={{ mb: 1 }} variant="body1" textAlign="center">
+          {recipe.description}
+        </Typography>
+      )}
       <Divider sx={{ my: 1 }} />
       <DialogContent sx={{ pt: 0, mt: 0 }}>
         <Box mb={2} textAlign="center">
@@ -53,21 +58,6 @@ export default function ViewRecipe({ open, onClose, recipe }) {
             <span style={{ margin: "0 3rem" }}></span>
             Portions: {recipe.portions || "-"}
           </Typography>
-        </Box>
-
-        <Box mb={2} textAlign="center">
-          <Typography variant="h6">Description</Typography>
-          {recipe.description ? (
-            <Typography variant="body1">{recipe.description}</Typography>
-          ) : (
-            <Typography
-              variant="body2"
-              fontStyle="italic"
-              color="textSecondary"
-            >
-              No description
-            </Typography>
-          )}
         </Box>
 
         <Divider sx={{ my: 1 }} />
