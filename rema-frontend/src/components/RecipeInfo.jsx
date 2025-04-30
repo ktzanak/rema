@@ -1,12 +1,25 @@
-import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import styles from "../css/recipeinfo.module.css";
 
-export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
-  const [selectedValue, setSelectedValue] = useState("");
+export default function RecipeInfo({
+  recipeinfo,
+  setRecipeinfo,
+  tags,
+  setTags,
+  categories,
+  setCategories,
+}) {
+  const handleCategoryChange = (event) => {
+    setCategories([event.target.value]);
+  };
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
+  const handleTagsChange = (event) => {
+    setTags(
+      event.target.value
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== "")
+    );
   };
 
   return (
@@ -25,7 +38,7 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
               }
               type="text"
               value={recipeinfo?.title || ""}
-              placeholder="Add a title"
+              placeholder="Title (required)"
             />
           </div>
         </Row>
@@ -42,7 +55,7 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
               }
               type="text"
               value={recipeinfo?.description || ""}
-              placeholder="Add a description (optional)"
+              placeholder="Description (optional)"
             />
           </div>
         </Row>
@@ -62,7 +75,7 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
                 }
                 type="text"
                 value={recipeinfo?.cooking_time || ""}
-                placeholder="Add time in total (optional)"
+                placeholder="Time in total (optional)"
               />
             </div>
           </Col>
@@ -72,15 +85,10 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
             <div className={styles.inputcontainer}>
               <input
                 className={styles.moderninput}
-                onChange={(e) =>
-                  setRecipeinfo({
-                    ...recipeinfo,
-                    tags: e.target.value,
-                  })
-                }
+                onChange={handleTagsChange}
                 type="text"
-                value={recipeinfo?.tags || ""}
-                placeholder="Add search tags or keywords (optional)"
+                value={tags.join(", ")}
+                placeholder="Comma-separated keywords (optional)"
               />
             </div>
           </Col>
@@ -99,7 +107,7 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
                 }
                 type="text"
                 value={recipeinfo?.portions || ""}
-                placeholder="Add number of portions (optional)"
+                placeholder="Number of portions (optional)"
               />
             </div>
           </Col>
@@ -109,8 +117,8 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
             <div className={styles.inputcontainer}>
               <select
                 id="dropdown"
-                value={selectedValue}
-                onChange={handleChange}
+                value={categories[0] || ""}
+                onChange={handleCategoryChange}
                 style={{
                   padding: "10px",
                   fontSize: "16px",
@@ -118,12 +126,13 @@ export default function RecipeInfo({ recipeinfo, setRecipeinfo }) {
                   margin: "5px",
                 }}
               >
-                <option>Select...</option>
+                <option value="">Select...</option>
                 <option value="appetizer">Appetizer</option>
-                <option value="dessert">Sauce</option>
-                <option value="maindish">Main dish</option>
+                <option value="sauce">Sauce</option>
+                <option value="maincourse">Main course</option>
                 <option value="dessert">Dessert</option>
-                <option value="dessert">Drink</option>
+                <option value="drink">Drink</option>
+                <option value="other">Other</option>
               </select>
             </div>
           </Col>
