@@ -51,8 +51,8 @@ export default function ListRecipes() {
     const lowerSearch = searchTerm.toLowerCase();
     return (
       recipe.title.toLowerCase().includes(lowerSearch) ||
-      recipe.ingredients.some((ingredient) =>
-        ingredient.toLowerCase().includes(lowerSearch)
+      recipe.ingredients?.some((ingredientrow) =>
+        ingredientrow.ingredient.toLowerCase().includes(lowerSearch)
       ) ||
       recipe.description?.toLowerCase().includes(lowerSearch)
       //recipe.tags?.some((tag) => tag.toLowerCase().includes(lowerSearch)) ||
