@@ -6,22 +6,9 @@ export default function RecipeInfo({
   setRecipeinfo,
   tags,
   setTags,
-  categories,
-  setCategories,
+  category,
+  setCategory,
 }) {
-  const handleCategoryChange = (event) => {
-    setCategories([event.target.value]);
-  };
-
-  const handleTagsChange = (event) => {
-    setTags(
-      event.target.value
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag !== "")
-    );
-  };
-
   return (
     <Row className={styles.inputcontainer}>
       <Col className={styles.recipeinfocol}>
@@ -85,9 +72,9 @@ export default function RecipeInfo({
             <div className={styles.inputcontainer}>
               <input
                 className={styles.moderninput}
-                onChange={handleTagsChange}
+                onChange={(e) => setTags(e.target.value)}
                 type="text"
-                value={tags.join(", ")}
+                value={tags}
                 placeholder="Comma-separated keywords (optional)"
               />
             </div>
@@ -117,8 +104,8 @@ export default function RecipeInfo({
             <div className={styles.inputcontainer}>
               <select
                 id="dropdown"
-                value={categories[0] || ""}
-                onChange={handleCategoryChange}
+                value={category || ""}
+                onChange={(e) => setCategory(e.target.value)}
                 style={{
                   padding: "10px",
                   fontSize: "16px",
