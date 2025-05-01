@@ -25,7 +25,7 @@ CREATE TABLE instructions (
 
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) UNIQUE
+    category VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE recipe_categories (
@@ -38,7 +38,7 @@ CREATE TABLE recipe_categories (
 
 CREATE TABLE tags (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) UNIQUE
+    tag VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE recipe_tags (
