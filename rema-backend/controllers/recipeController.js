@@ -72,8 +72,8 @@ export const addrecipe = async (req, res) => {
     created_at,
     ingredients,
     instructions,
-    //categories,
-    //tags,
+    category,
+    tags,
   } = req.body;
 
   const connection = await pool.getConnection();
@@ -106,33 +106,55 @@ export const addrecipe = async (req, res) => {
     }
 
     // Step 4: Insert and link categories to the recipe
-    /*for (const category of categories) {
+    let categoryId;
+    const [existingCategoryRows] = await connection.query(
+      "SELECT id FROM categories WHERE category = ?",
+      [category]
+    );
+
+    if (existingCategoryRows.length > 0) {
+      categoryId = existingCategoryRows[0].id;
+    } else {
       const [categoryResult] = await connection.query(
-        "INSERT INTO categories (name) VALUES (?) ON DUPLICATE KEY UPDATE id=id",
+        "INSERT INTO categories (category) VALUES (?)",
         [category]
       );
-      const categoryId = categoryResult.insertId || categoryResult[0].id;
+      categoryId = categoryResult.insertId;
+    }
+    await connection.query(
+      "INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)",
+      [recipeId, categoryId]
+    );
 
-      await connection.query(
-        "INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)",
-        [recipeId, categoryId]
-      );
-    }*/
+    // Step 5: Parse, insert and link tags to the recipe
+    const parsedTags = Array.isArray(tags)
+      ? tags
+      : tags.split(",").map((t) => t.trim());
 
-    // Step 5: Insert and link tags to the recipe
-    /*for (const tag of tags) {
-      const [tagResult] = await connection.query(
-        "INSERT INTO tags (name) VALUES (?) ON DUPLICATE KEY UPDATE id=id",
+    for (const tag of parsedTags) {
+      let tagId;
+
+      // Check if the tag already exists
+      const [existingTagRows] = await connection.query(
+        "SELECT id FROM tags WHERE tag = ?",
         [tag]
       );
-      const tagId = tagResult.insertId || tagResult[0].id;
 
+      if (existingTagRows.length > 0) {
+        tagId = existingTagRows[0].id;
+      } else {
+        const [tagResult] = await connection.query(
+          "INSERT INTO tags (tag) VALUES (?)",
+          [tag]
+        );
+        tagId = tagResult.insertId;
+      }
       await connection.query(
         "INSERT INTO recipe_tags (recipe_id, tag_id) VALUES (?, ?)",
         [recipeId, tagId]
       );
     }
-*/
+
     await connection.commit();
     res.status(201).json({ message: "Recipe added successfully!", recipeId });
   } catch (err) {
