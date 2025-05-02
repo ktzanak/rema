@@ -154,8 +154,10 @@ export default function ListRecipes() {
                   <TableCell sx={{ width: "68%" }}>
                     <Typography variant="h6">{recipe.title}</Typography>
                     <div style={{ marginTop: "4px", color: "gray" }}>
-                      Cooking Time: {recipe.cooking_time} | Portions:{" "}
-                      {recipe.portions}
+                      <strong>Category:</strong> {recipe.category || "-"} |
+                      <strong> Cooking Time:</strong>{" "}
+                      {recipe.cooking_time || "-"} |<strong> Portions:</strong>{" "}
+                      {recipe.portions || "-"}
                     </div>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
