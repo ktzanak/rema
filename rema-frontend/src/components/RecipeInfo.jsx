@@ -114,12 +114,12 @@ export default function RecipeInfo({
                 }}
               >
                 <option value="">Select...</option>
-                <option value="appetizer">Appetizer</option>
-                <option value="sauce">Sauce</option>
-                <option value="maincourse">Main course</option>
-                <option value="dessert">Dessert</option>
-                <option value="drink">Drink</option>
-                <option value="other">Other</option>
+                <option value="Appetizer">Appetizer</option>
+                <option value="Sauce">Sauce</option>
+                <option value="Main course">Main course</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Drink">Drink</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </Col>
