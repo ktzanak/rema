@@ -103,7 +103,6 @@ export const addrecipe = async (req, res) => {
   const connection = await pool.getConnection();
 
   try {
-    // Start the transaction
     await connection.beginTransaction();
 
     // Step 1: Insert the recipe into the 'recipes' table
@@ -182,11 +181,33 @@ export const addrecipe = async (req, res) => {
     await connection.commit();
     res.status(201).json({ message: "Recipe added successfully!", recipeId });
   } catch (err) {
-    // Rollback the transaction in case of error
     await connection.rollback();
     res.status(500).json({ error: err.message });
   } finally {
-    // Release the connection back to the pool
+    connection.release();
+  }
+};
+
+const cleanupOrphanedTagsAndCategories = async () => {
+  const connection = await pool.getConnection();
+  try {
+    await connection.beginTransaction();
+
+    await connection.query(`
+      DELETE FROM tags
+      WHERE id NOT IN (SELECT DISTINCT tag_id FROM recipe_tags)
+    `);
+
+    await connection.query(`
+      DELETE FROM categories
+      WHERE id NOT IN (SELECT DISTINCT category_id FROM recipe_categories)
+    `);
+
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    console.error("Cleanup error:", error.message);
+  } finally {
     connection.release();
   }
 };
@@ -204,6 +225,9 @@ export const deleterecipe = async (req, res) => {
 
     // Commit the transaction
     await connection.commit();
+
+    await cleanupOrphanedTagsAndCategories();
+
     res.status(200).json({ message: "Recipe deleted successfully." });
   } catch (error) {
     // Rollback the transaction in case of error
