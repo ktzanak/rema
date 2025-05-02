@@ -4,13 +4,29 @@ import pool from "../config/databaseconn.js";
 export const listrecipes = async (req, res) => {
   try {
     const [recipes] = await pool.query(`
-      SELECT 
-        rec.id AS recipe_id, rec.title, rec.description, rec.cooking_time, rec.portions, rec.created_at,
-        ing.id AS ingredient_id, ing.ingredient,
-        ins.id AS instruction_id, ins.step_number, ins.instruction
+     SELECT 
+        rec.id AS recipe_id, 
+        rec.title, 
+        rec.description, 
+        rec.cooking_time, 
+        rec.portions, 
+        rec.created_at,
+        ing.id AS ingredient_id, 
+        ing.ingredient,
+        ins.id AS instruction_id, 
+        ins.step_number, 
+        ins.instruction,
+        cat.id AS category_id,
+        cat.category,
+        tag.id AS tag_id,
+        tag.tag
       FROM recipes rec
       LEFT JOIN ingredients ing ON rec.id = ing.recipe_id
       LEFT JOIN instructions ins ON rec.id = ins.recipe_id
+      LEFT JOIN recipe_categories rc ON rec.id = rc.recipe_id
+      LEFT JOIN categories cat ON rc.category_id = cat.id
+      LEFT JOIN recipe_tags rt ON rec.id = rt.recipe_id
+      LEFT JOIN tags tag ON rt.tag_id = tag.id
       ORDER BY rec.title
     `);
 
@@ -27,6 +43,8 @@ export const listrecipes = async (req, res) => {
           created_at: recipe.created_at,
           ingredients: [],
           instructions: [],
+          tags: [],
+          category: recipe.category,
         });
       }
 
@@ -49,6 +67,12 @@ export const listrecipes = async (req, res) => {
           id: recipe.instruction_id,
           step_number: recipe.step_number,
           instruction: recipe.instruction,
+        });
+      }
+      if (recipe.tag && !rec.tags.some((i) => i.id === recipe.tag_id)) {
+        rec.tags.push({
+          id: recipe.tag_id,
+          tag: recipe.tag,
         });
       }
     }
