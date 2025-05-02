@@ -200,10 +200,7 @@ export const deleterecipe = async (req, res) => {
     await connection.beginTransaction();
 
     // Delete the recipe by ID
-    const [result] = await connection.query(
-      "DELETE FROM recipes WHERE id = ?",
-      [recipeid]
-    );
+    await connection.query("DELETE FROM recipes WHERE id = ?", [recipeid]);
 
     // Commit the transaction
     await connection.commit();
