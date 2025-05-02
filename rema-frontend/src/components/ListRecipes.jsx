@@ -54,9 +54,11 @@ export default function ListRecipes() {
       recipe.ingredients?.some((ingredientrow) =>
         ingredientrow.ingredient.toLowerCase().includes(lowerSearch)
       ) ||
-      recipe.description?.toLowerCase().includes(lowerSearch)
-      //recipe.tags?.some((tag) => tag.toLowerCase().includes(lowerSearch)) ||
-      //recipe.categories?.some((category) => category.toLowerCase().includes(lowerSearch)) ||
+      recipe.description?.toLowerCase().includes(lowerSearch) ||
+      recipe.tags?.some((tagrow) =>
+        tagrow.tag.toLowerCase().includes(lowerSearch)
+      ) ||
+      recipe.category?.toLowerCase().includes(lowerSearch)
     );
   });
 
@@ -126,7 +128,7 @@ export default function ListRecipes() {
   return (
     <Container>
       <TextField
-        label="Search recipes by title, description or ingredient"
+        label="Search recipes by title, description, ingredient, tags or category"
         variant="outlined"
         fullWidth
         sx={{ width: "80%", margin: "2rem auto", display: "block" }}
