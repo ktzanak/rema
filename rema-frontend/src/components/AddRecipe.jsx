@@ -13,7 +13,7 @@ export default function AddRecipe() {
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [tags, setTags] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
   const [recipeinfo, setRecipeinfo] = useState({
     title: "",
     description: "",
@@ -38,7 +38,7 @@ export default function AddRecipe() {
       created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       ingredients: ingredients,
       instructions: instructions,
-      categories: categories,
+      category: category,
       tags: tags,
     };
 
@@ -67,7 +67,7 @@ export default function AddRecipe() {
         setIngredients([]);
         setInstructions([]);
         setTags([]);
-        setCategories([]);
+        setCategory([]);
       } else {
         setSaveStatus({ message: `Error: ${data.error}`, type: "error" });
       }
@@ -86,8 +86,8 @@ export default function AddRecipe() {
         setRecipeinfo={setRecipeinfo}
         tags={tags}
         setTags={setTags}
-        categories={categories}
-        setCategories={setCategories}
+        category={category}
+        setCategory={setCategory}
       />
       <div className={styles.spacer}></div>
       <Row className={styles.inputcontainer}>
