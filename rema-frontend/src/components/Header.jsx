@@ -24,7 +24,7 @@ export default function Header() {
           New recipe
         </Link>
         <Link to="/list" className={styles.navLink}>
-          Recipes
+          My recipes
         </Link>
       </div>
     </div>
