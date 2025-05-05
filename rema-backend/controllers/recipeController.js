@@ -251,6 +251,8 @@ export const updaterecipe = async (req, res) => {
     portions,
     ingredients,
     instructions,
+    category,
+    tags,
   } = req.body;
 
   const connection = await pool.getConnection();
@@ -289,6 +291,64 @@ export const updaterecipe = async (req, res) => {
       await connection.query(
         "INSERT INTO instructions (recipe_id, step_number, instruction) VALUES (?, ?, ?)",
         [recipeid, instructionrow.step_number, instructionrow.instruction]
+      );
+    }
+
+    await connection.query(
+      "DELETE FROM recipe_categories WHERE recipe_id = ?",
+      [recipeid]
+    );
+
+    let categoryId;
+    const [existingCategoryRows] = await connection.query(
+      "SELECT id FROM categories WHERE category = ?",
+      [category]
+    );
+
+    if (existingCategoryRows.length > 0) {
+      categoryId = existingCategoryRows[0].id;
+    } else {
+      const [categoryResult] = await connection.query(
+        "INSERT INTO categories (category) VALUES (?)",
+        [category]
+      );
+      categoryId = categoryResult.insertId;
+    }
+
+    await connection.query(
+      "INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)",
+      [recipeid, categoryId]
+    );
+
+    // 5. Update tags
+    await connection.query("DELETE FROM recipe_tags WHERE recipe_id = ?", [
+      recipeid,
+    ]);
+
+    const parsedTags = Array.isArray(tags)
+      ? tags
+      : tags.split(",").map((t) => t.trim());
+
+    for (const tag of parsedTags) {
+      let tagId;
+      const [existingTagRows] = await connection.query(
+        "SELECT id FROM tags WHERE tag = ?",
+        [tag]
+      );
+
+      if (existingTagRows.length > 0) {
+        tagId = existingTagRows[0].id;
+      } else {
+        const [tagResult] = await connection.query(
+          "INSERT INTO tags (tag) VALUES (?)",
+          [tag]
+        );
+        tagId = tagResult.insertId;
+      }
+
+      await connection.query(
+        "INSERT INTO recipe_tags (recipe_id, tag_id) VALUES (?, ?)",
+        [recipeid, tagId]
       );
     }
 
