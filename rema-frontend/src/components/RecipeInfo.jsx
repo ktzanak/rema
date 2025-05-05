@@ -69,15 +69,17 @@ export default function RecipeInfo({
 
           <Col className={styles.recipeinfocol}>
             <span className={styles.recipeinfolabel}>Tags</span>
-            <div className={styles.inputcontainer}>
-              <input
-                className={styles.moderninput}
-                onChange={(e) => setTags(e.target.value)}
-                type="text"
-                value={tags}
-                placeholder="Comma-separated keywords (optional)"
-              />
-            </div>
+            {tags.map((tagitem, index) => (
+              <div key={tagitem.id} className={styles.inputcontainer}>
+                <input
+                  className={styles.moderninput}
+                  onChange={(e) => setTags(index, e.target.value)}
+                  type="text"
+                  value={recipeinfo?.tagitem.tag}
+                  placeholder="Comma-separated keywords (optional)"
+                />
+              </div>
+            ))}
           </Col>
         </Row>
         <Row className={styles.recipeinforowright}>
@@ -104,7 +106,7 @@ export default function RecipeInfo({
             <div className={styles.inputcontainer}>
               <select
                 id="dropdown"
-                value={category || ""}
+                value={recipeinfo?.category || ""}
                 onChange={(e) => setCategory(e.target.value)}
                 style={{
                   padding: "10px",
