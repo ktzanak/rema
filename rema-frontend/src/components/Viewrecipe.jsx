@@ -7,6 +7,7 @@ import {
   Button,
   Box,
   Divider,
+  Chip,
 } from "@mui/material";
 import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
@@ -50,9 +51,34 @@ export default function ViewRecipe({ open, onClose, recipe }) {
           {recipe.description}
         </Typography>
       )}
-      <Divider sx={{ my: 1 }} />
+      <Divider sx={{ my: 0.5 }} />
       <DialogContent sx={{ pt: 0, mt: 0 }}>
-        <Box mb={2} textAlign="center">
+        <Box mb={0.5} textAlign="center">
+          <Typography variant="subtitle1" color="textSecondary">
+            Category:{" "}
+            {recipe.category ? (
+              <Chip label={recipe.category} color="default" size="small" />
+            ) : (
+              "-"
+            )}
+            <span style={{ margin: "0 3rem" }}></span>
+            Tags:{" "}
+            {recipe.tags?.length > 0
+              ? recipe.tags.map((tagrow) => (
+                  <Chip
+                    key={tagrow.id}
+                    label={tagrow.tag}
+                    size="small"
+                    color="default"
+                    sx={{ mx: 0.5 }}
+                  />
+                ))
+              : "-"}
+          </Typography>
+        </Box>
+
+        <Divider sx={{ my: 0.5 }} />
+        <Box mb={0.5} textAlign="center">
           <Typography variant="subtitle1" color="textSecondary">
             Cooking Time: {recipe.cooking_time || "-"}
             <span style={{ margin: "0 3rem" }}></span>
@@ -60,7 +86,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
           </Typography>
         </Box>
 
-        <Divider sx={{ my: 1 }} />
+        <Divider sx={{ my: 0.5 }} />
         <Box display="flex" justifyContent="center" flexWrap="wrap">
           <Box sx={{ width: "30%" }}>
             <Typography variant="h6">Ingredients</Typography>
