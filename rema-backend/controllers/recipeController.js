@@ -293,55 +293,78 @@ export const updaterecipe = async (req, res) => {
         [recipeid, instructionrow.step_number, instructionrow.instruction]
       );
     }
-
-    await connection.query(
-      "DELETE FROM recipe_categories WHERE recipe_id = ?",
+    // 7. Find existing category ID for this recipe
+    const [oldCategoryRows] = await connection.query(
+      ` SELECT c.id, c.category 
+            FROM categories c
+            JOIN recipe_categories rc ON c.id = rc.category_id
+            WHERE rc.recipe_id = ?`,
       [recipeid]
     );
 
-    let categoryId;
-    const [existingCategoryRows] = await connection.query(
-      "SELECT id FROM categories WHERE category = ?",
-      [category]
-    );
+    if (oldCategoryRows.length > 0) {
+      const oldCategory = oldCategoryRows[0].category;
+      const oldCategoryId = oldCategoryRows[0].id;
 
-    if (existingCategoryRows.length > 0) {
-      categoryId = existingCategoryRows[0].id;
-    } else {
-      const [categoryResult] = await connection.query(
-        "INSERT INTO categories (category) VALUES (?)",
-        [category]
-      );
-      categoryId = categoryResult.insertId;
+      if (oldCategory !== category) {
+        // Check if the new category name already exists
+        const [existingNewCat] = await connection.query(
+          "SELECT id FROM categories WHERE category = ?",
+          [category]
+        );
+
+        let newCategoryId;
+        if (existingNewCat.length > 0) {
+          newCategoryId = existingNewCat[0].id;
+        } else {
+          const [newCatInsert] = await connection.query(
+            "INSERT INTO categories (category) VALUES (?)",
+            [category]
+          );
+          newCategoryId = newCatInsert.insertId;
+        }
+
+        // Update recipe_categories with new category_id
+        await connection.query(
+          "UPDATE recipe_categories SET category_id = ? WHERE recipe_id = ?",
+          [newCategoryId, recipeid]
+        );
+      }
     }
 
-    await connection.query(
-      "INSERT INTO recipe_categories (recipe_id, category_id) VALUES (?, ?)",
-      [recipeid, categoryId]
+    // 8. Get existing tag IDs for the recipe
+    const [existingTags] = await connection.query(
+      `SELECT t.id, t.tag 
+              FROM tags t
+              JOIN recipe_tags rt ON t.id = rt.tag_id
+              WHERE rt.recipe_id = ?`,
+      [recipeid]
     );
 
-    // 5. Update tags
+    // 9. Update or replace tags
     await connection.query("DELETE FROM recipe_tags WHERE recipe_id = ?", [
       recipeid,
     ]);
 
     const parsedTags = Array.isArray(tags)
-      ? tags
+      ? tags.map((t) => t.trim())
       : tags.split(",").map((t) => t.trim());
 
-    for (const tag of parsedTags) {
-      let tagId;
-      const [existingTagRows] = await connection.query(
+    for (const newTag of parsedTags) {
+      // Check if a tag with the new name already exists
+      const [existingNewTag] = await connection.query(
         "SELECT id FROM tags WHERE tag = ?",
-        [tag]
+        [newTag]
       );
 
-      if (existingTagRows.length > 0) {
-        tagId = existingTagRows[0].id;
+      let tagId;
+
+      if (existingNewTag.length > 0) {
+        tagId = existingNewTag[0].id;
       } else {
         const [tagResult] = await connection.query(
           "INSERT INTO tags (tag) VALUES (?)",
-          [tag]
+          [newTag]
         );
         tagId = tagResult.insertId;
       }
@@ -353,6 +376,7 @@ export const updaterecipe = async (req, res) => {
     }
 
     await connection.commit();
+    await cleanupOrphanedTagsAndCategories();
     res.status(200).json({ message: "Recipe updated successfully." });
   } catch (error) {
     await connection.rollback();
