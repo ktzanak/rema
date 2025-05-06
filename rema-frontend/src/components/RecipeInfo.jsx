@@ -69,17 +69,23 @@ export default function RecipeInfo({
 
           <Col className={styles.recipeinfocol}>
             <span className={styles.recipeinfolabel}>Tags</span>
-            {tags.map((tagitem, index) => (
-              <div key={tagitem.id} className={styles.inputcontainer}>
-                <input
-                  className={styles.moderninput}
-                  onChange={(e) => setTags(index, e.target.value)}
-                  type="text"
-                  value={recipeinfo?.tagitem.tag}
-                  placeholder="Comma-separated keywords (optional)"
-                />
-              </div>
-            ))}
+            <div className={styles.inputcontainer}>
+              <input
+                className={styles.moderninput}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  const tagArray = input
+                    .split(",")
+                    .map((tag, index) => ({ id: index, tag: tag.trim() }))
+                    .filter((tagObj) => tagObj.tag.length > 0);
+
+                  setTags(tagArray);
+                }}
+                type="text"
+                value={tags?.map((t) => t.tag).join(", ") || ""}
+                placeholder="Comma-separated keywords (optional)"
+              />
+            </div>
           </Col>
         </Row>
         <Row className={styles.recipeinforowright}>
