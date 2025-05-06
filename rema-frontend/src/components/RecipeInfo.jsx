@@ -1,5 +1,6 @@
 import { Row, Col } from "react-bootstrap";
 import styles from "../css/recipeinfo.module.css";
+import { useEffect, useState } from "react";
 
 export default function RecipeInfo({
   recipeinfo,
@@ -9,6 +10,27 @@ export default function RecipeInfo({
   category,
   setCategory,
 }) {
+  const [tagInput, setTagInput] = useState("");
+
+  useEffect(() => {
+    // Sync the tag input with the props when tags change externally.
+    setTagInput(tags?.map((t) => t.tag).join(", ") || "");
+  }, [tags]);
+
+  const handleTagInputChange = (e) => {
+    const input = e.target.value;
+    setTagInput(input);
+
+    // Only process when a comma is typed
+    if (input.endsWith(",")) {
+      const tagArray = input
+        .split(",")
+        .map((tag, index) => ({ id: index, tag: tag.trim() }))
+        .filter((tagObj) => tagObj.tag.length > 0);
+
+      setTags(tagArray);
+    }
+  };
   return (
     <Row className={styles.inputcontainer}>
       <Col className={styles.recipeinfocol}>
@@ -72,17 +94,9 @@ export default function RecipeInfo({
             <div className={styles.inputcontainer}>
               <input
                 className={styles.moderninput}
-                onChange={(e) => {
-                  const input = e.target.value;
-                  const tagArray = input
-                    .split(",")
-                    .map((tag, index) => ({ id: index, tag: tag.trim() }))
-                    .filter((tagObj) => tagObj.tag.length > 0);
-
-                  setTags(tagArray);
-                }}
+                onChange={handleTagInputChange}
                 type="text"
-                value={tags?.map((t) => t.tag).join(", ") || ""}
+                value={tagInput}
                 placeholder="Comma-separated keywords (optional)"
               />
             </div>
@@ -112,7 +126,7 @@ export default function RecipeInfo({
             <div className={styles.inputcontainer}>
               <select
                 id="dropdown"
-                value={recipeinfo?.category || ""}
+                value={category || ""}
                 onChange={(e) => setCategory(e.target.value)}
                 style={{
                   padding: "10px",
