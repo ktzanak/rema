@@ -49,6 +49,20 @@ export default function EditRecipe({ open, recipe, onClose, onSave }) {
                 ...info,
               }))
             }
+            tags={editedRecipe.tags || []}
+            setTags={(newTags) =>
+              setEditedRecipe((prev) => ({
+                ...prev,
+                tags: newTags,
+              }))
+            }
+            category={editedRecipe.category || ""}
+            setCategory={(newCategory) =>
+              setEditedRecipe((prev) => ({
+                ...prev,
+                category: newCategory,
+              }))
+            }
           />
 
           <div className={styles.spacer}></div>
