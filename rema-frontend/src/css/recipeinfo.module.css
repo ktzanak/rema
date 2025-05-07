@@ -6,7 +6,6 @@
   font-size: 16px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /*margin: 0 auto;*/
   padding: 15px 10px;
 }
 
@@ -42,14 +41,14 @@
   align-items: center;
   gap: 5px;
   width: 100%;
-  padding: 15px 10px; /* Match padding from .moderninput */
-  border-radius: 8px; /* Match border-radius from .moderninput */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Match box-shadow from .moderninput */
+  padding: 15px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background-color: white;
 }
 
 .chipInputWrapper:focus-within {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* No blue shadow, keep same shadow */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .chipInput {
