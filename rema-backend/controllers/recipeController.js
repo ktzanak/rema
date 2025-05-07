@@ -347,7 +347,7 @@ export const updaterecipe = async (req, res) => {
     ]);
 
     const parsedTags = Array.isArray(tags)
-      ? tags.map((t) => t.trim())
+      ? tags.map((t) => (typeof t === "string" ? t.trim() : t.tag?.trim()))
       : tags.split(",").map((t) => t.trim());
 
     for (const newTag of parsedTags) {
