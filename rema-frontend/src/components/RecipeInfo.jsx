@@ -10,11 +10,12 @@ export default function RecipeInfo({
   category,
   setCategory,
 }) {
-  const [tagInput, setTagInput] = useState("");
+  {
+    /*const [tagInput, setTagInput] = useState("");
 
   useEffect(() => {
     // Sync the tag input with the props when tags change externally.
-    setTagInput(tags?.map((t) => t.tag).join(", ") || "");
+    setTagInput(tags?.map((t) => t.tag).join(",") || "");
   }, [tags]);
 
   const handleTagInputChange = (e) => {
@@ -30,7 +31,25 @@ export default function RecipeInfo({
 
       setTags(tagArray);
     }
+  };*/
+  }
+  const [tagInput, setTagInput] = useState("");
+
+  const handleTagKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const value = tagInput.trim().replace(/,+$/, "");
+      if (value && !tags.find((t) => t.tag === value)) {
+        setTags([...tags, { tag: value }]);
+      }
+      setTagInput("");
+    }
   };
+
+  const removeTag = (index) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
   return (
     <Row className={styles.inputcontainer}>
       <Col className={styles.recipeinfocol}>
@@ -92,13 +111,30 @@ export default function RecipeInfo({
           <Col className={styles.recipeinfocol}>
             <span className={styles.recipeinfolabel}>Tags</span>
             <div className={styles.inputcontainer}>
-              <input
-                className={styles.moderninput}
-                onChange={handleTagInputChange}
-                type="text"
-                value={tagInput}
-                placeholder="Comma-separated keywords (optional)"
-              />
+              <div
+                className={styles.moderninput + " " + styles.chipInputWrapper}
+              >
+                {tags.map((t, index) => (
+                  <span key={index} className={styles.tagChip}>
+                    {t.tag}
+                    <button
+                      type="button"
+                      className={styles.tagRemove}
+                      onClick={() => removeTag(index)}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+                <input
+                  className={styles.chipInput}
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={handleTagKeyDown}
+                  placeholder={tags.length === 0 ? "Add tags (optional)" : ""}
+                />
+              </div>
             </div>
           </Col>
         </Row>
