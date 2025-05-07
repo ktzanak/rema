@@ -35,3 +35,52 @@
   width: 100%;
   margin: 20px auto;
 }
+
+.chipInputWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 15px 10px; /* Match padding from .moderninput */
+  border-radius: 8px; /* Match border-radius from .moderninput */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Match box-shadow from .moderninput */
+  background-color: white;
+}
+
+.chipInputWrapper:focus-within {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* No blue shadow, keep same shadow */
+}
+
+.chipInput {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 80px;
+  font-size: 16px;
+  padding: 0 0;
+  background-color: transparent;
+}
+
+.chipInput:focus {
+  outline: none;
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  padding: 1px 5px;
+  font-size: 13px;
+}
+
+.tagRemove {
+  margin-left: 2px;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #333;
+  margin-right: 1px;
+}
