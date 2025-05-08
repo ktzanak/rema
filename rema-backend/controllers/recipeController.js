@@ -304,7 +304,6 @@ export const updaterecipe = async (req, res) => {
 
     if (oldCategoryRows.length > 0) {
       const oldCategory = oldCategoryRows[0].category;
-      const oldCategoryId = oldCategoryRows[0].id;
 
       if (oldCategory !== category) {
         // Check if the new category name already exists
