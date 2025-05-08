@@ -67,7 +67,25 @@ export default function RecipeInfo({
       </Col>
       <Col className={styles.recipeinfocol}>
         <Row className={styles.recipeinforowright}>
-          <Col className={styles.recipeinfocol}>
+          <Col className={styles.recipeinfocolleft}>
+            <span className={styles.recipeinfolabel}>Portions</span>
+            <div className={styles.inputcontainer}>
+              <input
+                className={styles.moderninput}
+                onChange={(e) =>
+                  setRecipeinfo({
+                    ...recipeinfo,
+                    portions: e.target.value,
+                  })
+                }
+                type="text"
+                value={recipeinfo?.portions || ""}
+                placeholder="Portions (optional)"
+              />
+            </div>
+          </Col>
+
+          <Col className={styles.recipeinfocolright}>
             <span className={styles.recipeinfolabel}>Time</span>
             <div className={styles.inputcontainer}>
               <input
@@ -80,11 +98,13 @@ export default function RecipeInfo({
                 }
                 type="text"
                 value={recipeinfo?.cooking_time || ""}
-                placeholder="Time in total (optional)"
+                placeholder="Time (optional)"
               />
             </div>
           </Col>
-          <Col className={styles.recipeinfocol}>
+        </Row>
+        <Row className={styles.recipeinforowright}>
+          <Col className={styles.recipeinfocolleft}>
             <span className={styles.recipeinfolabel}>Category</span>
             <div className={styles.inputcontainer}>
               <select
@@ -98,7 +118,7 @@ export default function RecipeInfo({
                   margin: "5px",
                 }}
               >
-                <option value="">Select...</option>
+                <option value="">Select... (optional)</option>
                 <option value="Appetizer">Appetizer</option>
                 <option value="Sauce">Sauce</option>
                 <option value="Main course">Main course</option>
@@ -108,27 +128,8 @@ export default function RecipeInfo({
               </select>
             </div>
           </Col>
-        </Row>
-        <Row className={styles.recipeinforowright}>
-          <Col className={styles.recipeinfocol}>
-            <span className={styles.recipeinfolabel}>Portions</span>
-            <div className={styles.inputcontainer}>
-              <input
-                className={styles.moderninput}
-                onChange={(e) =>
-                  setRecipeinfo({
-                    ...recipeinfo,
-                    portions: e.target.value,
-                  })
-                }
-                type="text"
-                value={recipeinfo?.portions || ""}
-                placeholder="Number of portions (optional)"
-              />
-            </div>
-          </Col>
 
-          <Col className={styles.recipeinfocol}>
+          <Col className={styles.recipeinfocolright}>
             <span className={styles.recipeinfolabel}>Tags</span>
             <div className={styles.inputcontainer}>
               <div
@@ -152,7 +153,9 @@ export default function RecipeInfo({
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={handleTagKeyDown}
-                  placeholder={tags.length === 0 ? "Add tags (optional)" : ""}
+                  placeholder={
+                    tags.length === 0 ? "Comma-separated tags (optional)" : ""
+                  }
                 />
               </div>
             </div>
