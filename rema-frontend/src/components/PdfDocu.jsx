@@ -102,6 +102,20 @@ function PdfDocu(recipeinfoingredientsinstructions) {
                 {recipeinfoingredientsinstructions.recipeinfo.description}
               </Text>
               <Text style={styles.texttimeportions}>
+                <Text style={{ fontFamily: "Times-Bold" }}>Category: </Text>
+                {recipeinfoingredientsinstructions.category}
+                {"                       "}
+                <Text style={{ fontFamily: "Times-Bold" }}>Tags: </Text>
+                {recipeinfoingredientsinstructions.tags.map((tagrow, index) => (
+                  <Text style={styles.texttimeportions} key={index}>
+                    {tagrow.tag}
+                    {index < recipeinfoingredientsinstructions.tags.length - 1
+                      ? ", "
+                      : ""}
+                  </Text>
+                ))}
+              </Text>
+              <Text style={styles.texttimeportions}>
                 <Text style={{ fontFamily: "Times-Bold" }}>Time: </Text>
                 {recipeinfoingredientsinstructions.recipeinfo.cooking_time}
                 {"                       "}
