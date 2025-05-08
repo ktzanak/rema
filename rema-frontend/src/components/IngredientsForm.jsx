@@ -32,7 +32,7 @@ export default function IngredientsInstructionsForm({
           }
           type="text"
           value={ingredient.ingredient}
-          placeholder="Add each ingredient and quantity"
+          placeholder="Add each ingredient and quantity (optional)"
         />
 
         <Button

@@ -36,7 +36,7 @@ export default function IngredientsInstructionsForm({
           }
           type="text"
           value={instruction.instruction}
-          placeholder="Add each instruction"
+          placeholder="Add each instruction (optional)"
         />
         <Button
           type="submit"
