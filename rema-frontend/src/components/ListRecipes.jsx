@@ -29,7 +29,7 @@ export default function ListRecipes() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [dialogMode, setDialogMode] = useState(null); // view, edit delete or null
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (newPage) => {
     setPage(newPage);
   };
 
