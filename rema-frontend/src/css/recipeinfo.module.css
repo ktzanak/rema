@@ -17,6 +17,13 @@
   display: flex;
   justify-content: space-around;
 }
+.recipeinfocolleft {
+  /* I have to create two types one 30% and one 60% for left and right */
+  width: 30%;
+}
+.recipeinfocolright {
+  width: 60%;
+}
 .recipeinfocol {
   width: 45%;
 }
