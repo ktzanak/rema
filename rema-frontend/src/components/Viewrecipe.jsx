@@ -27,6 +27,8 @@ export default function ViewRecipe({ open, onClose, recipe }) {
         }}
         ingredients={recipe.ingredients}
         instructions={recipe.instructions}
+        category={recipe.category}
+        tags={recipe.tags}
       />
     ).toBlob();
     saveAs(blob, fileName);
