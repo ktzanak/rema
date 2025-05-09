@@ -77,8 +77,11 @@
   align-items: center;
   background-color: #e0e0e0;
   border-radius: 10px;
-  padding: 1px 5px;
-  font-size: 13px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 0px;
+  font-size: 15px;
 }
 
 .tagRemove {
