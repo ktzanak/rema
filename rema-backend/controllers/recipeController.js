@@ -151,7 +151,7 @@ export const addrecipe = async (req, res) => {
 
     // Step 5: Parse, insert and link tags to the recipe
     const parsedTags = Array.isArray(tags)
-      ? tags
+      ? tags.map((t) => (typeof t === "string" ? t.trim() : t.tag?.trim()))
       : tags.split(",").map((t) => t.trim());
 
     for (const tag of parsedTags) {
