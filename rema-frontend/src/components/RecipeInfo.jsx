@@ -15,7 +15,7 @@ export default function RecipeInfo({
   const handleTagKeyDown = (e) => {
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
-      const value = tagInput.trim().replace(/,+$/, "");
+      const value = tagInput.trim().replace(/,+$/, "").toLowerCase();
       if (value && !tags.find((t) => t.tag === value)) {
         setTags([...tags, { tag: value }]);
       }
