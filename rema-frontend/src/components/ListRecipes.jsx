@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import EditRecipe from "./EditRecipe";
 import ViewRecipe from "./Viewrecipe";
+import AIRecipe from "./AIRecipe";
 import {
   Dialog,
   DialogActions,
@@ -179,7 +180,11 @@ export default function ListRecipes() {
                     </Button>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
-                    <Button variant="contained" color="secondary">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleOpenDialog(recipe, "askai")}
+                    >
                       AI
                     </Button>
                   </TableCell>
@@ -230,6 +235,14 @@ export default function ListRecipes() {
           open={true}
           onClose={handleCloseDialog}
           recipe={selectedRecipe}
+        />
+      )}
+      {/*onSave={handleSaveAIRecipe}*/}
+      {dialogMode === "askai" && (
+        <AIRecipe
+          open={true}
+          recipe={selectedRecipe}
+          onClose={handleCloseDialog}
         />
       )}
       {dialogMode === "delete" && (
