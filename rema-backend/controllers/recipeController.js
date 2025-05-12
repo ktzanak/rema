@@ -1,4 +1,5 @@
 import pool from "../config/databaseconn.js";
+import { suggestImprovements } from "../controllers/aiCaller.js";
 
 // Fetch all recipes
 export const listrecipes = async (req, res) => {
@@ -383,5 +384,101 @@ export const updaterecipe = async (req, res) => {
     res.status(500).json({ error: error.message });
   } finally {
     connection.release();
+  }
+};
+
+export const getRecipeByIdForAI = async (recipeid) => {
+  const [recipes] = await pool.query(
+    `
+    SELECT 
+      rec.id AS recipe_id, 
+      rec.title, 
+      rec.description, 
+      rec.cooking_time, 
+      rec.portions, 
+      rec.created_at,
+      ing.id AS ingredient_id, 
+      ing.ingredient,
+      ins.id AS instruction_id, 
+      ins.step_number, 
+      ins.instruction,
+      cat.id AS category_id,
+      cat.category,
+      tag.id AS tag_id,
+      tag.tag
+    FROM recipes rec
+    LEFT JOIN ingredients ing ON rec.id = ing.recipe_id
+    LEFT JOIN instructions ins ON rec.id = ins.recipe_id
+    LEFT JOIN recipe_categories rc ON rec.id = rc.recipe_id
+    LEFT JOIN categories cat ON rc.category_id = cat.id
+    LEFT JOIN recipe_tags rt ON rec.id = rt.recipe_id
+    LEFT JOIN tags tag ON rt.tag_id = tag.id
+    WHERE rec.id = ?
+    ORDER BY ins.step_number
+    `,
+    [recipeid]
+  );
+
+  if (recipes.length === 0) return null;
+
+  const recipe = recipes[0];
+  const recipeDetails = {
+    id: recipe.recipe_id,
+    title: recipe.title,
+    description: recipe.description,
+    cooking_time: recipe.cooking_time,
+    portions: recipe.portions,
+    created_at: recipe.created_at,
+    ingredients: [],
+    instructions: [],
+    tags: [],
+    category: recipe.category,
+  };
+
+  for (const row of recipes) {
+    if (
+      row.ingredient_id &&
+      !recipeDetails.ingredients.some((i) => i.id === row.ingredient_id)
+    ) {
+      recipeDetails.ingredients.push({
+        id: row.ingredient_id,
+        ingredient: row.ingredient,
+      });
+    }
+    if (
+      row.instruction_id &&
+      !recipeDetails.instructions.some((i) => i.id === row.instruction_id)
+    ) {
+      recipeDetails.instructions.push({
+        id: row.instruction_id,
+        step_number: row.step_number,
+        instruction: row.instruction,
+      });
+    }
+    if (row.tag_id && !recipeDetails.tags.some((i) => i.id === row.tag_id)) {
+      recipeDetails.tags.push({
+        id: row.tag_id,
+        tag: row.tag,
+      });
+    }
+  }
+
+  return recipeDetails;
+};
+
+export const askai = async (req, res) => {
+  const { recipeid } = req.params;
+  try {
+    const recipe = await getRecipeByIdForAI(recipeid);
+
+    if (!recipe) {
+      return res.status(404).json({ error: "Recipe not found" });
+    }
+
+    const suggestions = await suggestImprovements(recipe);
+    res.json(suggestions);
+  } catch (error) {
+    console.error("AI error:", error.message);
+    res.status(500).json({ error: "Failed to get AI suggestions" });
   }
 };
