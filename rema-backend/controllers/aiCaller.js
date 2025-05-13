@@ -6,7 +6,7 @@ const openai = new OpenAI({
 
 export async function suggestImprovements(recipeText) {
   const response = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: "gpt-3.5-turbo",
     messages: [
       { role: "system", content: "You're a helpful chef." },
       { role: "user", content: `Make this recipe healthier: ${recipeText}` },
