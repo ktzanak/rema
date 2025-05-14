@@ -28,7 +28,28 @@ export default function ListRecipes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [dialogMode, setDialogMode] = useState(null); // view, edit delete or null
+  const [dialogMode, setDialogMode] = useState(null); // view, edit,AI, delete or null
+  const [aiAvailable, setAiAvailable] = useState(false);
+
+  useEffect(() => {
+    const checkAvailability = async () => {
+      try {
+        if (!navigator.onLine) {
+          setAiAvailable(false);
+          return;
+        }
+
+        const res = await fetch("http://localhost:8000/api/hasOpenaiKey");
+        const data = await res.json();
+        setAiAvailable(data.ok);
+      } catch (error) {
+        console.error("Error checking AI availability:", error);
+        setAiAvailable(false);
+      }
+    };
+
+    checkAvailability();
+  }, []);
 
   const handleChangePage = (newPage) => {
     setPage(newPage);
@@ -184,6 +205,7 @@ export default function ListRecipes() {
                       variant="contained"
                       color="secondary"
                       onClick={() => handleOpenDialog(recipe, "askai")}
+                      disabled={!aiAvailable}
                     >
                       AI
                     </Button>
