@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import styles from "../css/airecipe.module.css";
 import { useEffect, useState } from "react";
+const [mode, setMode] = useState("healthier");
 
 export default function AIRecipe({ open, onClose, recipe }) {
   const [aiRecipe, setAIRecipe] = useState(null);
@@ -27,7 +28,11 @@ export default function AIRecipe({ open, onClose, recipe }) {
           setAIRecipe(null);
         });
     }
-  }, [open, recipe]);
+  }, [open, recipe, mode]);
+
+  const handleModeChange = (event, newMode) => {
+    if (newMode) setMode(newMode);
+  };
 
   return (
     <Dialog
