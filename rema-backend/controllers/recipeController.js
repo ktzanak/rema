@@ -468,6 +468,7 @@ export const getRecipeByIdForAI = async (recipeid) => {
 
 export const askai = async (req, res) => {
   const { recipeid } = req.params;
+  const aimode = req.query.aimode || "healthier";
   try {
     const recipe = await getRecipeByIdForAI(recipeid);
 
@@ -475,7 +476,7 @@ export const askai = async (req, res) => {
       return res.status(404).json({ error: "Recipe not found" });
     }
 
-    const suggestions = await suggestImprovements(recipe);
+    const suggestions = await suggestImprovements(recipe, aimode);
     res.json(suggestions);
   } catch (error) {
     console.error("AI error:", error.message);
