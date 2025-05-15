@@ -7,16 +7,19 @@ import {
   Box,
   Divider,
   Chip,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import styles from "../css/airecipe.module.css";
 import { useEffect, useState } from "react";
-const [mode, setMode] = useState("healthier");
 
 export default function AIRecipe({ open, onClose, recipe }) {
   const [aiRecipe, setAIRecipe] = useState(null);
+  const [aimode, setAIMode] = useState("healthier");
+
   useEffect(() => {
     if (open && recipe) {
-      fetch(`http://localhost:8000/api/askai/${recipe.id}`, {
+      fetch(`http://localhost:8000/api/askai/${recipe.id}?aimode=${aimode}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(recipe),
@@ -28,10 +31,12 @@ export default function AIRecipe({ open, onClose, recipe }) {
           setAIRecipe(null);
         });
     }
-  }, [open, recipe, mode]);
+  }, [open, recipe, aimode]);
 
   const handleModeChange = (event, newMode) => {
-    if (newMode) setMode(newMode);
+    if (newMode && newMode !== aimode) {
+      setAIMode(newMode);
+    }
   };
 
   return (
@@ -167,7 +172,7 @@ export default function AIRecipe({ open, onClose, recipe }) {
                 textAlign="center"
                 gutterBottom
               >
-                AI Recipe
+                AI Recipe ({aimode.charAt(0).toUpperCase() + aimode.slice(1)})
               </Typography>
               <Typography
                 variant="h5"
@@ -297,6 +302,21 @@ export default function AIRecipe({ open, onClose, recipe }) {
         <Button onClick={onClose} variant="contained" color="primary">
           Close
         </Button>
+        <ToggleButtonGroup
+          value={aimode}
+          exclusive
+          onChange={handleModeChange}
+          aria-label="AI Mode"
+          size="small"
+          sx={{ mr: 2 }}
+        >
+          <ToggleButton value="healthier" aria-label="Healthier">
+            Healthier
+          </ToggleButton>
+          <ToggleButton value="tastier" aria-label="Tastier">
+            Tastier
+          </ToggleButton>
+        </ToggleButtonGroup>
       </DialogActions>
     </Dialog>
   );
