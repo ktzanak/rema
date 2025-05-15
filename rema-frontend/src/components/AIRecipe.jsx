@@ -7,8 +7,6 @@ import {
   Box,
   Divider,
   Chip,
-  ToggleButtonGroup,
-  ToggleButton,
 } from "@mui/material";
 import styles from "../css/airecipe.module.css";
 import { useEffect, useState } from "react";
@@ -299,24 +297,30 @@ export default function AIRecipe({ open, onClose, recipe }) {
       </DialogContent>
 
       <DialogActions sx={{ justifyContent: "center" }}>
-        <Button onClick={onClose} variant="contained" color="primary">
+        <Button
+          onClick={onClose}
+          variant="contained"
+          color="primary"
+          sx={{ mx: 1 }}
+        >
           Close
         </Button>
-        <ToggleButtonGroup
-          value={aimode}
-          exclusive
-          onChange={handleModeChange}
-          aria-label="AI Mode"
-          size="small"
-          sx={{ mr: 2 }}
+        <Button
+          onClick={() => setAIMode("healthier")}
+          variant={aimode === "healthier" ? "contained" : "outlined"}
+          color="secondary"
+          sx={{ mx: 1 }}
         >
-          <ToggleButton value="healthier" aria-label="Healthier">
-            Healthier
-          </ToggleButton>
-          <ToggleButton value="tastier" aria-label="Tastier">
-            Tastier
-          </ToggleButton>
-        </ToggleButtonGroup>
+          Healthier
+        </Button>
+        <Button
+          onClick={() => setAIMode("tastier")}
+          variant={aimode === "tastier" ? "contained" : "outlined"}
+          color="secondary"
+          sx={{ mx: 1 }}
+        >
+          Tastier
+        </Button>
       </DialogActions>
     </Dialog>
   );
