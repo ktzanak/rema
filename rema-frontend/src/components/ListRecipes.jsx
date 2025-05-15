@@ -28,7 +28,7 @@ export default function ListRecipes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [dialogMode, setDialogMode] = useState(null); // view, edit,AI, delete or null
+  const [dialogMode, setDialogMode] = useState(null); // view, edit, askai, delete or null
   const [aiAvailable, setAiAvailable] = useState(false);
 
   useEffect(() => {
@@ -138,7 +138,6 @@ export default function ListRecipes() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      // Refresh the recipes list after deletion
       fetchRecipes();
     } catch (error) {
       console.error("Error deleting recipe:", error);
@@ -259,7 +258,6 @@ export default function ListRecipes() {
           recipe={selectedRecipe}
         />
       )}
-      {/*onSave={handleSaveAIRecipe}*/}
       {dialogMode === "askai" && (
         <AIRecipe
           open={true}
