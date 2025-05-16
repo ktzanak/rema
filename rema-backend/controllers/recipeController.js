@@ -20,7 +20,8 @@ export const listrecipes = async (req, res) => {
         cat.id AS category_id,
         cat.category,
         tag.id AS tag_id,
-        tag.tag
+        tag.tag,
+        rat.rating
       FROM recipes rec
       LEFT JOIN ingredients ing ON rec.id = ing.recipe_id
       LEFT JOIN instructions ins ON rec.id = ins.recipe_id
@@ -28,6 +29,7 @@ export const listrecipes = async (req, res) => {
       LEFT JOIN categories cat ON rc.category_id = cat.id
       LEFT JOIN recipe_tags rt ON rec.id = rt.recipe_id
       LEFT JOIN tags tag ON rt.tag_id = tag.id
+      LEFT JOIN ratings rating ON rec.id = rating.recipe_id
       ORDER BY rec.title
     `);
 
@@ -239,6 +241,30 @@ export const deleterecipe = async (req, res) => {
       .json({ message: "An error occurred while deleting the recipe." });
   } finally {
     // Release the connection back to the pool
+    connection.release();
+  }
+};
+
+export const raterecipe = async (req, res) => {
+  const connection = await pool.getConnection();
+  const { recipeid } = req.params;
+  const { rating } = req.body;
+
+  try {
+    await connection.beginTransaction();
+
+    await connection.query(
+      "INSERT INTO ratings (recipe_id, rating) VALUES (?, ?)",
+      [recipeid, rating]
+    );
+
+    await connection.commit();
+    res.status(201).json({ message: "Rating added successfully." });
+  } catch (err) {
+    await connection.rollback();
+    console.error("Error inserting rating:", err.message);
+    res.status(500).json({ error: err.message });
+  } finally {
     connection.release();
   }
 };
