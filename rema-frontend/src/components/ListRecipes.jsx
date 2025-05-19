@@ -20,6 +20,7 @@ import {
   Paper,
   Button,
   TextField,
+  Rating,
 } from "@mui/material";
 
 export default function ListRecipes() {
@@ -146,6 +147,19 @@ export default function ListRecipes() {
     }
   };
 
+  const handleRatingChange = async (raterecipeId, newRating) => {
+    try {
+      await fetch(`http://localhost:8000/api/raterecipe/${raterecipeId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newRating }),
+      });
+      fetchRecipes();
+    } catch (error) {
+      console.error("Failed to submit rating:", error);
+    }
+  };
+
   return (
     <Container>
       <TextField
@@ -174,7 +188,27 @@ export default function ListRecipes() {
                 <TableRow key={recipe.id} hover>
                   <TableCell sx={{ width: "68%" }}>
                     <Typography variant="h6">{recipe.title}</Typography>
-                    <div style={{ marginTop: "4px", color: "gray" }}>
+                    <div
+                      style={{
+                        color: "gray",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <strong>Rating:</strong>
+                      <Rating
+                        name={`rating-${recipe.id}`}
+                        value={recipe.rating}
+                        precision={0.1}
+                        size="small"
+                        onChange={(event, newValue) =>
+                          handleRatingChange(recipe.id, newValue)
+                        }
+                      />
+                      ({recipe.rating?.toFixed(1) || "No rating"})
+                    </div>
+                    <div style={{ color: "gray" }}>
                       <strong>Category:</strong> {recipe.category || "-"} |
                       <strong> Cooking Time:</strong>{" "}
                       {recipe.cooking_time || "-"} |<strong> Portions:</strong>{" "}
