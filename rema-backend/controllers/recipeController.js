@@ -21,6 +21,7 @@ export const listrecipes = async (req, res) => {
         cat.category,
         tag.id AS tag_id,
         tag.tag,
+        rat.id AS rating_id,
         rat.rating
       FROM recipes rec
       LEFT JOIN ingredients ing ON rec.id = ing.recipe_id
@@ -29,7 +30,7 @@ export const listrecipes = async (req, res) => {
       LEFT JOIN categories cat ON rc.category_id = cat.id
       LEFT JOIN recipe_tags rt ON rec.id = rt.recipe_id
       LEFT JOIN tags tag ON rt.tag_id = tag.id
-      LEFT JOIN ratings rating ON rec.id = rating.recipe_id
+      LEFT JOIN ratings rat ON rec.id = rat.recipe_id
       ORDER BY rec.title
     `);
 
