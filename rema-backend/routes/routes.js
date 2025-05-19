@@ -14,7 +14,7 @@ router.get("/listrecipes", listrecipes);
 router.post("/addrecipe", addrecipe);
 router.delete("/deleterecipe/:recipeid", deleterecipe);
 router.put("/updaterecipe/:recipeid", updaterecipe);
-router.post("raterecipe/:recipeid", raterecipe);
+router.post("/raterecipe/:recipeid", raterecipe);
 router.post("/askai/:recipeid", askai);
 router.get("/hasOpenaiKey", (req, res) => {
   if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim() !== "") {
