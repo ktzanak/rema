@@ -122,7 +122,11 @@ export default function ListRecipes() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setRecipes(data);
+      const normalized = data.map((r) => ({
+        ...r,
+        rating: r.rating ? Number(r.rating) : null,
+      }));
+      setRecipes(normalized);
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
