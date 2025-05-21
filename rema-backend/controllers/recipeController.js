@@ -254,11 +254,23 @@ export const raterecipe = async (req, res) => {
 
   try {
     await connection.beginTransaction();
-
-    await connection.query(
-      "INSERT INTO ratings (recipe_id, rating) VALUES (?, ?)",
-      [recipeid, newRating]
+    // Check if the rating already exists for the recipe
+    const [existingrating] = await connection.query(
+      "SELECT id FROM ratings WHERE recipe_id = ?",
+      [recipeid]
     );
+
+    if (existingrating.length > 0) {
+      await connection.query(
+        "UPDATE ratings SET rating = ? WHERE recipe_id = ?",
+        [newRating, recipeid]
+      );
+    } else {
+      await connection.query(
+        "INSERT INTO ratings (recipe_id, rating) VALUES (?, ?)",
+        [recipeid, newRating]
+      );
+    }
 
     await connection.commit();
     res.status(201).json({ message: "Rating added successfully." });
