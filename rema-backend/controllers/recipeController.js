@@ -49,6 +49,7 @@ export const listrecipes = async (req, res) => {
           instructions: [],
           tags: [],
           category: recipe.category,
+          rating: recipe.rating,
         });
       }
 
@@ -249,14 +250,14 @@ export const deleterecipe = async (req, res) => {
 export const raterecipe = async (req, res) => {
   const connection = await pool.getConnection();
   const { recipeid } = req.params;
-  const { rating } = req.body;
+  const { newRating } = req.body;
 
   try {
     await connection.beginTransaction();
 
     await connection.query(
       "INSERT INTO ratings (recipe_id, rating) VALUES (?, ?)",
-      [recipeid, rating]
+      [recipeid, newRating]
     );
 
     await connection.commit();
