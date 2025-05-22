@@ -29,7 +29,7 @@ export default function ListRecipes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [dialogMode, setDialogMode] = useState(null); // view, edit, askai, delete or null
+  const [dialogMode, setDialogMode] = useState(null); // view, edit, askai, delete, rate or null
   const [aiAvailable, setAiAvailable] = useState(false);
 
   useEffect(() => {
@@ -122,11 +122,7 @@ export default function ListRecipes() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      const normalized = data.map((r) => ({
-        ...r,
-        rating: r.rating ? Number(r.rating) : null,
-      }));
-      setRecipes(normalized);
+      setRecipes(data);
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
@@ -161,6 +157,8 @@ export default function ListRecipes() {
       fetchRecipes();
     } catch (error) {
       console.error("Failed to submit rating:", error);
+    } finally {
+      handleCloseDialog();
     }
   };
 
@@ -201,22 +199,28 @@ export default function ListRecipes() {
                       }}
                     >
                       <strong>Rating:</strong>
-                      <Rating
-                        name={`rating-${recipe.id}`}
-                        value={recipe.rating}
-                        precision={0.1}
-                        size="small"
-                        onChange={(event, newValue) =>
-                          handleRatingChange(recipe.id, newValue)
-                        }
-                      />
+                      <div
+                        onClick={() => handleOpenDialog(recipe, "rate")}
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Rating
+                          name={`rating-${recipe.id}`}
+                          value={recipe.rating}
+                          precision={0.1}
+                          size="small"
+                          readOnly
+                        />
+                      </div>
                       ({recipe.rating?.toFixed(1) || "No rating"})
                     </div>
                     <div style={{ color: "gray" }}>
                       <strong>Category:</strong> {recipe.category || "-"} |
-                      <strong> Cooking Time:</strong>{" "}
-                      {recipe.cooking_time || "-"} |<strong> Portions:</strong>{" "}
-                      {recipe.portions || "-"}
+                      <strong>Time:</strong> {recipe.cooking_time || "-"} |
+                      <strong>Portions:</strong> {recipe.portions || "-"}
                     </div>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
@@ -334,6 +338,47 @@ export default function ListRecipes() {
               color="error"
             >
               Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+      {dialogMode === "rate" && (
+        <Dialog
+          open={true}
+          onClose={handleCloseDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          disableEnforceFocus
+          disableRestoreFocus
+        >
+          <DialogTitle id="alert-dialog-title" sx={{ textAlign: "center" }}>
+            {"Rate this recipe: " + selectedRecipe.title}
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Rating
+              name={`rating-${selectedRecipe.id}`}
+              value={selectedRecipe.rating}
+              precision={0.1}
+              size="large"
+              onChange={(event, newValue) =>
+                handleRatingChange(selectedRecipe.id, newValue)
+              }
+            />
+          </DialogContent>
+          <DialogActions sx={{ justifyContent: "center", gap: 4 }}>
+            <Button
+              onClick={handleCloseDialog}
+              variant="contained"
+              style={{ backgroundColor: "#E5E5E5", color: "#000000" }}
+            >
+              Cancel
             </Button>
           </DialogActions>
         </Dialog>
