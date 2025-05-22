@@ -18,7 +18,7 @@ function formatRecipeForAI(recipe) {
   return `
 Title: ${recipe.title}
 Description: ${recipe.description}
-Cooking Time: ${recipe.cooking_time} minutes
+Time: ${recipe.cooking_time} minutes
 Portions: ${recipe.portions}
 ${category}
 Tags: ${tags}

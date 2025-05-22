@@ -82,7 +82,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
         <Divider sx={{ my: 0.5 }} />
         <Box mb={0.5} textAlign="center">
           <Typography variant="subtitle1" color="textSecondary">
-            Cooking Time: {recipe.cooking_time || "-"}
+            Time: {recipe.cooking_time || "-"}
             <span style={{ margin: "0 3rem" }}></span>
             Portions: {recipe.portions || "-"}
           </Typography>

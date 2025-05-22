@@ -102,7 +102,7 @@ export default function AIRecipe({ open, onClose, recipe }) {
 
             <Box mb={1} textAlign="center">
               <Typography variant="subtitle1" color="textSecondary">
-                Cooking Time: {recipe.cooking_time || "-"}
+                Time: {recipe.cooking_time || "-"}
                 <span style={{ margin: "0 3rem" }}></span>
                 Portions: {recipe.portions || "-"}
               </Typography>
@@ -215,7 +215,7 @@ export default function AIRecipe({ open, onClose, recipe }) {
 
               <Box mb={1} textAlign="center">
                 <Typography variant="subtitle1" color="textSecondary">
-                  Cooking Time: {aiRecipe?.cooking_time || "-"}
+                  Time: {aiRecipe?.cooking_time || "-"}
                   <span style={{ margin: "0 3rem" }}></span>
                   Portions: {aiRecipe?.portions || "-"}
                 </Typography>
