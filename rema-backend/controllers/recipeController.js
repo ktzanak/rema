@@ -49,7 +49,7 @@ export const listrecipes = async (req, res) => {
           instructions: [],
           tags: [],
           category: recipe.category,
-          rating: recipe.rating,
+          rating: recipe.rating !== null ? Number(recipe.rating) : null,
         });
       }
 
