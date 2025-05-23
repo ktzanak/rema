@@ -13,6 +13,4 @@ app.use("/api", routes);
 
 // Start server
 const express_port = process.env.EXPRESS_PORT;
-app.listen(express_port, () =>
-  console.log(`Server running on port ${express_port}`)
-);
+app.listen(express_port);

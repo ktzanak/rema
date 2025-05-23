@@ -1,43 +1,28 @@
 import { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
-import { pdf } from "@react-pdf/renderer";
-import { saveAs } from "file-saver";
-import PdfDocu from "./PdfDocu";
 import IngredientsForm from "./IngredientsForm";
 import InstructionsForm from "./InstructionsForm";
 import IngredientsList from "./IngredientsList";
 import InstructionsList from "./InstructionsList";
 import RecipeInfo from "./RecipeInfo";
 import styles from "../css/addrecipe.module.css";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import Button from "@mui/material/Button";
 
 export default function AddRecipe() {
   const [saveStatus, setSaveStatus] = useState({ message: "", type: "" });
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
-  //const [tags, setTags] = useState([]);
-  //const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [category, setCategory] = useState("");
   const [recipeinfo, setRecipeinfo] = useState({
-    name: "",
+    title: "",
     description: "",
-    totaltime: "",
-    nrportions: "",
+    cooking_time: "",
+    portions: "",
   });
 
-  const downloadPdf = async () => {
-    const fileName = "ReMa_recipe.pdf";
-    const blob = await pdf(
-      <PdfDocu
-        recipeinfo={recipeinfo}
-        ingredients={ingredients}
-        instructions={instructions}
-      />
-    ).toBlob();
-    saveAs(blob, fileName);
-  };
-
   const saveRecipe = async () => {
-    if (!recipeinfo.name.trim()) {
+    if (!recipeinfo.title.trim()) {
       setSaveStatus({
         message: "Title is required for saving the recipe!",
         type: "error",
@@ -46,15 +31,15 @@ export default function AddRecipe() {
     }
 
     const recipeData = {
-      title: recipeinfo.name,
+      title: recipeinfo.title,
       description: recipeinfo.description,
-      cooking_time: recipeinfo.totaltime,
-      portions: recipeinfo.nrportions,
+      cooking_time: recipeinfo.cooking_time,
+      portions: recipeinfo.portions,
       created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       ingredients: ingredients,
       instructions: instructions,
-      //categories: categories,
-      //tags: tags,
+      category: category,
+      tags: tags,
     };
 
     try {
@@ -74,13 +59,15 @@ export default function AddRecipe() {
           type: "success",
         });
         setRecipeinfo({
-          name: "",
+          title: "",
           description: "",
-          totaltime: "",
-          nrportions: "",
+          cooking_time: "",
+          portions: "",
         });
         setIngredients([]);
         setInstructions([]);
+        setTags([]);
+        setCategory([]);
       } else {
         setSaveStatus({ message: `Error: ${data.error}`, type: "error" });
       }
@@ -94,7 +81,14 @@ export default function AddRecipe() {
 
   return (
     <Container>
-      <RecipeInfo recipeinfo={recipeinfo} setRecipeinfo={setRecipeinfo} />
+      <RecipeInfo
+        recipeinfo={recipeinfo}
+        setRecipeinfo={setRecipeinfo}
+        tags={tags}
+        setTags={setTags}
+        category={category}
+        setCategory={setCategory}
+      />
       <div className={styles.spacer}></div>
       <Row className={styles.inputcontainer}>
         <Col className={styles.ingredientsinstructionslabelcol}>
@@ -155,15 +149,9 @@ export default function AddRecipe() {
       </Row>
       <Row className={styles.inputcontainerbutton}>
         <Col className={styles.ingredientsinstructionsbutton}>
-          <button onClick={saveRecipe} className={styles.modernbuttonsave}>
+          <Button variant="contained" color="primary" onClick={saveRecipe}>
             Save
-          </button>
-        </Col>
-        <span className={styles.orText}>-or-</span>
-        <Col className={styles.ingredientsinstructionsbutton}>
-          <button onClick={downloadPdf} className={styles.modernbuttonexport}>
-            Export to pdf
-          </button>
+          </Button>
         </Col>
       </Row>
     </Container>

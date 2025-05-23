@@ -1,4 +1,5 @@
 import styles from "../css/ingredientitem.module.css";
+import Button from "@mui/material/Button";
 
 export default function IngredientItem({
   ingredientitem,
@@ -14,14 +15,23 @@ export default function IngredientItem({
   return (
     <div className={styles.ingredientitem}>
       <div className={styles.ingredientitemname}>
-        {ingredientitem.name}
+        {ingredientitem.ingredient}
         <span>
-          <button
+          <Button
             onClick={() => handledelete(ingredientitem)}
-            className={styles.deletebutton}
+            disableElevation
+            variant="contained"
+            color="success"
+            sx={{
+              minWidth: "unset",
+              paddingX: 1.5,
+              paddingY: 0.5,
+              borderRadius: 1,
+              backgroundColor: "#82b366",
+            }}
           >
             x
-          </button>
+          </Button>
         </span>
       </div>
       <hr className={styles.line} />

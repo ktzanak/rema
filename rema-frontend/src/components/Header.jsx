@@ -21,11 +21,14 @@ export default function Header() {
           Home
         </Link>*/}
         <Link to="/add" className={styles.navLink}>
-          Add Recipe
+          New recipe
         </Link>
         <Link to="/list" className={styles.navLink}>
-          List Recipes
+          My recipes
         </Link>
+        {/*<Link to="/planshop" className={styles.navLink}>
+          Plan & Shop
+        </Link>*/}
       </div>
     </div>
   );

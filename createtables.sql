@@ -25,7 +25,7 @@ CREATE TABLE instructions (
 
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) UNIQUE
+    category VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE recipe_categories (
@@ -38,7 +38,7 @@ CREATE TABLE recipe_categories (
 
 CREATE TABLE tags (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) UNIQUE
+    tag VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE recipe_tags (
@@ -48,3 +48,11 @@ CREATE TABLE recipe_tags (
     FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );
+
+CREATE TABLE ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    recipe_id INT,
+    rating DECIMAL(3,1) CHECK (rating >= 0.1 AND rating <= 5.0),
+    FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
+);
+

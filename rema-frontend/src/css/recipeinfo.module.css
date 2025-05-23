@@ -6,7 +6,6 @@
   font-size: 16px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /*margin: 0 auto;*/
   padding: 15px 10px;
 }
 
@@ -17,6 +16,13 @@
 .inputcontainer {
   display: flex;
   justify-content: space-around;
+}
+.recipeinfocolleft {
+  /* I have to create two types one 30% and one 60% for left and right */
+  width: 30%;
+}
+.recipeinfocolright {
+  width: 60%;
 }
 .recipeinfocol {
   width: 45%;
@@ -34,4 +40,56 @@
 .recipeinforowleft {
   width: 100%;
   margin: 20px auto;
+}
+
+.chipInputWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 15px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.chipInputWrapper:focus-within {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chipInput {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 80px;
+  font-size: 16px;
+  padding: 0 0;
+  background-color: transparent;
+}
+
+.chipInput:focus {
+  outline: none;
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 0px;
+  font-size: 15px;
+}
+
+.tagRemove {
+  margin-left: 2px;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #333;
+  margin-right: 1px;
 }
