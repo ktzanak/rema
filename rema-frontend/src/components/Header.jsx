@@ -26,9 +26,9 @@ export default function Header() {
         <Link to="/list" className={styles.navLink}>
           My recipes
         </Link>
-        <Link to="/planshop" className={styles.navLink}>
+        {/*<Link to="/planshop" className={styles.navLink}>
           Plan & Shop
-        </Link>
+        </Link>*/}
       </div>
     </div>
   );
