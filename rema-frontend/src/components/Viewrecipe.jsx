@@ -13,6 +13,7 @@ import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import PdfDocu from "./PdfDocu";
 import styles from "../css/viewrecipe.module.css";
+import { Rating } from "@mui/material";
 
 export default function ViewRecipe({ open, onClose, recipe }) {
   const downloadPdf = async () => {
@@ -48,6 +49,18 @@ export default function ViewRecipe({ open, onClose, recipe }) {
       >
         {recipe.title}
       </DialogTitle>
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Rating
+            name={`readonly-rating-${recipe.id}`}
+            value={recipe.rating}
+            precision={0.1}
+            size="small"
+            readOnly
+          />
+          ({recipe.rating?.toFixed(1) || "No rating"})
+        </Box>
+      </Box>
       {recipe.description && (
         <Typography sx={{ mb: 1 }} variant="body1" textAlign="center">
           {recipe.description}
