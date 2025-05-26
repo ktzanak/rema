@@ -25,6 +25,7 @@ export default function PlanShop() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [dialogMode, setDialogMode] = useState(null);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const fetchRecipes = async () => {
     try {
@@ -91,7 +92,6 @@ export default function PlanShop() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-
       <TableContainer
         component={Paper}
         sx={{ width: "30%", margin: "auto", mt: 4, boxShadow: 3 }}
@@ -118,22 +118,13 @@ export default function PlanShop() {
                       }}
                     >
                       <strong>Rating:</strong>
-                      <div
-                        onClick={() => handleOpenDialog(recipe, "rate")}
-                        style={{
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Rating
-                          name={`rating-${recipe.id}`}
-                          value={recipe.rating}
-                          precision={0.1}
-                          size="small"
-                          readOnly
-                        />
-                      </div>
+                      <Rating
+                        name={`readonly-rating-${recipe.id}`}
+                        value={recipe.rating}
+                        precision={0.1}
+                        size="small"
+                        readOnly
+                      />
                       ({recipe.rating?.toFixed(1) || "No rating"})
                     </div>
                     <div style={{ color: "gray" }}>
