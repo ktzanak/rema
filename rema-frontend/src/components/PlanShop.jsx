@@ -3,11 +3,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import ViewRecipe from "./Viewrecipe";
 
 import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Typography,
   Table,
   TableBody,
@@ -21,7 +16,6 @@ import {
   TextField,
   Rating,
 } from "@mui/material";
-//import MealPool from "./MealPool"; // your component to show recipes
 //import ShoppingList from "./ShoppingList"; // if used
 //import WeeklyPlanner from "./WeeklyPlanner"; // if used
 
@@ -93,14 +87,14 @@ export default function PlanShop() {
         label="Search recipes by title, description, ingredient, tags or category"
         variant="outlined"
         fullWidth
-        sx={{ width: "80%", margin: "2rem auto", display: "block" }}
+        sx={{ width: "30%", margin: "2rem auto", display: "block" }}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
       <TableContainer
         component={Paper}
-        sx={{ width: "80%", margin: "auto", mt: 4, boxShadow: 3 }}
+        sx={{ width: "30%", margin: "auto", mt: 4, boxShadow: 3 }}
       >
         <Table>
           <TableBody>
@@ -113,7 +107,7 @@ export default function PlanShop() {
             ) : (
               mealPool.map((recipe) => (
                 <TableRow key={recipe.id} hover>
-                  <TableCell sx={{ width: "30%" }}>
+                  <TableCell sx={{ width: "90%" }}>
                     <Typography variant="h6">{recipe.title}</Typography>
                     <div
                       style={{
@@ -148,7 +142,7 @@ export default function PlanShop() {
                       <strong>Portions:</strong> {recipe.portions || "-"}
                     </div>
                   </TableCell>
-                  <TableCell align="center" sx={{ width: "6%" }}>
+                  <TableCell align="center" sx={{ width: "10%" }}>
                     <Button
                       variant="contained"
                       color="warning"
