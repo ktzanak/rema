@@ -16,8 +16,8 @@ import {
   TextField,
   Rating,
 } from "@mui/material";
-//import ShoppingList from "./ShoppingList"; // if used
-//import WeeklyPlanner from "./WeeklyPlanner"; // if used
+import WeeklyPlanner from "./WeeklyPlanner";
+import ShoppingList from "./ShoppingList";
 
 export default function PlanShop() {
   const [mealPool, setMealPool] = useState([]);
@@ -83,97 +83,106 @@ export default function PlanShop() {
   );
 
   return (
-    <Container>
-      <TextField
-        label="Search recipes by title, description, ingredient, tags or category"
-        variant="outlined"
-        fullWidth
-        sx={{ width: "30%", margin: "2rem auto", display: "block" }}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <TableContainer
-        component={Paper}
-        sx={{ width: "30%", margin: "auto", mt: 4, boxShadow: 3 }}
-      >
-        <Table>
-          <TableBody>
-            {displayedRecipes.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No recipes...
-                </TableCell>
-              </TableRow>
-            ) : (
-              mealPool.map((recipe) => (
-                <TableRow key={recipe.id} hover>
-                  <TableCell sx={{ width: "90%" }}>
-                    <Typography variant="h6">{recipe.title}</Typography>
-                    <div
-                      style={{
-                        color: "gray",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                      }}
-                    >
-                      <strong>Rating:</strong>
-                      <Rating
-                        name={`readonly-rating-${recipe.id}`}
-                        value={recipe.rating}
-                        precision={0.1}
-                        size="small"
-                        readOnly
-                      />
-                      ({recipe.rating?.toFixed(1) || "No rating"})
-                    </div>
-                    <div style={{ color: "gray" }}>
-                      <strong>Category:</strong> {recipe.category || "-"} |
-                      <strong>Time:</strong> {recipe.cooking_time || "-"} |
-                      <strong>Portions:</strong> {recipe.portions || "-"}
-                    </div>
-                  </TableCell>
-                  <TableCell align="center" sx={{ width: "10%" }}>
-                    <Button
-                      variant="contained"
-                      color="warning"
-                      onClick={() => handleOpenDialog(recipe, "view")}
-                    >
-                      View
-                    </Button>
-                  </TableCell>
+    <Container fluid>
+      <Row>
+        <Col md={4}>
+          <TextField
+            label="Search recipes by title, description, ingredient, tags or category"
+            variant="outlined"
+            fullWidth
+            sx={{ width: "30%", margin: "2rem auto", display: "block" }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <TableContainer
+            component={Paper}
+            sx={{ width: "30%", margin: "auto", mt: 4, boxShadow: 3 }}
+          >
+            <Table>
+              <TableBody>
+                {displayedRecipes.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} align="center">
+                      No recipes...
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  mealPool.map((recipe) => (
+                    <TableRow key={recipe.id} hover>
+                      <TableCell sx={{ width: "90%" }}>
+                        <Typography variant="h6">{recipe.title}</Typography>
+                        <div
+                          style={{
+                            color: "gray",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                          }}
+                        >
+                          <strong>Rating:</strong>
+                          <Rating
+                            name={`readonly-rating-${recipe.id}`}
+                            value={recipe.rating}
+                            precision={0.1}
+                            size="small"
+                            readOnly
+                          />
+                          ({recipe.rating?.toFixed(1) || "No rating"})
+                        </div>
+                        <div style={{ color: "gray" }}>
+                          <strong>Category:</strong> {recipe.category || "-"} |
+                          <strong>Time:</strong> {recipe.cooking_time || "-"} |
+                          <strong>Portions:</strong> {recipe.portions || "-"}
+                        </div>
+                      </TableCell>
+                      <TableCell align="center" sx={{ width: "10%" }}>
+                        <Button
+                          variant="contained"
+                          color="warning"
+                          onClick={() => handleOpenDialog(recipe, "view")}
+                        >
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 20]}
+                    count={filteredRecipes.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    showFirstButton
+                    showLastButton
+                    labelRowsPerPage="Recipes per page"
+                    labelDisplayedRows={({ from, to, count }) =>
+                      `Showing ${from}-${to} of ${count}`
+                    }
+                  />
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 20]}
-                count={filteredRecipes.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                showFirstButton
-                showLastButton
-                labelRowsPerPage="Recipes per page"
-                labelDisplayedRows={({ from, to, count }) =>
-                  `Showing ${from}-${to} of ${count}`
-                }
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-
-      {dialogMode === "view" && (
-        <ViewRecipe
-          open={true}
-          onClose={handleCloseDialog}
-          recipe={selectedRecipe}
-        />
-      )}
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </Col>
+        <Col md={4}>
+          <WeeklyPlanner mealPool={mealPool} />
+        </Col>
+        <Col md={4}>
+          <ShoppingList />
+        </Col>
+        {dialogMode === "view" && (
+          <ViewRecipe
+            open={true}
+            onClose={handleCloseDialog}
+            recipe={selectedRecipe}
+          />
+        )}
+      </Row>
     </Container>
   );
 }
