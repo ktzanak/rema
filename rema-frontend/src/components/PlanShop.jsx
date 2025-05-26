@@ -96,7 +96,7 @@ export default function PlanShop() {
           />
           <TableContainer
             component={Paper}
-            sx={{ width: "30%", margin: "auto", mt: 4, boxShadow: 3 }}
+            sx={{ width: "30%", mt: 4, boxShadow: 3 }}
           >
             <Table>
               <TableBody>
@@ -131,7 +131,9 @@ export default function PlanShop() {
                         </div>
                         <div style={{ color: "gray" }}>
                           <strong>Category:</strong> {recipe.category || "-"} |
-                          <strong>Time:</strong> {recipe.cooking_time || "-"} |
+                          <strong>Time:</strong> {recipe.cooking_time || "-"}
+                        </div>
+                        <div style={{ color: "gray" }}>
                           <strong>Portions:</strong> {recipe.portions || "-"}
                         </div>
                       </TableCell>
