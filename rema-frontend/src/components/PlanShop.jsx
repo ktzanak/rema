@@ -21,6 +21,7 @@ import ShoppingList from "./ShoppingList";
 
 export default function PlanShop() {
   const [mealPool, setMealPool] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -34,7 +35,7 @@ export default function PlanShop() {
         throw new Error("Failed to fetch recipes");
       }
       const data = await response.json();
-      setMealPool(data);
+      setRecipes(data);
     } catch (error) {
       console.error("Error fetching meal pool:", error);
     }
@@ -62,7 +63,7 @@ export default function PlanShop() {
     setSelectedRecipe(null);
   };
 
-  const filteredRecipes = mealPool.filter((recipe) => {
+  const filteredRecipes = recipes.filter((recipe) => {
     const lowerSearch = searchTerm.toLowerCase();
     return (
       recipe.title.toLowerCase().includes(lowerSearch) ||
@@ -90,14 +91,11 @@ export default function PlanShop() {
             label="Search recipes by title, description, ingredient, tags or category"
             variant="outlined"
             fullWidth
-            sx={{ width: "30%", margin: "2rem auto", display: "block" }}
+            sx={{ margin: "2rem 0", display: "block" }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <TableContainer
-            component={Paper}
-            sx={{ width: "30%", mt: 4, boxShadow: 3 }}
-          >
+          <TableContainer component={Paper} sx={{ mt: 4, boxShadow: 3 }}>
             <Table>
               <TableBody>
                 {displayedRecipes.length === 0 ? (
@@ -107,7 +105,7 @@ export default function PlanShop() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  mealPool.map((recipe) => (
+                  displayedRecipes.map((recipe) => (
                     <TableRow key={recipe.id} hover>
                       <TableCell sx={{ width: "90%" }}>
                         <Typography variant="h6">{recipe.title}</Typography>
