@@ -21,7 +21,7 @@ import WeeklyPlanner from "./WeeklyPlanner";
 import ShoppingList from "./ShoppingList";
 
 export default function PlanShop() {
-  const [mealPool, setMealPool] = useState([]);
+  const [mealPool, setMealPool] = useState({});
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
