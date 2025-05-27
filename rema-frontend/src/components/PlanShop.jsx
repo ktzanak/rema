@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ViewRecipe from "./Viewrecipe";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 import {
   Typography,
@@ -83,6 +84,28 @@ export default function PlanShop() {
     page * rowsPerPage + rowsPerPage
   );
 
+  const handleDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+
+    if (destination.droppableId.startsWith("day-")) {
+      const droppedRecipe = recipes.find(
+        (recipe) => recipe.id.toString() === draggableId
+      );
+
+      setMealPool((prev) => {
+        const updated = { ...prev };
+        const day = destination.droppableId;
+
+        if (!updated[day]) updated[day] = [];
+        updated[day].push(droppedRecipe);
+
+        return updated;
+      });
+    }
+  };
+
   return (
     <Container fluid>
       <Row>
@@ -97,7 +120,89 @@ export default function PlanShop() {
           />
           <TableContainer component={Paper} sx={{ mt: 4, boxShadow: 3 }}>
             <Table>
-              <TableBody>
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId="recipeList">
+                  {(provided) => (
+                    <TableBody
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      {displayedRecipes.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={4} align="center">
+                            No recipes...
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        displayedRecipes.map((recipe, index) => (
+                          <Draggable
+                            key={recipe.id}
+                            draggableId={recipe.id.toString()}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <TableRow
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                hover
+                              >
+                                <TableCell>
+                                  <Typography variant="h6">
+                                    {recipe.title}
+                                  </Typography>
+                                  <div
+                                    style={{
+                                      color: "gray",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: "0.5rem",
+                                    }}
+                                  >
+                                    <strong>Rating:</strong>
+                                    <Rating
+                                      name={`readonly-rating-${recipe.id}`}
+                                      value={recipe.rating}
+                                      precision={0.1}
+                                      size="small"
+                                      readOnly
+                                    />
+                                    ({recipe.rating?.toFixed(1) || "No rating"})
+                                  </div>
+                                  <div style={{ color: "gray" }}>
+                                    <strong>Category:</strong>{" "}
+                                    {recipe.category || "-"} |
+                                    <strong> Time:</strong>{" "}
+                                    {recipe.cooking_time || "-"}
+                                  </div>
+                                  <div style={{ color: "gray" }}>
+                                    <strong>Portions:</strong>{" "}
+                                    {recipe.portions || "-"}
+                                  </div>
+                                </TableCell>
+                                <TableCell align="center">
+                                  <Button
+                                    variant="contained"
+                                    color="warning"
+                                    onClick={() =>
+                                      handleOpenDialog(recipe, "view")
+                                    }
+                                  >
+                                    View
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            )}
+                          </Draggable>
+                        ))
+                      )}
+                      {provided.placeholder}
+                    </TableBody>
+                  )}
+                </Droppable>
+              </DragDropContext>
+
+              {/*<TableBody>
                 {displayedRecipes.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={4} align="center">
@@ -147,7 +252,7 @@ export default function PlanShop() {
                     </TableRow>
                   ))
                 )}
-              </TableBody>
+              </TableBody>*/}
               <TableFooter>
                 <TableRow>
                   <TablePagination
@@ -170,7 +275,11 @@ export default function PlanShop() {
           </TableContainer>
         </Col>
         <Col md={4}>
-          <WeeklyPlanner mealPool={mealPool} />
+          <WeeklyPlanner
+            mealPool={mealPool}
+            setMealPool={setMealPool}
+            recipes={recipes}
+          />
         </Col>
         <Col md={4}>
           <ShoppingList />
