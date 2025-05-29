@@ -28,7 +28,6 @@ export default function PlanShop() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [dialogMode, setDialogMode] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const today = new Date();
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const fetchRecipes = async () => {
@@ -107,35 +106,36 @@ export default function PlanShop() {
       });
     }
   };
+  const handleMonthChange = (year, month) => {
+    let newYear = year;
+    let newMonth = month;
 
-  const handleNextMonth = () => {
-    setSelectedDate(
-      new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1)
-    );
-  };
+    if (month < 0) {
+      newYear = year - 1;
+      newMonth = 11;
+    } else if (month > 11) {
+      newYear = year + 1;
+      newMonth = 0;
+    }
 
-  const handlePrevMonth = () => {
-    setSelectedDate(
-      new Date(selectedDate.getFullYear(), selectedDate.getMonth() - 1, 1)
-    );
+    setSelectedDate(new Date(newYear, newMonth, 1));
   };
 
   return (
     <Container>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Row style={{ display: "flex", alignItems: "stretch" }}>
-          <Col style={{ width: "25%" }}>
+          <Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
             <TextField
               label="Search recipes by title, description, ingredient, tags or category"
               variant="outlined"
               fullWidth
-              sx={{ margin: "2rem 1rem" }}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <TableContainer
               component={Paper}
-              sx={{ boxShadow: 3, margin: "0rem 1rem" }}
+              sx={{ boxShadow: 3, margin: "1rem 0rem" }}
             >
               <Table>
                 <Droppable droppableId="recipeList">
@@ -223,7 +223,6 @@ export default function PlanShop() {
               mt={2}
               sx={{
                 width: "100%",
-                margin: "1rem 1rem",
                 boxShadow: "0px 2px 8px rgba(0,0,0,0.2)",
                 borderTopLeftRadius: 4,
                 borderTopRightRadius: 4,
@@ -273,17 +272,16 @@ export default function PlanShop() {
               />
             </Box>
           </Col>
-          <Col style={{ width: "43%", margin: "2rem 3rem" }}>
+          <Col style={{ width: "43%", margin: "1.5rem 1rem" }}>
             <MonthPlanner
               year={selectedDate.getFullYear()}
               month={selectedDate.getMonth()}
               mealPool={mealPool}
               setMealPool={setMealPool}
+              onMonthChange={handleMonthChange}
             />
-            <Button onClick={handlePrevMonth}>Previous</Button>
-            <Button onClick={handleNextMonth}>Next</Button>
           </Col>
-          <Col style={{ width: "25%" }}>
+          <Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
             <ShoppingList />
           </Col>
 
