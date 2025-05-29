@@ -13,6 +13,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hello-pangea/dnd": "^18.0.1",
+    "@mui/icons-material": "^6.4.11",
     "@mui/material": "^6.4.7",
     "@react-pdf/renderer": "^4.2.2",
     "bootstrap": "^5.3.3",
