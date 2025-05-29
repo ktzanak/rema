@@ -84,16 +84,18 @@ export default function PlanShop() {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
-
+  /*
   const handleDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
 
     if (destination.droppableId.startsWith("day-")) {
+      
       const droppedRecipe = recipes.find(
         (recipe) => recipe.id.toString() === draggableId
       );
+      
 
       setMealPool((prev) => {
         const updated = { ...prev };
@@ -105,7 +107,72 @@ export default function PlanShop() {
         return updated;
       });
     }
+  };*/
+  const handleDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+
+    const droppedRecipe = recipes.find(
+      (recipe) => recipe.id.toString() === draggableId
+    );
+    if (!droppedRecipe) return;
+
+    setMealPool((prev) => {
+      const updated = { ...prev };
+
+      // Case 1: Drag from recipeList to a day droppable -> add meal
+      if (
+        source.droppableId === "recipeList" &&
+        destination.droppableId.startsWith("day-")
+      ) {
+        if (!updated[destination.droppableId])
+          updated[destination.droppableId] = [];
+
+        // Insert at destination index to preserve order
+        const alreadyExists = updated[destination.droppableId].some(
+          (meal) => meal.id === droppedRecipe.id
+        );
+        if (!alreadyExists) {
+          updated[destination.droppableId].splice(
+            destination.index,
+            0,
+            droppedRecipe
+          );
+        }
+
+        return updated;
+      }
+
+      // Case 2: Drag within calendar days (reorder or move)
+      if (
+        source.droppableId.startsWith("day-") &&
+        destination.droppableId.startsWith("day-")
+      ) {
+        // Remove from source
+        if (updated[source.droppableId]) {
+          updated[source.droppableId] = updated[source.droppableId].filter(
+            (meal) => meal.id.toString() !== draggableId
+          );
+        }
+
+        // Add to destination
+        if (!updated[destination.droppableId])
+          updated[destination.droppableId] = [];
+        updated[destination.droppableId].splice(
+          destination.index,
+          0,
+          droppedRecipe
+        );
+
+        return updated;
+      }
+
+      // Otherwise do nothing
+      return prev;
+    });
   };
+
   const handleMonthChange = (year, month) => {
     let newYear = year;
     let newMonth = month;
