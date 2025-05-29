@@ -1,14 +1,32 @@
 import React from "react";
 import { Droppable } from "@hello-pangea/dnd";
-import { Paper, Typography, Box, Tooltip } from "@mui/material";
+import { Paper, Typography, Box, Tooltip, IconButton } from "@mui/material";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 // Get day of week (0 = Sunday)
 function getWeekdayIndex(date) {
   return date.getDay();
 }
 
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const weekNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 // Main planner
-export default function MonthPlanner({ year, month, mealPool, setMealPool }) {
+export default function MonthPlanner({ year, month, mealPool, onMonthChange }) {
   const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startOffset = getWeekdayIndex(firstDay);
@@ -26,107 +44,128 @@ export default function MonthPlanner({ year, month, mealPool, setMealPool }) {
     today.getDate() === day;
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "repeat(7, 1fr)",
-        gap: 2,
-        p: 2,
-        backgroundColor: "#fafafa",
-        borderRadius: 4,
-        boxShadow: 2,
-      }}
-    >
-      {/* Day headers */}
-      {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((dayName) => (
-        <Typography
-          key={dayName}
-          variant="body2"
-          align="center"
-          sx={{ fontWeight: "bold", color: "#666" }}
-        >
-          {dayName}
+    <Box>
+      <Box
+        sx={{
+          justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+        }}
+      >
+        <IconButton onClick={() => onMonthChange?.(year, month - 1)}>
+          <ArrowBackIos fontSize="small" />
+        </IconButton>
+        <Typography variant="h6">
+          {monthNames[month]} {year}
         </Typography>
-      ))}
+        <IconButton onClick={() => onMonthChange?.(year, month + 1)}>
+          <ArrowForwardIos fontSize="small" />
+        </IconButton>
+      </Box>
 
-      {/* Days */}
-      {cells.map((dayNumber, idx) => {
-        if (dayNumber === null) return <Box key={idx} />;
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: 2,
+          p: 2,
+          backgroundColor: "#fafafa",
+          borderRadius: 4,
+          boxShadow: 2,
+        }}
+      >
+        {weekNames.map((dayName) => (
+          <Typography
+            key={dayName}
+            variant="body2"
+            align="center"
+            sx={{ fontWeight: "bold", color: "#666" }}
+          >
+            {dayName}
+          </Typography>
+        ))}
 
-        const droppableId = `day-${year}-${month + 1}-${dayNumber}`;
+        {cells.map((dayNumber, idx) => {
+          if (dayNumber === null) return <Box key={idx} />;
 
-        return (
-          <Droppable key={droppableId} droppableId={droppableId}>
-            {(provided, snapshot) => (
-              <Paper
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                elevation={snapshot.isDraggingOver ? 6 : 1}
-                sx={{
-                  p: 1,
-                  minHeight: "80px",
-                  minWidth: "50px",
-                  backgroundColor: snapshot.isDraggingOver
-                    ? "#f0f4ff"
-                    : "#ffffff",
-                  borderRadius: 2,
-                  border: isToday(dayNumber)
-                    ? "2px solid #2196f3"
-                    : "1px solid #e0e0e0",
-                  transition: "all 0.2s ease",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
-                }}
-              >
-                <Typography
-                  variant="caption"
+          const droppableId = `day-${year}-${month + 1}-${dayNumber}`;
+
+          return (
+            <Droppable key={droppableId} droppableId={droppableId}>
+              {(provided, snapshot) => (
+                <Paper
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  elevation={snapshot.isDraggingOver ? 6 : 1}
                   sx={{
-                    fontWeight: "bold",
-                    color: isToday(dayNumber) ? "#2196f3" : "#888",
-                    textAlign: "right",
+                    p: 1,
+                    minHeight: "80px",
+                    minWidth: "50px",
+                    backgroundColor: snapshot.isDraggingOver
+                      ? "#f0f4ff"
+                      : "#ffffff",
+                    borderRadius: 2,
+                    border: isToday(dayNumber)
+                      ? "2px solid #2196f3"
+                      : "1px solid #e0e0e0",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
                   }}
                 >
-                  {dayNumber}
-                </Typography>
-
-                {(mealPool?.[droppableId] || []).map((meal) => (
-                  <Tooltip
-                    key={meal.id}
-                    title={
-                      <React.Fragment>
-                        <Typography fontWeight="bold">{meal.title}</Typography>
-                        <Typography variant="body2">
-                          {meal.description || "No description provided."}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                    arrow
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: "bold",
+                      color: isToday(dayNumber) ? "#2196f3" : "#888",
+                      textAlign: "right",
+                    }}
                   >
-                    <Paper
-                      elevation={2}
-                      sx={{
-                        p: 1,
-                        backgroundColor: "#e8f5e9",
-                        borderRadius: 1,
-                        fontSize: "0.85rem",
-                        cursor: "grab",
-                        "&:hover": {
-                          backgroundColor: "#d0f0d4",
-                        },
-                      }}
-                    >
-                      {meal.title}
-                    </Paper>
-                  </Tooltip>
-                ))}
+                    {dayNumber}
+                  </Typography>
 
-                {provided.placeholder}
-              </Paper>
-            )}
-          </Droppable>
-        );
-      })}
+                  {(mealPool?.[droppableId] || []).map((meal) => (
+                    <Tooltip
+                      key={meal.id}
+                      title={
+                        <React.Fragment>
+                          <Typography fontWeight="bold">
+                            {meal.title}
+                          </Typography>
+                          <Typography variant="body2">
+                            {meal.description || "No description provided."}
+                          </Typography>
+                        </React.Fragment>
+                      }
+                      arrow
+                    >
+                      <Paper
+                        elevation={2}
+                        sx={{
+                          p: 1,
+                          backgroundColor: "#e8f5e9",
+                          borderRadius: 1,
+                          fontSize: "0.85rem",
+                          cursor: "grab",
+                          "&:hover": {
+                            backgroundColor: "#d0f0d4",
+                          },
+                        }}
+                      >
+                        {meal.title}
+                      </Paper>
+                    </Tooltip>
+                  ))}
+
+                  {provided.placeholder}
+                </Paper>
+              )}
+            </Droppable>
+          );
+        })}
+      </Box>
     </Box>
   );
 }
