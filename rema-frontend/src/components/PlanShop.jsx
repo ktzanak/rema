@@ -339,7 +339,7 @@ export default function PlanShop() {
               />
             </Box>
           </Col>
-          <Col style={{ width: "43%", margin: "1.5rem 1rem" }}>
+          <Col style={{ width: "70%", margin: "1.5rem 1rem" }}>
             <MonthPlanner
               year={selectedDate.getFullYear()}
               month={selectedDate.getMonth()}
@@ -348,9 +348,9 @@ export default function PlanShop() {
               onMonthChange={handleMonthChange}
             />
           </Col>
-          <Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
+          {/*<Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
             <ShoppingList />
-          </Col>
+          </Col>*/}
 
           {dialogMode === "view" && (
             <ViewRecipe
