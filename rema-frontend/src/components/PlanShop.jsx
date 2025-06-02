@@ -50,11 +50,6 @@ export default function PlanShop() {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const handleOpenDialog = (recipe, mode) => {
     setDialogMode(mode);
     setSelectedRecipe(recipe);
@@ -256,12 +251,11 @@ export default function PlanShop() {
             >
               <TablePagination
                 component="div"
-                rowsPerPageOptions={[5, 10, 20]}
+                rowsPerPageOptions={[]}
                 count={filteredRecipes.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={(event, newPage) => handleChangePage(newPage)}
-                onRowsPerPageChange={handleChangeRowsPerPage}
                 labelRowsPerPage=""
                 showFirstButton
                 showLastButton
