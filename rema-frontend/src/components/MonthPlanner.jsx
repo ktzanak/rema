@@ -102,17 +102,17 @@ export default function MonthPlanner({ mealPool }) {
           }-${day.getDate()}`;
 
           return (
-            <Box key={idx} flex="1 1 0" px={0.5}>
+            <Box key={idx} flex="1 1 0" px={0.5} minWidth={0}>
               <Droppable droppableId={droppableId}>
                 {(provided, snapshot) => (
                   <Paper
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    elevation={snapshot.isDraggingOver ? 6 : 1}
+                    elevation={snapshot.draggingOverWith ? 6 : 1}
                     sx={{
                       p: 1,
-                      minHeight: "150px",
-                      backgroundColor: snapshot.isDraggingOver
+                      minHeight: "400px",
+                      backgroundColor: snapshot.draggingOverWith
                         ? "#f0f4ff"
                         : "#fff",
                       border: isToday(day)
