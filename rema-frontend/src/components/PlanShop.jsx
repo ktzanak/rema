@@ -28,7 +28,6 @@ export default function PlanShop() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [dialogMode, setDialogMode] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const fetchRecipes = async () => {
     try {
@@ -84,30 +83,7 @@ export default function PlanShop() {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
-  /*
-  const handleDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
 
-    if (!destination) return;
-
-    if (destination.droppableId.startsWith("day-")) {
-      
-      const droppedRecipe = recipes.find(
-        (recipe) => recipe.id.toString() === draggableId
-      );
-      
-
-      setMealPool((prev) => {
-        const updated = { ...prev };
-        const day = destination.droppableId;
-
-        if (!updated[day]) updated[day] = [];
-        updated[day].push(droppedRecipe);
-
-        return updated;
-      });
-    }
-  };*/
   const handleDragEnd = (result) => {
     const { destination, source, draggableId } = result;
 
@@ -121,7 +97,7 @@ export default function PlanShop() {
     setMealPool((prev) => {
       const updated = { ...prev };
 
-      // Case 1: Drag from recipeList to a day droppable -> add meal
+      // Case 1: Drag from recipeList to a day droppable
       if (
         source.droppableId === "recipeList" &&
         destination.droppableId.startsWith("day-")
@@ -129,7 +105,7 @@ export default function PlanShop() {
         if (!updated[destination.droppableId])
           updated[destination.droppableId] = [];
 
-        // Insert at destination index to preserve order
+        // Check if meal already exists in the day and insert at destination index to preserve order
         const alreadyExists = updated[destination.droppableId].some(
           (meal) => meal.id === droppedRecipe.id
         );
@@ -168,24 +144,8 @@ export default function PlanShop() {
         return updated;
       }
 
-      // Otherwise do nothing
       return prev;
     });
-  };
-
-  const handleMonthChange = (year, month) => {
-    let newYear = year;
-    let newMonth = month;
-
-    if (month < 0) {
-      newYear = year - 1;
-      newMonth = 11;
-    } else if (month > 11) {
-      newYear = year + 1;
-      newMonth = 0;
-    }
-
-    setSelectedDate(new Date(newYear, newMonth, 1));
   };
 
   return (
@@ -204,7 +164,7 @@ export default function PlanShop() {
               component={Paper}
               sx={{ boxShadow: 3, margin: "1rem 0rem" }}
             >
-              <Table>
+              <Table size="small">
                 <Droppable droppableId="recipeList">
                   {(provided) => (
                     <TableBody
@@ -232,8 +192,8 @@ export default function PlanShop() {
                                 hover
                               >
                                 <TableCell>
-                                  <Typography variant="h6">
-                                    {recipe.title}
+                                  <Typography variant="subtitle1">
+                                    <strong>{recipe.title}</strong>
                                   </Typography>
                                   <div
                                     style={{
@@ -255,9 +215,7 @@ export default function PlanShop() {
                                   </div>
                                   <div style={{ color: "gray" }}>
                                     <strong> Time:</strong>{" "}
-                                    {recipe.cooking_time || "-"}
-                                  </div>
-                                  <div style={{ color: "gray" }}>
+                                    {recipe.cooking_time || "-"} |{" "}
                                     <strong>Portions:</strong>{" "}
                                     {recipe.portions || "-"}
                                   </div>
@@ -340,13 +298,7 @@ export default function PlanShop() {
             </Box>
           </Col>
           <Col style={{ width: "70%", margin: "1.5rem 1rem" }}>
-            <MonthPlanner
-              year={selectedDate.getFullYear()}
-              month={selectedDate.getMonth()}
-              mealPool={mealPool}
-              setMealPool={setMealPool}
-              onMonthChange={handleMonthChange}
-            />
+            <MonthPlanner mealPool={mealPool} />
           </Col>
           {/*<Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
             <ShoppingList />
