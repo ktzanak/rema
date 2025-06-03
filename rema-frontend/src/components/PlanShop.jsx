@@ -154,6 +154,7 @@ export default function PlanShop() {
               fullWidth
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              size="small"
             />
             <TableContainer
               component={Paper}
@@ -240,13 +241,15 @@ export default function PlanShop() {
             <Box
               display="flex"
               justifyContent="center"
-              mt={2}
+              mt={0}
               sx={{
                 width: "100%",
                 boxShadow: "0px 2px 8px rgba(0,0,0,0.2)",
                 borderTopLeftRadius: 4,
                 borderTopRightRadius: 4,
                 backgroundColor: "white",
+                margin: 0,
+                padding: 0,
               }}
             >
               <TablePagination
@@ -264,11 +267,18 @@ export default function PlanShop() {
                 }
                 sx={{
                   display: "table",
+                  margin: 0,
+                  padding: 0,
+                  "& .MuiTablePagination-toolbar": {
+                    minHeight: "32px",
+                    height: "32px",
+                    padding: 0,
+                  },
                   "& .MuiToolbar-root": {
-                    paddingLeft: 0,
-                    paddingRight: 0,
-                    marginLeft: 0,
-                    marginRight: 0,
+                    minHeight: "22px",
+
+                    padding: 0,
+                    margin: 0,
                     justifyContent: "center",
                   },
                   "& .MuiTablePagination-actions": {
@@ -278,12 +288,15 @@ export default function PlanShop() {
                   "& .MuiTablePagination-selectLabel": {
                     margin: 0,
                     padding: 0,
+                    display: "none",
                   },
                   "& .MuiTablePagination-select": {
                     margin: 0,
                     padding: 0,
+                    display: "none",
                   },
                   "& .MuiTablePagination-displayedRows": {
+                    fontSize: "0.8rem",
                     margin: 0,
                     padding: 0,
                   },
