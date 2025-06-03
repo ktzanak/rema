@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { Droppable } from "@hello-pangea/dnd";
-import { Paper, Typography, Box, Tooltip, IconButton } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Box,
+  Tooltip,
+  IconButton,
+  Button,
+} from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 function getStartOfWeek(date) {
@@ -46,32 +53,47 @@ export default function MonthPlanner({ mealPool }) {
     day.setDate(currentWeekStart.getDate() + i);
     return day;
   });
+
   const firstMonth = days[0].getMonth();
   const lastMonth = days[6].getMonth();
   const yearDisplayed = days[3].getFullYear();
+
+  const handleShoppingList = () => {
+    // TODO: Implement logic to generate/show shopping list based on meals in the calendar for the week
+    alert("Show shopping list for this week");
+  };
 
   return (
     <Box>
       <Box
         sx={{
-          justifyContent: "flex-start",
           display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
           gap: 0,
           mb: 2,
         }}
       >
-        <IconButton onClick={() => setWeekOffset((prev) => prev - 1)}>
-          <ArrowBackIos fontSize="small" />
-        </IconButton>
-        <IconButton onClick={() => setWeekOffset((prev) => prev + 1)}>
-          <ArrowForwardIos fontSize="small" />
-        </IconButton>
-        <Typography variant="h6">
-          {firstMonth === lastMonth
-            ? `${monthNames[firstMonth]} ${days[3].getFullYear()}`
-            : `${monthNames[firstMonth]} – ${monthNames[lastMonth]} ${yearDisplayed}`}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
+          <IconButton onClick={() => setWeekOffset((prev) => prev - 1)}>
+            <ArrowBackIos fontSize="small" />
+          </IconButton>
+          <IconButton onClick={() => setWeekOffset((prev) => prev + 1)}>
+            <ArrowForwardIos fontSize="small" />
+          </IconButton>
+          <Typography variant="h6">
+            {firstMonth === lastMonth
+              ? `${monthNames[firstMonth]} ${days[3].getFullYear()}`
+              : `${monthNames[firstMonth]} – ${monthNames[lastMonth]} ${yearDisplayed}`}
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={handleShoppingList}
+        >
+          Create shopping list
+        </Button>
       </Box>
 
       <Box display="flex" width="100%">
