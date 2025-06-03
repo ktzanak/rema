@@ -184,93 +184,98 @@ export default function PlanShop() {
                             draggableId={recipe.id.toString()}
                             index={index}
                           >
-                            {(provided) => (
-                              <Box
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                sx={{
-                                  px: 1,
-                                  py: 0,
-                                  backgroundColor: "#fafafa",
-                                  "&:hover": {
-                                    backgroundColor: "#f0f0f0",
-                                  },
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <Box>
-                                  <Typography
-                                    variant="subtitle1"
-                                    fontWeight="bold"
-                                  >
-                                    {recipe.title}
-                                  </Typography>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: "0.5rem",
-                                      color: "gray",
-                                    }}
-                                  >
+                            {(provided, snapshot) => (
+                              <>
+                                <Box
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  sx={{
+                                    px: 1,
+                                    py: 0,
+                                    backgroundColor: "#fafafa",
+                                    "&:hover": {
+                                      backgroundColor: "#f0f0f0",
+                                      cursor: "pointer",
+                                    },
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <Box>
                                     <Typography
-                                      variant="body2"
+                                      variant="subtitle1"
                                       fontWeight="bold"
                                     >
-                                      Rating:
+                                      {recipe.title}
                                     </Typography>
-                                    <Rating
-                                      name={`readonly-rating-${recipe.id}`}
-                                      value={recipe.rating}
-                                      precision={0.1}
-                                      size="small"
-                                      readOnly
-                                    />
-                                    <Typography variant="body2">
-                                      (
-                                      {recipe.rating?.toFixed(1) || "No rating"}
-                                      )
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "0.5rem",
+                                        color: "gray",
+                                      }}
+                                    >
+                                      <Typography
+                                        variant="body2"
+                                        fontWeight="bold"
+                                      >
+                                        Rating:
+                                      </Typography>
+                                      <Rating
+                                        name={`readonly-rating-${recipe.id}`}
+                                        value={recipe.rating}
+                                        precision={0.1}
+                                        size="small"
+                                        readOnly
+                                      />
+                                      <Typography variant="body2">
+                                        (
+                                        {recipe.rating?.toFixed(1) ||
+                                          "No rating"}
+                                        )
+                                      </Typography>
+                                    </Box>
+                                    <Typography variant="body2" color="gray">
+                                      <strong>Time:</strong>{" "}
+                                      {recipe.cooking_time || "-"} |{" "}
+                                      <strong>Portions:</strong>{" "}
+                                      {recipe.portions || "-"}
                                     </Typography>
                                   </Box>
-                                  <Typography variant="body2" color="gray">
-                                    <strong>Time:</strong>{" "}
-                                    {recipe.cooking_time || "-"} |{" "}
-                                    <strong>Portions:</strong>{" "}
-                                    {recipe.portions || "-"}
-                                  </Typography>
+                                  <Button
+                                    variant="contained"
+                                    color="warning"
+                                    size="small"
+                                    onClick={() =>
+                                      handleOpenDialog(recipe, "view")
+                                    }
+                                  >
+                                    View
+                                  </Button>
                                 </Box>
-                                <Button
-                                  variant="contained"
-                                  color="warning"
-                                  size="small"
-                                  onClick={() =>
-                                    handleOpenDialog(recipe, "view")
-                                  }
-                                >
-                                  View
-                                </Button>
-                              </Box>
+                                {index !== displayedRecipes.length - 1 &&
+                                  !snapshot.isDragging && (
+                                    <Box
+                                      sx={{
+                                        width: "90%",
+                                        px: 2,
+                                      }}
+                                    >
+                                      <Box
+                                        sx={{
+                                          height: "1px",
+                                          backgroundColor: "#ddd",
+                                          my: 0,
+                                        }}
+                                      />
+                                    </Box>
+                                  )}
+                              </>
                             )}
                           </Draggable>
-                          {index !== displayedRecipes.length - 1 && (
-                            <Box
-                              sx={{
-                                width: "90%",
-                                px: 2,
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  height: "1px",
-                                  backgroundColor: "#ddd",
-                                  my: 0,
-                                }}
-                              />
-                            </Box>
-                          )}
                         </React.Fragment>
                       ))
                     )}
