@@ -3,22 +3,14 @@ import { Container, Row, Col } from "react-bootstrap";
 import ViewRecipe from "./Viewrecipe";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Box } from "@mui/material";
-
 import {
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   TablePagination,
-  Paper,
   Button,
   TextField,
   Rating,
 } from "@mui/material";
 import MonthPlanner from "./MonthPlanner";
-import ShoppingList from "./ShoppingList";
 
 export default function PlanShop() {
   const [mealPool, setMealPool] = useState({});
@@ -353,9 +345,6 @@ export default function PlanShop() {
           <Col style={{ width: "70%", margin: "1.5rem 1rem" }}>
             <MonthPlanner mealPool={mealPool} />
           </Col>
-          {/*<Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
-            <ShoppingList />
-          </Col>*/}
 
           {dialogMode === "view" && (
             <ViewRecipe
