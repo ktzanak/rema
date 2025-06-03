@@ -108,11 +108,11 @@ export default function MonthPlanner({ mealPool }) {
                   <Paper
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    elevation={snapshot.draggingOverWith ? 6 : 1}
+                    elevation={snapshot.isDraggingOver ? 6 : 1}
                     sx={{
                       p: 1,
                       minHeight: "400px",
-                      backgroundColor: snapshot.draggingOverWith
+                      backgroundColor: snapshot.isDraggingOver
                         ? "#f0f4ff"
                         : "#fff",
                       border: isToday(day)
@@ -144,12 +144,12 @@ export default function MonthPlanner({ mealPool }) {
                           elevation={2}
                           sx={{
                             p: 1,
-                            backgroundColor: "#e8f5e9",
+                            backgroundColor: "#ffcdd2",
                             borderRadius: 1,
                             fontSize: "0.85rem",
                             cursor: "grab",
                             "&:hover": {
-                              backgroundColor: "#d0f0d4",
+                              backgroundColor: "#ef9a9a",
                             },
                           }}
                         >
