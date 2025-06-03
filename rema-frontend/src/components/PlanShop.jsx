@@ -156,50 +156,72 @@ export default function PlanShop() {
               onChange={(e) => setSearchTerm(e.target.value)}
               size="small"
             />
-            <TableContainer
-              component={Paper}
-              sx={{ boxShadow: 3, margin: "1rem 0rem" }}
+            <Box
+              sx={{
+                boxShadow: 3,
+                margin: "1rem 0rem",
+                borderRadius: 2,
+              }}
             >
-              <Table size="small">
-                <Droppable droppableId="recipeList">
-                  {(provided) => (
-                    <TableBody
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      {displayedRecipes.length === 0 ? (
-                        <TableRow>
-                          <TableCell colSpan={4} align="center">
-                            No recipes...
-                          </TableCell>
-                        </TableRow>
-                      ) : (
-                        displayedRecipes.map((recipe, index) => (
+              <Droppable droppableId="recipeList">
+                {(provided) => (
+                  <Box
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    display="flex"
+                    flexDirection="column"
+                    gap={1}
+                  >
+                    {displayedRecipes.length === 0 ? (
+                      <Typography align="center" color="textSecondary">
+                        No recipes...
+                      </Typography>
+                    ) : (
+                      displayedRecipes.map((recipe, index) => (
+                        <React.Fragment key={recipe.id}>
                           <Draggable
                             key={recipe.id}
                             draggableId={recipe.id.toString()}
                             index={index}
                           >
                             {(provided) => (
-                              <TableRow
+                              <Box
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                hover
+                                sx={{
+                                  px: 1,
+                                  py: 0,
+                                  backgroundColor: "#fafafa",
+                                  "&:hover": {
+                                    backgroundColor: "#f0f0f0",
+                                  },
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                }}
                               >
-                                <TableCell>
-                                  <Typography variant="subtitle1">
-                                    <strong>{recipe.title}</strong>
+                                <Box>
+                                  <Typography
+                                    variant="subtitle1"
+                                    fontWeight="bold"
+                                  >
+                                    {recipe.title}
                                   </Typography>
-                                  <div
-                                    style={{
-                                      color: "gray",
+                                  <Box
+                                    sx={{
                                       display: "flex",
                                       alignItems: "center",
                                       gap: "0.5rem",
+                                      color: "gray",
                                     }}
                                   >
-                                    <strong>Rating:</strong>
+                                    <Typography
+                                      variant="body2"
+                                      fontWeight="bold"
+                                    >
+                                      Rating:
+                                    </Typography>
                                     <Rating
                                       name={`readonly-rating-${recipe.id}`}
                                       value={recipe.rating}
@@ -207,37 +229,56 @@ export default function PlanShop() {
                                       size="small"
                                       readOnly
                                     />
-                                    ({recipe.rating?.toFixed(1) || "No rating"})
-                                  </div>
-                                  <div style={{ color: "gray" }}>
-                                    <strong> Time:</strong>{" "}
+                                    <Typography variant="body2">
+                                      (
+                                      {recipe.rating?.toFixed(1) || "No rating"}
+                                      )
+                                    </Typography>
+                                  </Box>
+                                  <Typography variant="body2" color="gray">
+                                    <strong>Time:</strong>{" "}
                                     {recipe.cooking_time || "-"} |{" "}
                                     <strong>Portions:</strong>{" "}
                                     {recipe.portions || "-"}
-                                  </div>
-                                </TableCell>
-                                <TableCell align="center">
-                                  <Button
-                                    variant="contained"
-                                    color="warning"
-                                    onClick={() =>
-                                      handleOpenDialog(recipe, "view")
-                                    }
-                                  >
-                                    View
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
+                                  </Typography>
+                                </Box>
+                                <Button
+                                  variant="contained"
+                                  color="warning"
+                                  size="small"
+                                  onClick={() =>
+                                    handleOpenDialog(recipe, "view")
+                                  }
+                                >
+                                  View
+                                </Button>
+                              </Box>
                             )}
                           </Draggable>
-                        ))
-                      )}
-                      {provided.placeholder}
-                    </TableBody>
-                  )}
-                </Droppable>
-              </Table>
-            </TableContainer>
+                          {index !== displayedRecipes.length - 1 && (
+                            <Box
+                              sx={{
+                                width: "90%",
+                                px: 2,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  height: "1px",
+                                  backgroundColor: "#ddd",
+                                  my: 0,
+                                }}
+                              />
+                            </Box>
+                          )}
+                        </React.Fragment>
+                      ))
+                    )}
+                    {provided.placeholder}
+                  </Box>
+                )}
+              </Droppable>
+            </Box>
             <Box
               display="flex"
               justifyContent="center"
