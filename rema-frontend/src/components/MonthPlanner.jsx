@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import ShoppingList from "./ShoppingList";
 
 function getStartOfWeek(date) {
   const day = date.getDay(); // Sunday = 0
@@ -58,9 +59,11 @@ export default function MonthPlanner({ mealPool }) {
   const lastMonth = days[6].getMonth();
   const yearDisplayed = days[3].getFullYear();
 
-  const handleShoppingList = () => {
+  const downloadPdf = async () => {
     // TODO: Implement logic to generate/show shopping list based on meals in the calendar for the week
-    alert("Show shopping list for this week");
+    const fileName = "ReMa_shopping_list_" + today + ".pdf";
+    const blob = await pdf(<ShoppingList />).toBlob();
+    saveAs(blob, fileName);
   };
 
   return (
@@ -87,12 +90,14 @@ export default function MonthPlanner({ mealPool }) {
               : `${monthNames[firstMonth]} – ${monthNames[lastMonth]} ${yearDisplayed}`}
           </Typography>
         </Box>
+
         <Button
+          size="small"
           variant="contained"
           color="success"
-          onClick={handleShoppingList}
+          onClick={downloadPdf}
         >
-          Create shopping list
+          Weekly shopping list
         </Button>
       </Box>
 
