@@ -158,6 +158,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                         display="flex"
                         alignItems="center"
                         gap={1}
+                        width="100%"
                       >
                         <Tooltip
                           title={
@@ -175,11 +176,16 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                           <Paper
                             elevation={2}
                             sx={{
-                              p: 1,
+                              p: 0.5,
+                              pr: 0,
                               backgroundColor: "#ffcdd2",
                               borderRadius: 1,
                               fontSize: "0.85rem",
                               cursor: "grab",
+                              flexGrow: 1,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
                               "&:hover": {
                                 backgroundColor: "#ef9a9a",
                               },
