@@ -8,7 +8,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { ArrowBackIos, ArrowForwardIos, Close } from "@mui/icons-material";
 import ShoppingList from "./ShoppingList";
 
 function getStartOfWeek(date) {
@@ -36,7 +36,7 @@ const monthNames = [
 
 const weekNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-export default function MonthPlanner({ mealPool }) {
+export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   const [weekOffset, setWeekOffset] = useState(0);
 
   const today = new Date();
@@ -153,36 +153,48 @@ export default function MonthPlanner({ mealPool }) {
                     }}
                   >
                     {(mealPool?.[droppableId] || []).map((meal) => (
-                      <Tooltip
+                      <Box
                         key={meal.id}
-                        title={
-                          <React.Fragment>
-                            <Typography fontWeight="bold">
-                              {meal.title}
-                            </Typography>
-                            <Typography variant="body2">
-                              {meal.description || "No description"}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                        arrow
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
                       >
-                        <Paper
-                          elevation={2}
-                          sx={{
-                            p: 1,
-                            backgroundColor: "#ffcdd2",
-                            borderRadius: 1,
-                            fontSize: "0.85rem",
-                            cursor: "grab",
-                            "&:hover": {
-                              backgroundColor: "#ef9a9a",
-                            },
-                          }}
+                        <Tooltip
+                          title={
+                            <React.Fragment>
+                              <Typography fontWeight="bold">
+                                {meal.title}
+                              </Typography>
+                              <Typography variant="body2">
+                                {meal.description || "No description"}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                          arrow
                         >
-                          {meal.title}
-                        </Paper>
-                      </Tooltip>
+                          <Paper
+                            elevation={2}
+                            sx={{
+                              p: 1,
+                              backgroundColor: "#ffcdd2",
+                              borderRadius: 1,
+                              fontSize: "0.85rem",
+                              cursor: "grab",
+                              "&:hover": {
+                                backgroundColor: "#ef9a9a",
+                              },
+                            }}
+                          >
+                            {meal.title}
+                            <IconButton
+                              size="small"
+                              onClick={() => onRemoveMeal(droppableId, meal.id)}
+                            >
+                              <Close fontSize="small" />
+                            </IconButton>
+                          </Paper>
+                        </Tooltip>
+                      </Box>
                     ))}
 
                     {provided.placeholder}
