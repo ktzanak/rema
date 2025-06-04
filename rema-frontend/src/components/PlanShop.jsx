@@ -135,6 +135,14 @@ export default function PlanShop() {
     });
   };
 
+  const handleRemoveMeal = (dayId, mealId) => {
+    setMealPool((prev) => {
+      const updated = { ...prev };
+      updated[dayId] = updated[dayId].filter((meal) => meal.id !== mealId);
+      return updated;
+    });
+  };
+
   return (
     <Container>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -172,7 +180,6 @@ export default function PlanShop() {
                       displayedRecipes.map((recipe, index) => (
                         <React.Fragment key={recipe.id}>
                           <Draggable
-                            key={recipe.id}
                             draggableId={recipe.id.toString()}
                             index={index}
                           >
@@ -301,7 +308,7 @@ export default function PlanShop() {
                 showFirstButton
                 showLastButton
                 labelDisplayedRows={({ from, to, count }) =>
-                  `Showing ${from}-${to} of ${count}`
+                  `Showing ${from}-${to} out of ${count}`
                 }
                 sx={{
                   display: "table",
@@ -343,7 +350,7 @@ export default function PlanShop() {
             </Box>
           </Col>
           <Col style={{ width: "70%", margin: "1.5rem 1rem" }}>
-            <MonthPlanner mealPool={mealPool} />
+            <MonthPlanner mealPool={mealPool} onRemoveMeal={handleRemoveMeal} />
           </Col>
 
           {dialogMode === "view" && (
