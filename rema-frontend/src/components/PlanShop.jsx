@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ViewRecipe from "./Viewrecipe";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
@@ -51,25 +51,28 @@ export default function PlanShop() {
     setSelectedRecipe(null);
   };
 
-  const filteredRecipes = recipes.filter((recipe) => {
+  const filteredRecipes = useMemo(() => {
     const lowerSearch = searchTerm.toLowerCase();
-    return (
-      recipe.title.toLowerCase().includes(lowerSearch) ||
-      recipe.ingredients?.some((ingredientrow) =>
-        ingredientrow.ingredient.toLowerCase().includes(lowerSearch)
-      ) ||
-      recipe.description?.toLowerCase().includes(lowerSearch) ||
-      recipe.tags?.some((tagrow) =>
-        tagrow.tag.toLowerCase().includes(lowerSearch)
-      ) ||
-      recipe.category?.toLowerCase().includes(lowerSearch)
+    return recipes.filter(
+      (recipe) =>
+        recipe.title.toLowerCase().includes(lowerSearch) ||
+        recipe.ingredients?.some((ingredientrow) =>
+          ingredientrow.ingredient.toLowerCase().includes(lowerSearch)
+        ) ||
+        recipe.description?.toLowerCase().includes(lowerSearch) ||
+        recipe.tags?.some((tagrow) =>
+          tagrow.tag.toLowerCase().includes(lowerSearch)
+        ) ||
+        recipe.category?.toLowerCase().includes(lowerSearch)
     );
-  });
+  }, [recipes, searchTerm]);
 
-  const displayedRecipes = filteredRecipes.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  const displayedRecipes = useMemo(() => {
+    return filteredRecipes.slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
+    );
+  }, [filteredRecipes, page, rowsPerPage]);
 
   const handleDragEnd = (result) => {
     const { destination, source, draggableId } = result;
@@ -195,7 +198,7 @@ export default function PlanShop() {
                                     backgroundColor: "#fafafa",
                                     "&:hover": {
                                       backgroundColor: "#f0f0f0",
-                                      cursor: "pointer",
+                                      cursor: "grab",
                                     },
                                     display: "flex",
                                     justifyContent: "space-between",
