@@ -11,6 +11,7 @@ import {
 import { ArrowBackIos, ArrowForwardIos, Close } from "@mui/icons-material";
 import ShoppingListPdf from "./ShoppingListPdf";
 import { pdf } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
 
 function getStartOfWeek(date) {
   const day = date.getDay(); // Sunday = 0
@@ -76,8 +77,16 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
 
   const downloadPdf = async () => {
     // TODO: Implement logic to generate/show shopping list based on meals in the calendar for the week
-    const fileName = "ReMa_shopping_list_" + today + ".pdf";
-    const blob = await pdf(<ShoppingListPdf />).toBlob();
+    const formatteddate1 = `${today.getDate()}_${
+      today.getMonth() + 1
+    }_${today.getFullYear()}`;
+    const formatteddate2 = `${today.getDate()}.${
+      today.getMonth() + 1
+    }.${today.getFullYear()}`;
+    const fileName = "ReMa_shopping_list_" + formatteddate1 + ".pdf";
+    const blob = await pdf(
+      <ShoppingListPdf todaydate={formatteddate2} />
+    ).toBlob();
     saveAs(blob, fileName);
   };
 
