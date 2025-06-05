@@ -9,7 +9,8 @@ import {
   Button,
 } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos, Close } from "@mui/icons-material";
-import ShoppingList from "./ShoppingList";
+import ShoppingListPdf from "./ShoppingListPdf";
+import { pdf } from "@react-pdf/renderer";
 
 function getStartOfWeek(date) {
   const day = date.getDay(); // Sunday = 0
@@ -59,10 +60,24 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   const lastMonth = days[6].getMonth();
   const yearDisplayed = days[3].getFullYear();
 
+  const isPastDay = (date) => {
+    const todayNoTime = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+    const checkDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    return checkDate < todayNoTime;
+  };
+
   const downloadPdf = async () => {
     // TODO: Implement logic to generate/show shopping list based on meals in the calendar for the week
     const fileName = "ReMa_shopping_list_" + today + ".pdf";
-    const blob = await pdf(<ShoppingList />).toBlob();
+    const blob = await pdf(<ShoppingListPdf />).toBlob();
     saveAs(blob, fileName);
   };
 
@@ -109,7 +124,12 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
               align="center"
               sx={{
                 fontWeight: "bold",
-                color: isToday(day) ? "#1976d2" : "#666",
+                color: isToday(day)
+                  ? "#1976d2"
+                  : isPastDay(day)
+                  ? "#aaa"
+                  : "#666",
+                opacity: isPastDay(day) ? 0.6 : 1,
                 borderRadius: 1,
                 px: 1,
                 py: 0.5,
@@ -130,83 +150,114 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
 
           return (
             <Box key={idx} flex="1 1 0" px={0.5} minWidth={0}>
-              <Droppable droppableId={droppableId}>
-                {(provided, snapshot) => (
-                  <Paper
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    elevation={snapshot.isDraggingOver ? 6 : 1}
-                    sx={{
-                      p: 1,
-                      minHeight: "400px",
-                      backgroundColor: snapshot.isDraggingOver
-                        ? "#f0f4ff"
-                        : "#fff",
-                      border: isToday(day)
-                        ? "2px solid #2196f3"
-                        : "1px solid #e0e0e0",
-                      borderRadius: 2,
-                      transition: "all 0.2s ease",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 1,
-                    }}
-                  >
-                    {(mealPool?.[droppableId] || []).map((meal) => (
-                      <Box
-                        key={meal.id}
-                        display="flex"
-                        alignItems="center"
-                        gap={1}
-                        width="100%"
-                      >
-                        <Tooltip
-                          title={
-                            <React.Fragment>
-                              <Typography fontWeight="bold">
-                                {meal.title}
-                              </Typography>
-                              <Typography variant="body2">
-                                {meal.description || "No description"}
-                              </Typography>
-                            </React.Fragment>
-                          }
-                          arrow
+              {!isPastDay(day) ? (
+                <Droppable droppableId={droppableId}>
+                  {(provided, snapshot) => (
+                    <Paper
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      elevation={snapshot.isDraggingOver ? 6 : 2}
+                      sx={{
+                        p: 1,
+                        minHeight: "400px",
+                        backgroundColor: snapshot.isDraggingOver
+                          ? "#f0f4ff"
+                          : "#fff",
+                        border: isToday(day)
+                          ? "2px solid #2196f3"
+                          : "1px solid #e0e0e0",
+                        borderRadius: 2,
+                        transition: "all 0.2s ease",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                      }}
+                    >
+                      {(mealPool?.[droppableId] || []).map((meal) => (
+                        <Box
+                          key={meal.id}
+                          display="flex"
+                          alignItems="center"
+                          gap={1}
+                          width="100%"
                         >
-                          <Paper
-                            elevation={2}
-                            sx={{
-                              p: 0.5,
-                              pr: 0,
-                              backgroundColor: "#ffcdd2",
-                              borderRadius: 1,
-                              fontSize: "0.85rem",
-                              cursor: "grab",
-                              flexGrow: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              "&:hover": {
-                                backgroundColor: "#ef9a9a",
-                              },
-                            }}
+                          <Tooltip
+                            title={
+                              <>
+                                <Typography fontWeight="bold">
+                                  {meal.title}
+                                </Typography>
+                                <Typography variant="body2">
+                                  {meal.description || "No description"}
+                                </Typography>
+                              </>
+                            }
+                            arrow
                           >
-                            {meal.title}
-                            <IconButton
-                              size="small"
-                              onClick={() => onRemoveMeal(droppableId, meal.id)}
+                            <Paper
+                              elevation={2}
+                              sx={{
+                                p: 0.5,
+                                pr: 0,
+                                backgroundColor: "#ffcdd2",
+                                borderRadius: 1,
+                                fontSize: "0.85rem",
+                                cursor: "grab",
+                                flexGrow: 1,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                "&:hover": {
+                                  backgroundColor: "#ef9a9a",
+                                },
+                              }}
                             >
-                              <Close fontSize="small" />
-                            </IconButton>
-                          </Paper>
-                        </Tooltip>
-                      </Box>
-                    ))}
-
-                    {provided.placeholder}
-                  </Paper>
-                )}
-              </Droppable>
+                              {meal.title}
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  onRemoveMeal(droppableId, meal.id)
+                                }
+                              >
+                                <Close fontSize="small" />
+                              </IconButton>
+                            </Paper>
+                          </Tooltip>
+                        </Box>
+                      ))}
+                      {provided.placeholder}
+                    </Paper>
+                  )}
+                </Droppable>
+              ) : (
+                <Paper
+                  elevation={2}
+                  sx={{
+                    p: 1,
+                    minHeight: "400px",
+                    backgroundColor: "#f5f5f5",
+                    border: "1px dashed #ccc",
+                    borderRadius: 2,
+                    opacity: 0.6,
+                    pointerEvents: "none",
+                  }}
+                >
+                  {(mealPool?.[droppableId] || []).map((meal) => (
+                    <Paper
+                      key={meal.id}
+                      elevation={1}
+                      sx={{
+                        p: 0.5,
+                        backgroundColor: "#ddd",
+                        fontSize: "0.85rem",
+                        mb: 1,
+                      }}
+                    >
+                      {meal.title}
+                    </Paper>
+                  ))}
+                </Paper>
+              )}
             </Box>
           );
         })}
