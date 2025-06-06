@@ -21,6 +21,10 @@ function getStartOfWeek(date) {
   return start;
 }
 
+function getIngredientsForRecipes(recipeIds) {
+  return allIngredients.filter((item) => recipeIds.includes(item.recipe_id));
+}
+
 const monthNames = [
   "January",
   "February",
@@ -76,7 +80,6 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   };
 
   const downloadPdf = async () => {
-    // TODO: Implement logic to generate/show shopping list based on meals in the calendar for the week
     const formatteddate1 = `${today.getDate()}_${
       today.getMonth() + 1
     }_${today.getFullYear()}`;
@@ -84,8 +87,24 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
       today.getMonth() + 1
     }.${today.getFullYear()}`;
     const fileName = "ReMa_shopping_list_" + formatteddate1 + ".pdf";
+
+    const recipeIdsCurrentWeek = [];
+    days.forEach((day) => {
+      const droppableId = `day-${day.getFullYear()}-${
+        day.getMonth() + 1
+      }-${day.getDate()}`;
+      const meals = mealPool?.[droppableId] || [];
+      meals.forEach((meal) => {
+        if (meal.recipe_id) recipeIdsCurrentWeek.push(meal.recipe_id);
+      });
+    });
+
+    // Deduplicate recipe IDs
+    const uniqueRecipeIdsCurrentWeek = [...new Set(recipeIdsCurrentWeek)];
+    const ingredients = getIngredientsForRecipes(uniqueRecipeIdsCurrentWeek);
+
     const blob = await pdf(
-      <ShoppingListPdf todaydate={formatteddate2} />
+      <ShoppingListPdf todaydate={formatteddate2} ingredients={ingredients} />
     ).toBlob();
     saveAs(blob, fileName);
   };
