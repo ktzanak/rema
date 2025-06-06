@@ -8,7 +8,7 @@ import {
 } from "@react-pdf/renderer";
 import bwLogo from "../assets/bw_remalogo.png";
 
-export default function ShoppingListPdf(formatteddate2) {
+export default function ShoppingListPdf(dateAndIngredients) {
   const styles = StyleSheet.create({
     page: { backgroundColor: "white", margin: 10, fontFamily: "Times-Roman" },
     section: { color: "black", textAlign: "center" },
@@ -31,6 +31,29 @@ export default function ShoppingListPdf(formatteddate2) {
       margin: 20,
     },
     inlinetop2: { flexDirection: "column" },
+    textingredients: {
+      fontSize: 12,
+      marginVertical: 5,
+      minWidth: 200,
+      maxWidth: 200,
+    },
+    inlinedown1: {
+      flexDirection: "row",
+      marginVertical: 25,
+      marginHorizontal: 20,
+    },
+    ingredientslabel: {
+      fontSize: 14,
+      marginVertical: 10,
+      fontFamily: "Times-Bold",
+      minWidth: 150,
+      maxWidth: 150,
+    },
+    inlinedown2left: {
+      flexDirection: "column",
+      alignItems: "left",
+      textAlign: "left",
+    },
   });
   return (
     <Document>
@@ -44,11 +67,21 @@ export default function ShoppingListPdf(formatteddate2) {
               <Text style={styles.title}>Shopping list</Text>
               <Text style={styles.textdate}>
                 <Text style={{ fontFamily: "Times-Bold" }}>Date: </Text>
-                {formatteddate2.todaydate}
+                {dateAndIngredients.todaydate}
               </Text>
             </View>
           </View>
-          {/*add ingredient list*/}
+
+          <View style={styles.inlinedown1}>
+            <Text style={styles.ingredientslabel}>Ingredients</Text>
+            <View style={styles.inlinedown2left}>
+              {dateAndIngredients.ingredients.map((ingredient, index) => (
+                <Text style={styles.textingredients} key={index}>
+                  {ingredient}
+                </Text>
+              ))}
+            </View>
+          </View>
         </View>
       </Page>
     </Document>
