@@ -87,7 +87,6 @@ export default function PlanShop() {
     setMealPool((prev) => {
       const updated = { ...prev };
 
-      // Case 1: Drag from recipeList to a day droppable
       if (
         source.droppableId === "recipeList" &&
         destination.droppableId.startsWith("day-")
@@ -95,7 +94,6 @@ export default function PlanShop() {
         if (!updated[destination.droppableId])
           updated[destination.droppableId] = [];
 
-        // Check if meal already exists in the day and insert at destination index to preserve order
         const alreadyExists = updated[destination.droppableId].some(
           (meal) => meal.id === droppedRecipe.id
         );
@@ -110,19 +108,16 @@ export default function PlanShop() {
         return updated;
       }
 
-      // Case 2: Drag within calendar days (reorder or move)
       if (
         source.droppableId.startsWith("day-") &&
         destination.droppableId.startsWith("day-")
       ) {
-        // Remove from source
         if (updated[source.droppableId]) {
           updated[source.droppableId] = updated[source.droppableId].filter(
             (meal) => meal.id.toString() !== draggableId
           );
         }
 
-        // Add to destination
         if (!updated[destination.droppableId])
           updated[destination.droppableId] = [];
         updated[destination.droppableId].splice(
