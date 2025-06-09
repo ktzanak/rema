@@ -9,6 +9,19 @@ import {
 import bwLogo from "../assets/bw_remalogo.png";
 
 export default function ShoppingListPdf(dateAndIngredients) {
+  const MAX_LINES_FIRST_COLUMN = 27;
+  const ingredients = dateAndIngredients.ingredients;
+
+  const firstColumn =
+    ingredients.length > MAX_LINES_FIRST_COLUMN
+      ? ingredients.slice(0, MAX_LINES_FIRST_COLUMN)
+      : ingredients;
+
+  const secondColumn =
+    ingredients.length > MAX_LINES_FIRST_COLUMN
+      ? ingredients.slice(MAX_LINES_FIRST_COLUMN)
+      : [];
+
   const styles = StyleSheet.create({
     page: { backgroundColor: "white", margin: 10, fontFamily: "Times-Roman" },
     section: { color: "black", textAlign: "center" },
@@ -31,28 +44,19 @@ export default function ShoppingListPdf(dateAndIngredients) {
       margin: 20,
     },
     inlinetop2: { flexDirection: "column" },
+    columnsContainer: {
+      flexDirection: "row",
+      justifyContent: "flex-start",
+      paddingHorizontal: 40,
+      gap: 40,
+    },
+    column: {
+      flexDirection: "column",
+      flex: 1,
+    },
     textingredients: {
       fontSize: 12,
       marginVertical: 5,
-      minWidth: 200,
-      maxWidth: 200,
-    },
-    inlinedown1: {
-      flexDirection: "row",
-      marginVertical: 25,
-      marginHorizontal: 20,
-    },
-    ingredientslabel: {
-      fontSize: 14,
-      marginVertical: 10,
-      fontFamily: "Times-Bold",
-      minWidth: 150,
-      maxWidth: 150,
-    },
-    inlinedown2left: {
-      flexDirection: "column",
-      alignItems: "left",
-      textAlign: "left",
     },
   });
   return (
@@ -72,15 +76,26 @@ export default function ShoppingListPdf(dateAndIngredients) {
             </View>
           </View>
 
-          <View style={styles.inlinedown1}>
-            <Text style={styles.ingredientslabel}>Ingredients</Text>
-            <View style={styles.inlinedown2left}>
-              {dateAndIngredients.ingredients.map((ingredient, index) => (
+          <View style={styles.columnsContainer}>
+            <View style={styles.column}>
+              {firstColumn.map((ingredient, index) => (
                 <Text style={styles.textingredients} key={index}>
                   {ingredient}
                 </Text>
               ))}
             </View>
+            {secondColumn.length > 0 && (
+              <View style={styles.column}>
+                {secondColumn.map((ingredient, index) => (
+                  <Text
+                    style={styles.textingredients}
+                    key={index + firstColumn.length}
+                  >
+                    {ingredient}
+                  </Text>
+                ))}
+              </View>
+            )}
           </View>
         </View>
       </Page>
