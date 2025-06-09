@@ -4,22 +4,20 @@ import bwLogo from "../assets/bw_remalogo.png";
 
 export default function Header() {
   return (
-    <div className={styles.wholeheaderdeco}>
-      <div className={styles.parentdiv}>
-        <img className={styles.imgpos} src={bwLogo} />
-        <div className={styles.headerdeco}>
+    <header className={styles.header}>
+      {/*<div className={styles.headerdeco}>
           <div className={styles.headersize}>Welcome to ReMa!</div>
           <hr className={styles.line} />
           <div className={styles.subheadersize}>
             A simple application for creating recipes. It can be used for any
             type of recipe, main courses, cocktails, desserts and many more!
           </div>
-        </div>
+        </div>*/}
+      <div className={styles.leftSection}>
+        <img className={styles.logo} src={bwLogo} alt="ReMa logo" />
+        <span className={styles.title}>ReMa</span>
       </div>
-      <div className={styles.navLinks}>
-        {/*<Link to="/home" className={styles.navLink}>
-          Home
-        </Link>*/}
+      <nav className={styles.navLinks}>
         <Link to="/add" className={styles.navLink}>
           New recipe
         </Link>
@@ -29,7 +27,7 @@ export default function Header() {
         <Link to="/planshop" className={styles.navLink}>
           Plan & Shop
         </Link>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 }
