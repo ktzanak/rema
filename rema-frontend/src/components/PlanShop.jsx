@@ -3,6 +3,9 @@ import { Container, Row, Col } from "react-bootstrap";
 import ViewRecipe from "./Viewrecipe";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Box } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+
 import {
   Typography,
   TablePagination,
@@ -146,6 +149,15 @@ export default function PlanShop() {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Row style={{ display: "flex", alignItems: "stretch" }}>
           <Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
+            <Box display="flex" justifyContent="flex-end">
+              <Tooltip title="Drag recipes to the calendar on the right">
+                <InfoOutlinedIcon
+                  color="action"
+                  fontSize="medium"
+                  sx={{ cursor: "help", mb: 1 }}
+                />
+              </Tooltip>
+            </Box>
             <TextField
               label="Search recipes by title, description, ingredient, tags or category"
               variant="outlined"
@@ -154,6 +166,7 @@ export default function PlanShop() {
               onChange={(e) => setSearchTerm(e.target.value)}
               size="small"
             />
+
             <Box
               sx={{
                 boxShadow: 3,
