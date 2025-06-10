@@ -14,9 +14,9 @@ export default function Header() {
         <span className={styles.title}>ReMa</span>
       </div>
       <nav className={styles.navLinks}>
-        {/*<Link to="/home" className={styles.navLink}>
+        <Link to="/home" className={styles.navLink}>
           Home
-        </Link>*/}
+        </Link>
         <Link to="/add" className={styles.navLink}>
           New recipe
         </Link>
