@@ -5,10 +5,6 @@ import bwLogo from "../assets/bw_remalogo.png";
 export default function Header() {
   return (
     <header className={styles.header}>
-      {/*
-      A simple application for creating recipes. It can be used for any
-      type of recipe, main courses, cocktails, desserts and many more!
-      */}
       <div className={styles.leftSection}>
         <img className={styles.logo} src={bwLogo} alt="ReMa logo" />
         <span className={styles.title}>ReMa</span>
