@@ -10,15 +10,16 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 8px; 
-  height: 8px; 
+  width: 8px;
+  height: 8px;
 
-::-webkit-scrollbar-thumb {
-  background-color: darkgrey; /* Color of the draggable part */
-  border-radius: 10px; 
-}
+  ::-webkit-scrollbar-thumb {
+    background-color: darkgrey; /* Color of the draggable part */
+    border-radius: 10px;
+  }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Background color of the scrollbar track */
-  border-radius: 10px; 
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background color of the scrollbar track */
+    border-radius: 10px;
+  }
 }
