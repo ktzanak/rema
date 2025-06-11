@@ -150,7 +150,14 @@ export default function PlanShop() {
         <Row style={{ display: "flex", alignItems: "stretch" }}>
           <Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
             <Box display="flex" justifyContent="flex-end">
-              <Tooltip title="Drag recipes to the calendar on the right">
+              <Tooltip
+                title={
+                  <Typography sx={{ fontSize: "1rem" }}>
+                    Drag and drop recipes from the list to the calendar on the
+                    right
+                  </Typography>
+                }
+              >
                 <InfoOutlinedIcon
                   color="action"
                   fontSize="medium"
