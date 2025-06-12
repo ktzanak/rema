@@ -2,7 +2,9 @@ import styles from "../css/header.module.css";
 import { Link } from "react-router-dom";
 import bwLogo from "../assets/bw_remalogo.png";
 
-export default function Header() {
+export default function Header({ hidden }) {
+  if (hidden) return null;
+
   return (
     <header className={styles.header}>
       <div className={styles.leftSection}>
