@@ -15,7 +15,7 @@ import "./css/app.css";
 function AppContent() {
   const location = useLocation();
   const isHome = location.pathname === "/" || location.pathname === "/home";
-  const [showHeader, setShowHeader] = useState(!isHome); // show header by default unless home
+  const [showHeader, setShowHeader] = useState(!isHome);
 
   return (
     <>
