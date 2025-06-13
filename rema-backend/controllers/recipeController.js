@@ -523,3 +523,55 @@ export const askai = async (req, res) => {
     res.status(500).json({ error: "Failed to get AI suggestions" });
   }
 };
+
+export const foodQuote = async (req, res) => {
+  const fqkey = process.env.QUOTES_API_KEY;
+  const fallbackJokes = [
+    "I followed my heart — and it led me to the fridge.",
+    "I'm on a seafood diet. I see food and I eat it.",
+    "My favorite exercise is a cross between a lunge and a crunch. I call it lunch.",
+    "You can't live a full life on an empty stomach.",
+    "Don’t be upsetti — eat some spaghetti.",
+    "Stressed spelled backwards is desserts.",
+    "Why do we cook bacon and bake cookies?",
+    "Cooking is love made visible.",
+    "Life is uncertain. Eat dessert first.",
+    "A recipe has no soul. You as the cook must bring soul to the recipe.",
+    "The secret ingredient is always cheese.",
+    "First we eat, then we do everything else.",
+    "Good food is good mood.",
+    "Cooking is like painting or writing a song.",
+    "A messy kitchen is a sign of happiness.",
+    "You don’t need a silver fork to eat good food.",
+  ];
+
+  const getFallback = () =>
+    fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+
+  try {
+    if (!fqkey || fqkey.trim() === "") {
+      return res.json({ quote: getFallback() });
+    }
+
+    const response = await fetch(
+      `https://api.spoonacular.com/food/jokes/random?apiKey=${fqkey}`
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Spoonacular API responded with status ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (!data?.text || data.text.length > 160) {
+      return res.json({ quote: getFallback() });
+    }
+
+    res.json({ quote: data.text });
+  } catch (err) {
+    console.error("Error fetching Spoonacular joke:", err.message);
+    res.json({ quote: getFallback() });
+  }
+};
