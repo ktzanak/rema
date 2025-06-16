@@ -5,6 +5,44 @@ import styles from "../css/home.module.css";
 
 export default function Home({ onIntroEnd }) {
   const [showIntro, setShowIntro] = useState(true);
+  const [quotesAvailable, setQuotesAvailable] = useState(false);
+  const [quote, setQuote] = useState(null);
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      if (!quotesAvailable || showIntro) return;
+
+      try {
+        const res = await fetch("http://localhost:8000/api/foodQuote");
+        const data = await res.json();
+        setQuote(data.quote);
+      } catch (err) {
+        console.error("Failed to fetch quote:", err);
+      }
+    };
+
+    fetchQuote();
+  }, [quotesAvailable, showIntro]);
+
+  useEffect(() => {
+    const checkAvailability = async () => {
+      try {
+        if (!navigator.onLine) {
+          setQuotesAvailable(false);
+          return;
+        }
+
+        const res = await fetch("http://localhost:8000/api/hasFoodQuotesKey");
+        const data = await res.json();
+        setQuotesAvailable(data.ok);
+      } catch (error) {
+        console.error("Error checking quotes availability:", error);
+        setQuotesAvailable(false);
+      }
+    };
+
+    checkAvailability();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -55,44 +93,20 @@ export default function Home({ onIntroEnd }) {
           className={styles.homeContent}
         >
           <div className={styles.homeContent}>
+            <h1>Welcome to ReMa!</h1>
             <h4>
-              A simple application for creating recipes. It can be used for any
-              type of recipe, main courses, cocktails, desserts and many more!
+              A simple application for creating recipes. <br />
+              It can be used for any type of recipe, main courses, cocktails,
+              desserts and many more!
             </h4>
           </div>
+          {quote && (
+            <blockquote>
+              <em>"{quote}"</em>
+            </blockquote>
+          )}
         </motion.div>
       )}
     </div>
   );
 }
-
-/*import { Container } from "react-bootstrap";
-import React, { useState, useEffect } from "react";
-import bwLogo from "../assets/bw_remalogo.png";
-import styles from "../css/home.module.css";
-
-export default function Home() {
-  const [showIntro, setShowIntro] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 4000); 
-    return () => clearTimeout(timer);
-  }, []);
-  return (
-    <>
-      {showIntro ? (
-        <div className={styles.introContainer}>
-          <img src={bwLogo} alt="Logo" className={styles.introLogo} />
-          <h1 className={styles.introTitle}>Welcome to ReMa!</h1>
-        </div>
-      ) : (
-        <div className={styles.homeContent}>
-          <h3>
-            A simple application for creating recipes. It can be used for any
-            type of recipe, main courses, cocktails, desserts and many more!
-          </h3>
-        </div>
-      )}
-    </>
-  );
-}*/
