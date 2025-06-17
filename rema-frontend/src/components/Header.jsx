@@ -8,8 +8,10 @@ export default function Header({ hidden }) {
   return (
     <header className={styles.header}>
       <div className={styles.leftSection}>
-        <img className={styles.logo} src={bwLogo} alt="ReMa logo" />
-        <span className={styles.title}>ReMa</span>
+        <Link to="/home" className={styles.logoLink}>
+          <img className={styles.logo} src={bwLogo} alt="ReMa logo" />
+          <span className={styles.title}>ReMa</span>
+        </Link>
       </div>
       <nav className={styles.navLinks}>
         <Link to="/home" className={styles.navLink}>
