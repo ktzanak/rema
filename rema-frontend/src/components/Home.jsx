@@ -92,19 +92,22 @@ export default function Home({ onIntroEnd }) {
           transition={{ duration: 0.6 }}
           className={styles.homeContent}
         >
-          <div className={styles.homeContent}>
-            <h1>Welcome to ReMa!</h1>
-            <h4>
-              A simple application for creating recipes. <br />
-              It can be used for any type of recipe, main courses, cocktails,
-              desserts and many more!
-            </h4>
+          <div className={styles.coloredSection}>
+            <div className={styles.fullWidthTextFrame}>
+              <h1>Welcome to ReMa!</h1>
+              <h4>
+                A simple application for creating recipes. <br />
+                It can be used for any type of recipe, main courses, cocktails,
+                desserts and many more!
+              </h4>
+
+              {quote && (
+                <blockquote>
+                  <em>"{quote}"</em>
+                </blockquote>
+              )}
+            </div>
           </div>
-          {quote && (
-            <blockquote>
-              <em>"{quote}"</em>
-            </blockquote>
-          )}
         </motion.div>
       )}
     </div>
