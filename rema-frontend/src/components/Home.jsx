@@ -47,7 +47,7 @@ export default function Home({ onIntroEnd }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
-      onIntroEnd?.(); // notify parent to show header
+      onIntroEnd?.();
     }, 3000);
     return () => clearTimeout(timer);
   }, [onIntroEnd]);

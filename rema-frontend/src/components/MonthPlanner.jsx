@@ -14,7 +14,7 @@ import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 
 function getStartOfWeek(date) {
-  const day = date.getDay(); // Sunday = 0
+  const day = date.getDay();
   const diff = day === 0 ? -6 : 1 - day; // shift to Monday
   const start = new Date(date);
   start.setDate(date.getDate() + diff);
