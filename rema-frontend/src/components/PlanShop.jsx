@@ -172,6 +172,14 @@ export default function PlanShop() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               size="small"
+              sx={{
+                "& .MuiInputLabel-root": {
+                  fontSize: "0.75rem",
+                },
+                "& .MuiInputLabel-root.MuiInputLabel-shrink": {
+                  fontSize: "1rem",
+                },
+              }}
             />
 
             <Box
