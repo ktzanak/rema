@@ -4,7 +4,10 @@ import bwLogo from "../assets/bw_remalogo.png";
 import styles from "../css/home.module.css";
 
 export default function Home({ onIntroEnd }) {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    const alreadyShown = sessionStorage.getItem("introShown");
+    return !alreadyShown;
+  });
   const [quotesAvailable, setQuotesAvailable] = useState(false);
   const [quote, setQuote] = useState(null);
 
@@ -45,12 +48,24 @@ export default function Home({ onIntroEnd }) {
   }, []);
 
   useEffect(() => {
+    if (!showIntro) return;
+
     const timer = setTimeout(() => {
       setShowIntro(false);
+      sessionStorage.setItem("introShown", "true");
       onIntroEnd?.();
     }, 3000);
     return () => clearTimeout(timer);
-  }, [onIntroEnd]);
+  }, [showIntro, onIntroEnd]);
+
+  useEffect(() => {
+    const handleUnload = () => {
+      sessionStorage.removeItem("introShown");
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  }, []);
 
   return (
     <div className={styles.container}>
