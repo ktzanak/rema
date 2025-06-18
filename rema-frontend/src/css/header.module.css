@@ -54,6 +54,6 @@
 .logoLink {
   display: flex;
   align-items: center;
-  text-decoration: none; /* Optional: removes underline */
-  color: inherit; /* Optional: inherits font color */
+  text-decoration: none;
+  color: inherit;
 }
