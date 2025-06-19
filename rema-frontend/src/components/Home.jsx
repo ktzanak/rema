@@ -116,11 +116,9 @@ export default function Home({ onIntroEnd }) {
                 desserts and many more!
               </h4>
 
-              {quote && (
-                <blockquote>
-                  <em>"{quote}"</em>
-                </blockquote>
-              )}
+              <blockquote>
+                <em>{quote === null ? `"..."` : `"${quote}"`}</em>
+              </blockquote>
             </div>
           </div>
         </motion.div>
