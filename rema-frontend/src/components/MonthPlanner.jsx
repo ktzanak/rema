@@ -215,7 +215,13 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                                   {meal.title}
                                 </Typography>
                                 <Typography variant="body2">
-                                  {meal.description || "No description"}
+                                  Description: {meal.description || "-"}
+                                </Typography>
+                                <Typography variant="body2">
+                                  Time: {meal.cooking_time || "-"}
+                                </Typography>
+                                <Typography variant="body2">
+                                  Portions: {meal.portions || "-"}
                                 </Typography>
                               </>
                             }
