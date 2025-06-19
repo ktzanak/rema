@@ -54,7 +54,7 @@ export const listrecipes = async (req, res) => {
       }
 
       const rec = recipeMap.get(recipe.recipe_id);
-
+      // Avoid duplicate ingredients, instructions, and tags
       if (
         recipe.ingredient_id &&
         !rec.ingredients.some((i) => i.id === recipe.ingredient_id)
@@ -91,7 +91,7 @@ export const listrecipes = async (req, res) => {
   }
 };
 
-// Add a recipe and insert into recipe, ingredients, instructions, categories, tags, and their relationships within a transaction
+// Add a recipe and its relationships within a transaction
 export const addrecipe = async (req, res) => {
   const {
     title,
@@ -193,6 +193,7 @@ export const addrecipe = async (req, res) => {
   }
 };
 
+// Clean orphaned tags and categories
 const cleanupOrphanedTagsAndCategories = async () => {
   const connection = await pool.getConnection();
   try {
@@ -222,31 +223,28 @@ export const deleterecipe = async (req, res) => {
   const connection = await pool.getConnection();
 
   try {
-    // Start a transaction
     await connection.beginTransaction();
 
-    // Delete the recipe by ID
+    // Delete the recipe
     await connection.query("DELETE FROM recipes WHERE id = ?", [recipeid]);
-
-    // Commit the transaction
     await connection.commit();
 
+    // Clean up any tags/categories that are no longer in use
     await cleanupOrphanedTagsAndCategories();
 
     res.status(200).json({ message: "Recipe deleted successfully." });
   } catch (error) {
-    // Rollback the transaction in case of error
     await connection.rollback();
     console.error("Error deleting recipe:", error);
     res
       .status(500)
       .json({ message: "An error occurred while deleting the recipe." });
   } finally {
-    // Release the connection back to the pool
     connection.release();
   }
 };
 
+// Create/update rating of recipe
 export const raterecipe = async (req, res) => {
   const connection = await pool.getConnection();
   const { recipeid } = req.params;
@@ -283,6 +281,7 @@ export const raterecipe = async (req, res) => {
   }
 };
 
+// Update an existing recipe along with all associated data
 export const updaterecipe = async (req, res) => {
   const { recipeid } = req.params;
   const {
@@ -334,7 +333,7 @@ export const updaterecipe = async (req, res) => {
         [recipeid, instructionrow.step_number, instructionrow.instruction]
       );
     }
-    // 7. Find existing category ID for this recipe
+    // 6. Find existing category ID for this recipe
     const [oldCategoryRows] = await connection.query(
       ` SELECT c.id, c.category 
             FROM categories c
@@ -372,7 +371,7 @@ export const updaterecipe = async (req, res) => {
       }
     }
 
-    // 8. Get existing tag IDs for the recipe
+    // 7. Get existing tag IDs for the recipe
     const [existingTags] = await connection.query(
       `SELECT t.id, t.tag 
               FROM tags t
@@ -381,7 +380,7 @@ export const updaterecipe = async (req, res) => {
       [recipeid]
     );
 
-    // 9. Update or replace tags
+    // 8. Update or replace tags
     await connection.query("DELETE FROM recipe_tags WHERE recipe_id = ?", [
       recipeid,
     ]);
@@ -416,6 +415,8 @@ export const updaterecipe = async (req, res) => {
     }
 
     await connection.commit();
+
+    // Clean up any tags/categories that are no longer in use
     await cleanupOrphanedTagsAndCategories();
     res.status(200).json({ message: "Recipe updated successfully." });
   } catch (error) {
@@ -427,6 +428,7 @@ export const updaterecipe = async (req, res) => {
   }
 };
 
+// Fetch all relevant info of recipe and structure it for AI-based processing
 export const getRecipeByIdForAI = async (recipeid) => {
   const [recipes] = await pool.query(
     `
@@ -506,6 +508,7 @@ export const getRecipeByIdForAI = async (recipeid) => {
   return recipeDetails;
 };
 
+// Generate AI-based suggestions for a given recipe
 export const askai = async (req, res) => {
   const { recipeid } = req.params;
   const aimode = req.query.aimode || "healthier";
@@ -524,6 +527,7 @@ export const askai = async (req, res) => {
   }
 };
 
+// Get food-related quotes from spoonacular or use the fallback ones
 export const foodQuote = async (req, res) => {
   const fqkey = process.env.QUOTES_API_KEY;
   const fallbackJokes = [
