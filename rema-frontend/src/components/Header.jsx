@@ -7,12 +7,10 @@ export default function Header({ hidden }) {
 
   return (
     <header className={styles.header}>
-      <div className={styles.leftSection}>
-        <Link to="/home" className={styles.logoLink}>
-          <img className={styles.logo} src={bwLogo} alt="ReMa logo" />
-          <span className={styles.title}>ReMa</span>
-        </Link>
-      </div>
+      <Link to="/home" className={styles.logoLink}>
+        <img className={styles.logo} src={bwLogo} alt="ReMa logo" />
+        <span className={styles.title}>ReMa</span>
+      </Link>
       <nav className={styles.navLinks}>
         <Link to="/home" className={styles.navLink}>
           Home

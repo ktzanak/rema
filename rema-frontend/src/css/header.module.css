@@ -10,12 +10,6 @@
   position: relative;
 }
 
-.leftSection {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .logo {
   width: 65px; /*it was 120px w and 106px h*/
   height: auto;
@@ -56,4 +50,5 @@
   align-items: center;
   text-decoration: none;
   color: inherit;
+  gap: 12px;
 }
