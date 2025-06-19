@@ -198,6 +198,10 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                         display: "flex",
                         flexDirection: "column",
                         gap: 1,
+                        "&:hover": {
+                          backgroundColor: "#f0f0f0",
+                          cursor: "pointer",
+                        },
                       }}
                     >
                       {(mealPool?.[droppableId] || []).map((meal) => (
