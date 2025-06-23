@@ -143,7 +143,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
         </Button>
       </Box>
 
-      <Box display="flex" width="100%">
+      <Box display="flex" width="100%" sx={{ paddingLeft: "30px" }}>
         {days.map((day, idx) => (
           <Box key={idx} flex="1 1 0" px={0.5}>
             <Typography
@@ -169,27 +169,41 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
       </Box>
 
       {/* Droppable areas for 7 days */}
-      <Box display="flex" width="100%" mt={1}>
+      <Box
+        display="flex"
+        width="100%"
+        mt={1}
+        sx={{ position: "relative", height: "1200px" }}
+      >
         {/* Y-Axis with time labels */}
         <Box
           sx={{
-            width: "60px",
+            width: "30px",
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-end",
             pr: 1,
-            mt: "30px", // Align with cards
+            mt: "4%",
           }}
         >
-          {Array.from({ length: 23 }, (_, i) => {
-            const hour = i + 1;
+          {Array.from({ length: 24 }, (_, i) => {
+            if (i === 0) return null;
+            const hour = i;
             const suffix = hour < 12 ? "AM" : "PM";
             const label = `${hour % 12 === 0 ? 12 : hour % 12}${suffix}`;
+            const topPercent = i * 4.16;
             return (
               <Typography
                 key={i}
                 variant="caption"
-                sx={{ height: "16px", fontSize: "0.75rem", color: "#555" }}
+                sx={{
+                  position: "absolute",
+                  top: `${topPercent}%`,
+                  transform: "translateY(-50%)",
+                  fontSize: "0.75rem",
+                  color: "#555",
+                  whiteSpace: "nowrap",
+                }}
               >
                 {label}
               </Typography>
@@ -213,7 +227,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                       elevation={snapshot.isDraggingOver ? 6 : 2}
                       sx={{
                         p: 1,
-                        minHeight: "400px",
+                        minHeight: "1200px",
                         backgroundColor: snapshot.isDraggingOver
                           ? "#f0f4ff"
                           : "#fff",
