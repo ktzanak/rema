@@ -170,6 +170,33 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
 
       {/* Droppable areas for 7 days */}
       <Box display="flex" width="100%" mt={1}>
+        {/* Y-Axis with time labels */}
+        <Box
+          sx={{
+            width: "60px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            pr: 1,
+            mt: "30px", // Align with cards
+          }}
+        >
+          {Array.from({ length: 23 }, (_, i) => {
+            const hour = i + 1;
+            const suffix = hour < 12 ? "AM" : "PM";
+            const label = `${hour % 12 === 0 ? 12 : hour % 12}${suffix}`;
+            return (
+              <Typography
+                key={i}
+                variant="caption"
+                sx={{ height: "16px", fontSize: "0.75rem", color: "#555" }}
+              >
+                {label}
+              </Typography>
+            );
+          })}
+        </Box>
+
         {days.map((day, idx) => {
           const droppableId = `day-${day.getFullYear()}-${
             day.getMonth() + 1
