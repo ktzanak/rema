@@ -148,7 +148,16 @@ export default function PlanShop() {
     <Container>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Row style={{ display: "flex", alignItems: "stretch" }}>
-          <Col style={{ width: "25%", margin: "1.5rem 1rem" }}>
+          <Col
+            style={{
+              width: "25%",
+              margin: "1.5rem 1rem",
+              position: "sticky",
+              top: "1rem",
+              alignSelf: "flex-start",
+              height: "fit-content",
+            }}
+          >
             <Box display="flex" justifyContent="flex-end">
               <Tooltip
                 title={
