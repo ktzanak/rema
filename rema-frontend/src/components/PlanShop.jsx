@@ -153,7 +153,7 @@ export default function PlanShop() {
               width: "25%",
               margin: "1.5rem 1rem",
               position: "sticky",
-              top: "1rem",
+              top: "4.5rem",
               alignSelf: "flex-start",
               height: "fit-content",
             }}
