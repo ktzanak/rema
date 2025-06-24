@@ -116,7 +116,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
           alignItems: "center",
           justifyContent: "space-between",
           gap: 0,
-          mb: 2,
+          pb: 2,
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
@@ -143,7 +143,13 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
         </Button>
       </Box>
 
-      <Box display="flex" width="100%" sx={{ paddingLeft: "30px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          paddingLeft: "30px",
+        }}
+      >
         {days.map((day, idx) => (
           <Box key={idx} flex="1 1 0" px={0.5}>
             <Typography
@@ -200,7 +206,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                   position: "absolute",
                   top: `${topPercent}%`,
                   transform: "translateY(-50%)",
-                  fontSize: "0.75rem",
+                  fontSize: "0.7rem",
                   color: "#555",
                   whiteSpace: "nowrap",
                 }}
@@ -312,7 +318,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                   elevation={2}
                   sx={{
                     p: 1,
-                    minHeight: "400px",
+                    minHeight: "1200px",
                     backgroundColor: "#f5f5f5",
                     border: "1px dashed #ccc",
                     borderRadius: 2,
