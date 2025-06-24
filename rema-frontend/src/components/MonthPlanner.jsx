@@ -112,68 +112,76 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
     <Box>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 0,
-          pb: 2,
+          position: "sticky",
+          top: "88px",
+          zIndex: 10,
+          backgroundColor: "white",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
-          <IconButton onClick={() => setWeekOffset((prev) => prev - 1)}>
-            <ArrowBackIos fontSize="small" />
-          </IconButton>
-          <IconButton onClick={() => setWeekOffset((prev) => prev + 1)}>
-            <ArrowForwardIos fontSize="small" />
-          </IconButton>
-          <Typography variant="h6">
-            {firstMonth === lastMonth
-              ? `${monthNames[firstMonth]} ${days[3].getFullYear()}`
-              : `${monthNames[firstMonth]} – ${monthNames[lastMonth]} ${yearDisplayed}`}
-          </Typography>
-        </Box>
-
-        <Button
-          size="small"
-          variant="contained"
-          color="success"
-          onClick={downloadPdf}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 0,
+            pb: 2,
+          }}
         >
-          Weekly shopping list
-        </Button>
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          paddingLeft: "30px",
-        }}
-      >
-        {days.map((day, idx) => (
-          <Box key={idx} flex="1 1 0" px={0.5}>
-            <Typography
-              variant="body2"
-              align="center"
-              sx={{
-                fontWeight: "bold",
-                color: isToday(day)
-                  ? "#1976d2"
-                  : isPastDay(day)
-                  ? "#aaa"
-                  : "#666",
-                opacity: isPastDay(day) ? 0.6 : 1,
-                borderRadius: 1,
-                px: 1,
-                py: 0.5,
-              }}
-            >
-              {weekNames[idx]} {day.getDate()}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
+            <IconButton onClick={() => setWeekOffset((prev) => prev - 1)}>
+              <ArrowBackIos fontSize="small" />
+            </IconButton>
+            <IconButton onClick={() => setWeekOffset((prev) => prev + 1)}>
+              <ArrowForwardIos fontSize="small" />
+            </IconButton>
+            <Typography variant="h6">
+              {firstMonth === lastMonth
+                ? `${monthNames[firstMonth]} ${days[3].getFullYear()}`
+                : `${monthNames[firstMonth]} – ${monthNames[lastMonth]} ${yearDisplayed}`}
             </Typography>
           </Box>
-        ))}
-      </Box>
 
+          <Button
+            size="small"
+            variant="contained"
+            color="success"
+            onClick={downloadPdf}
+          >
+            Weekly shopping list
+          </Button>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            paddingLeft: "30px",
+          }}
+        >
+          {days.map((day, idx) => (
+            <Box key={idx} flex="1 1 0" px={0.5}>
+              <Typography
+                variant="body2"
+                align="center"
+                sx={{
+                  fontWeight: "bold",
+                  color: isToday(day)
+                    ? "#1976d2"
+                    : isPastDay(day)
+                    ? "#aaa"
+                    : "#666",
+                  opacity: isPastDay(day) ? 0.6 : 1,
+                  borderRadius: 1,
+                  px: 1,
+                  py: 0.5,
+                }}
+              >
+                {weekNames[idx]} {day.getDate()}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </Box>
       {/* Droppable areas for 7 days */}
       <Box
         display="flex"
@@ -189,7 +197,6 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
             flexDirection: "column",
             alignItems: "flex-end",
             pr: 1,
-            mt: "4%",
           }}
         >
           {Array.from({ length: 24 }, (_, i) => {
