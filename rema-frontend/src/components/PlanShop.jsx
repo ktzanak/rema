@@ -151,11 +151,12 @@ export default function PlanShop() {
           <Col
             style={{
               width: "25%",
-              margin: "1.5rem 1rem",
+              padding: "0rem 1rem",
               position: "sticky",
-              top: "88px",
+              top: "62.5px",
               alignSelf: "flex-start",
               height: "fit-content",
+              paddingTop: "25.5px",
             }}
           >
             <Box display="flex" justifyContent="flex-end">
@@ -387,7 +388,7 @@ export default function PlanShop() {
           <Col
             style={{
               width: "70%",
-              margin: "1.5rem 1rem",
+              padding: "0rem 1rem",
             }}
           >
             <MonthPlanner mealPool={mealPool} onRemoveMeal={handleRemoveMeal} />
