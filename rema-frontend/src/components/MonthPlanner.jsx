@@ -113,9 +113,10 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
       <Box
         sx={{
           position: "sticky",
-          top: "88px",
-          zIndex: 10,
+          top: "62.5px",
+          zIndex: 100,
           backgroundColor: "white",
+          paddingTop: "17.5px",
         }}
       >
         <Box
@@ -186,7 +187,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
       <Box
         display="flex"
         width="100%"
-        mt={1}
+        pt={1}
         sx={{ position: "relative", height: "1200px" }}
       >
         {/* Y-Axis with time labels */}
