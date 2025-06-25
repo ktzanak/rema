@@ -157,6 +157,7 @@ export default function PlanShop() {
               alignSelf: "flex-start",
               height: "fit-content",
               paddingTop: "25.5px",
+              zIndex: 100,
             }}
           >
             <Box display="flex" justifyContent="flex-end">
