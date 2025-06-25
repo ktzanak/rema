@@ -243,7 +243,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                         p: 1,
                         minHeight: "1200px",
                         backgroundColor: snapshot.isDraggingOver
-                          ? "#f0f4ff"
+                          ? "#d7e1fc"
                           : "#fff",
                         border: isToday(day)
                           ? "2px solid #2196f3"
