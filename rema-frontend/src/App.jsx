@@ -5,20 +5,11 @@ import PlanShop from "./components/PlanShop";
 import Home from "./components/Home";
 import IntroOverlay from "./components/IntroOverlay";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./css/app.css";
 
 function AppContent({ introFinished }) {
-  const location = useLocation();
-
-  //const isHome = location.pathname === "/" || location.pathname === "/home";
-
   return (
     <>
       <AnimatePresence>
