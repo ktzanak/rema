@@ -156,9 +156,9 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
           sx={{
             display: "flex",
             width: "100%",
-            paddingLeft: "30px",
           }}
         >
+          <Box sx={{ width: "30px", pr: 1 }} />
           {days.map((day, idx) => (
             <Box key={idx} flex="1 1 0" px={0.5}>
               <Typography
@@ -231,7 +231,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
           }-${day.getDate()}`;
 
           return (
-            <Box key={idx} flex="1 1 0" px={0.5} minWidth={0}>
+            <Box key={idx} flex="1 1 0" px={0.5}>
               {!isPastDay(day) ? (
                 <Droppable droppableId={droppableId}>
                   {(provided, snapshot) => (
