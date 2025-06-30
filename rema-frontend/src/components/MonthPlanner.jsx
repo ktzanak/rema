@@ -231,7 +231,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
           }-${day.getDate()}`;
 
           return (
-            <Box key={idx} flex="1 1 0" px={0.5}>
+            <Box key={idx} flex="1 1 0" px={0.5} minWidth={0}>
               {!isPastDay(day) ? (
                 <Droppable droppableId={droppableId}>
                   {(provided, snapshot) => (
@@ -291,20 +291,34 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                               sx={{
                                 p: 0.5,
                                 pr: 0,
+                                height: "50px",
                                 backgroundColor: "#ffcdd2",
                                 borderRadius: 1,
-                                fontSize: "0.85rem",
+                                fontSize: "0.7rem",
                                 cursor: "grab",
                                 flexGrow: 1,
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "space-between",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
                                 "&:hover": {
                                   backgroundColor: "#ef9a9a",
                                 },
                               }}
                             >
-                              {meal.title}
+                              <Box
+                                sx={{
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                  whiteSpace: "nowrap",
+                                  flex: 1,
+                                  pr: 0,
+                                }}
+                              >
+                                {meal.title}
+                              </Box>
                               <IconButton
                                 size="small"
                                 onClick={() =>
