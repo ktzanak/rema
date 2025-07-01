@@ -225,7 +225,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
 
         {days.map((day, idx) => {
           return (
-            <Box key={idx} flex="1 1 0" px={0.5} minWidth={0}>
+            <Box key={idx} flex="1 1 0" minWidth={0}>
               {Array.from({ length: 24 }, (_, hour) => {
                 const slotId = `day-${day.getFullYear()}-${
                   day.getMonth() + 1
@@ -233,119 +233,113 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
 
                 return (
                   <React.Fragment key={slotId}>
-                    {!isPastDay(day) ? (
-                      <Droppable key={slotId} droppableId={slotId}>
-                        {(provided, snapshot) => (
-                          <Paper
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                            elevation={snapshot.isDraggingOver ? 6 : 2}
-                            sx={{
-                              p: 1,
-                              height: "50px",
-                              overflowY: "auto",
-                              overflowX: "hidden",
-                              backgroundColor: snapshot.isDraggingOver
-                                ? "#d7e1fc"
-                                : "#fff",
-                              border: isToday(day)
-                                ? "1px solid #2196f3"
-                                : "1px solid #e0e0e0",
-                              borderRadius: 2,
-                              transition: "background-color 0.2s ease",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 1,
-                              "&:hover": {
-                                backgroundColor: "#f0f0f0",
-                                cursor: "pointer",
-                              },
-                            }}
-                          >
-                            {(mealPool?.[slotId] || []).map((meal) => (
-                              <Box
-                                key={meal.id}
-                                display="flex"
-                                alignItems="center"
-                                gap={1}
-                                width="100%"
+                    {/*{!isPastDay(day) ? (*/}
+                    <Droppable key={slotId} droppableId={slotId}>
+                      {(provided, snapshot) => (
+                        <Box
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                          sx={{
+                            p: "2px 4px",
+                            height: "50px",
+                            overflowY: "auto",
+                            overflowX: "hidden",
+                            borderRight:
+                              idx < 6 ? "1px solid rgb(191, 191, 191)" : "none",
+                            backgroundColor: snapshot.isDraggingOver
+                              ? "#d7e1fc"
+                              : "#fff",
+                            opacity: !isPastDay(day) ? 1 : 0.6,
+                            transition: "background-color 0.2s ease",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 0.5,
+                            "&:hover": {
+                              backgroundColor: "#f0f0f0",
+                              cursor: "pointer",
+                            },
+                          }}
+                        >
+                          {(mealPool?.[slotId] || []).map((meal) => (
+                            <Box
+                              key={meal.id}
+                              display="flex"
+                              alignItems="center"
+                              gap={1}
+                              width="100%"
+                            >
+                              <Tooltip
+                                title={
+                                  <>
+                                    <Typography fontWeight="bold">
+                                      {meal.title}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                      Description: {meal.description || "-"}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                      Time: {meal.cooking_time || "-"}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                      Portions: {meal.portions || "-"}
+                                    </Typography>
+                                  </>
+                                }
+                                arrow
                               >
-                                <Tooltip
-                                  title={
-                                    <>
-                                      <Typography fontWeight="bold">
-                                        {meal.title}
-                                      </Typography>
-                                      <Typography variant="body2">
-                                        Description: {meal.description || "-"}
-                                      </Typography>
-                                      <Typography variant="body2">
-                                        Time: {meal.cooking_time || "-"}
-                                      </Typography>
-                                      <Typography variant="body2">
-                                        Portions: {meal.portions || "-"}
-                                      </Typography>
-                                    </>
-                                  }
-                                  arrow
+                                <Paper
+                                  sx={{
+                                    pl: 0.5,
+                                    height: "20px",
+                                    backgroundColor: "#ffcdd2",
+                                    borderRadius: 1,
+                                    fontSize: "0.7rem",
+                                    cursor: "grab",
+                                    flexGrow: 1,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    textOverflow: "ellipsis",
+                                    "&:hover": {
+                                      backgroundColor: "#ef9a9a",
+                                    },
+                                  }}
                                 >
-                                  <Paper
-                                    elevation={2}
+                                  <Box
                                     sx={{
-                                      pl: 0.5,
-                                      height: "20px",
-                                      backgroundColor: "#ffcdd2",
-                                      borderRadius: 1,
-                                      fontSize: "0.7rem",
-                                      cursor: "grab",
-                                      flexGrow: 1,
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "space-between",
                                       overflow: "hidden",
-                                      whiteSpace: "nowrap",
                                       textOverflow: "ellipsis",
-                                      "&:hover": {
-                                        backgroundColor: "#ef9a9a",
-                                      },
+                                      whiteSpace: "nowrap",
+                                      flex: 1,
+                                      pr: 0,
                                     }}
                                   >
-                                    <Box
-                                      sx={{
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        whiteSpace: "nowrap",
-                                        flex: 1,
-                                        pr: 0,
-                                      }}
-                                    >
-                                      {meal.title}
-                                    </Box>
-                                    <IconButton
-                                      size="small"
-                                      onClick={() =>
-                                        onRemoveMeal(slotId, meal.id)
-                                      }
-                                    >
-                                      <Close fontSize="small" />
-                                    </IconButton>
-                                  </Paper>
-                                </Tooltip>
-                              </Box>
-                            ))}
-                            {provided.placeholder}
-                          </Paper>
-                        )}
-                      </Droppable>
-                    ) : (
-                      <Paper
-                        elevation={2}
+                                    {meal.title}
+                                  </Box>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() =>
+                                      onRemoveMeal(slotId, meal.id)
+                                    }
+                                  >
+                                    <Close fontSize="small" />
+                                  </IconButton>
+                                </Paper>
+                              </Tooltip>
+                            </Box>
+                          ))}
+                          {provided.placeholder}
+                        </Box>
+                      )}
+                    </Droppable>
+                    {/*}) : (
+                      <Box
                         sx={{
                           p: 1,
                           minHeight: "50px",
                           backgroundColor: "#f5f5f5",
-                          border: "1px dashed #ccc",
-                          borderRadius: 2,
                           opacity: 0.6,
                           pointerEvents: "none",
                         }}
@@ -353,19 +347,18 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                         {(mealPool?.[slotId] || []).map((meal) => (
                           <Paper
                             key={meal.id}
-                            elevation={1}
                             sx={{
                               p: 0.5,
                               backgroundColor: "#ddd",
-                              fontSize: "0.85rem",
+                              fontSize: "0.7rem",
                               mb: 1,
                             }}
                           >
                             {meal.title}
                           </Paper>
                         ))}
-                      </Paper>
-                    )}
+                      </Box>
+                    )}*/}
                   </React.Fragment>
                 );
               })}
