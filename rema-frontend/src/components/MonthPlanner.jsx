@@ -74,13 +74,6 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
     );
     return checkDate < todayNoTime;
   };
-  /*const isToday = (d) => d.toDateString() === today.toDateString();
-
-  const isPastDay = (d) => {
-    const td = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const dd = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    return dd < td;
-  };*/
 
   const getIngredientsCurrentWeek = () => {
     const ingredientsCurrentWeek = [];
@@ -208,7 +201,6 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
           }}
         >
           {Array.from({ length: 24 }, (_, i) => {
-            //if (i === 0) return null;
             const hour = i;
             const suffix = hour < 12 ? "AM" : "PM";
             const label = `${hour % 12 === 0 ? 12 : hour % 12}${suffix}`;
@@ -232,8 +224,6 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
         </Box>
 
         {days.map((day, idx) => {
-          //const droppableId = `day-${day.getFullYear()}-${day.getMonth() + 1}-${day.getDate()}`;
-
           return (
             <Box key={idx} flex="1 1 0" px={0.5} minWidth={0}>
               {Array.from({ length: 24 }, (_, hour) => {
@@ -300,9 +290,8 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                                   <Paper
                                     elevation={2}
                                     sx={{
-                                      p: 0.5,
-                                      pr: 0,
-                                      height: "50px",
+                                      pl: 0.5,
+                                      height: "20px",
                                       backgroundColor: "#ffcdd2",
                                       borderRadius: 1,
                                       fontSize: "0.7rem",
