@@ -242,7 +242,9 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                             elevation={snapshot.isDraggingOver ? 6 : 2}
                             sx={{
                               p: 1,
-                              minHeight: "50px",
+                              height: "50px",
+                              overflowY: "auto",
+                              overflowX: "hidden",
                               backgroundColor: snapshot.isDraggingOver
                                 ? "#d7e1fc"
                                 : "#fff",
@@ -250,7 +252,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                                 ? "1px solid #2196f3"
                                 : "1px solid #e0e0e0",
                               borderRadius: 2,
-                              transition: "all 0.2s ease",
+                              transition: "background-color 0.2s ease",
                               display: "flex",
                               flexDirection: "column",
                               gap: 1,
