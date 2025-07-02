@@ -78,16 +78,22 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   const getIngredientsCurrentWeek = () => {
     const ingredientsCurrentWeek = [];
     days.forEach((day) => {
-      const droppableId = `day-${day.getFullYear()}-${
-        day.getMonth() + 1
-      }-${day.getDate()}`;
-      const meals = mealPool?.[droppableId] || [];
-      meals.forEach((meal) => {
-        if (meal.id) {
-          const ingredientNames = meal.ingredients.map((ing) => ing.ingredient);
-          ingredientsCurrentWeek.push(...ingredientNames);
-        }
-      });
+      {
+        Array.from({ length: 24 }, (_, i) => {
+          const slotId = `day-${day.getFullYear()}-${
+            day.getMonth() + 1
+          }-${day.getDate()}-hour-${i}`;
+          const meals = mealPool?.[slotId] || [];
+          meals.forEach((meal) => {
+            if (meal.id) {
+              const ingredientNames = meal.ingredients.map(
+                (ing) => ing.ingredient
+              );
+              ingredientsCurrentWeek.push(...ingredientNames);
+            }
+          });
+        });
+      }
     });
     return ingredientsCurrentWeek;
   };
@@ -186,9 +192,6 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
       {/* Droppable areas for 7 days */}
       <Box
         display="flex"
-        Add
-        commentMore
-        actions
         width="100%"
         pt={1}
         sx={{ position: "relative", height: "1200px" }}
