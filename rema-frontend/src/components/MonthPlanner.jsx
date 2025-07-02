@@ -185,194 +185,164 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
       </Box>
       {/* Droppable areas for 7 days */}
       <Box
-        sx={{
-          position: "relative",
-          width: "100%",
-          pt: 1,
-          height: "1200px",
-          overflow: "hidden",
-        }}
+        display="flex"
+        Add
+        commentMore
+        actions
+        width="100%"
+        pt={1}
+        sx={{ position: "relative", height: "1200px" }}
       >
+        {/* Y-Axis with time labels */}
         <Box
           sx={{
-            position: "absolute",
-            top: 0,
-            left: "30px", // Leave space for Y-axis
-            right: 0,
-            height: "100%",
-            zIndex: 2,
+            width: "30px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            pr: 1,
           }}
         >
-          {Array.from({ length: 24 }, (_, i) => (
-            <Box
-              key={i}
-              sx={{
-                position: "absolute",
-                top: `${i * 50}px`,
-                left: 0,
-                right: 0,
-                borderTop: "1px solid rgb(191, 191, 191)",
-              }}
-            />
-          ))}
-        </Box>
-        <Box
-          display="flex"
-          width="100%"
-          sx={{ position: "relative", zIndex: 1 }}
-        >
-          {/* Y-Axis with time labels */}
-          <Box
-            sx={{
-              width: "30px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-              pr: 1,
-            }}
-          >
-            {Array.from({ length: 24 }, (_, i) => {
-              const hour = i;
-              const suffix = hour < 12 ? "AM" : "PM";
-              const label = `${hour % 12 === 0 ? 12 : hour % 12}${suffix}`;
-              const topPercent = i * 50;
-              return (
-                <Typography
-                  key={i}
-                  variant="caption"
-                  sx={{
-                    position: "absolute",
-                    top: `${topPercent}px`,
-                    fontSize: "0.7rem",
-                    color: "#555",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {label}
-                </Typography>
-              );
-            })}
-          </Box>
-
-          {days.map((day, idx) => {
+          {Array.from({ length: 24 }, (_, i) => {
+            const hour = i;
+            const suffix = hour < 12 ? "AM" : "PM";
+            const label = `${hour % 12 === 0 ? 12 : hour % 12}${suffix}`;
+            const topPercent = i * 50;
             return (
-              <Box key={idx} flex="1 1 0" minWidth={0}>
-                {Array.from({ length: 24 }, (_, hour) => {
-                  const slotId = `day-${day.getFullYear()}-${
-                    day.getMonth() + 1
-                  }-${day.getDate()}-hour-${hour}`;
-
-                  return (
-                    <React.Fragment key={slotId}>
-                      <Droppable key={slotId} droppableId={slotId}>
-                        {(provided, snapshot) => (
-                          <Box
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                            sx={{
-                              p: "2px 4px",
-                              height: "50px",
-                              overflowY: "auto",
-                              overflowX: "hidden",
-                              borderRight:
-                                idx < 6
-                                  ? "1px solid rgb(191, 191, 191)"
-                                  : "none",
-                              backgroundColor: snapshot.isDraggingOver
-                                ? "#d7e1fc"
-                                : "#fff",
-                              opacity: !isPastDay(day) ? 1 : 0.6,
-                              transition: "background-color 0.2s ease",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 0.5,
-                              "&:hover": {
-                                backgroundColor: "#f0f0f0",
-                                cursor: "pointer",
-                              },
-                            }}
-                          >
-                            {(mealPool?.[slotId] || []).map((meal) => (
-                              <Box
-                                key={meal.id}
-                                display="flex"
-                                alignItems="center"
-                                gap={1}
-                                width="100%"
-                              >
-                                <Tooltip
-                                  title={
-                                    <>
-                                      <Typography fontWeight="bold">
-                                        {meal.title}
-                                      </Typography>
-                                      <Typography variant="body2">
-                                        Description: {meal.description || "-"}
-                                      </Typography>
-                                      <Typography variant="body2">
-                                        Time: {meal.cooking_time || "-"}
-                                      </Typography>
-                                      <Typography variant="body2">
-                                        Portions: {meal.portions || "-"}
-                                      </Typography>
-                                    </>
-                                  }
-                                  arrow
-                                >
-                                  <Paper
-                                    sx={{
-                                      pl: 0.5,
-                                      height: "20px",
-                                      backgroundColor: "#ffcdd2",
-                                      borderRadius: 1,
-                                      fontSize: "0.7rem",
-                                      cursor: "grab",
-                                      flexGrow: 1,
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "space-between",
-                                      overflow: "hidden",
-                                      whiteSpace: "nowrap",
-                                      textOverflow: "ellipsis",
-                                      "&:hover": {
-                                        backgroundColor: "#ef9a9a",
-                                      },
-                                    }}
-                                  >
-                                    <Box
-                                      sx={{
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        whiteSpace: "nowrap",
-                                        flex: 1,
-                                        pr: 0,
-                                      }}
-                                    >
-                                      {meal.title}
-                                    </Box>
-                                    <IconButton
-                                      size="small"
-                                      onClick={() =>
-                                        onRemoveMeal(slotId, meal.id)
-                                      }
-                                    >
-                                      <Close fontSize="small" />
-                                    </IconButton>
-                                  </Paper>
-                                </Tooltip>
-                              </Box>
-                            ))}
-                            {provided.placeholder}
-                          </Box>
-                        )}
-                      </Droppable>
-                    </React.Fragment>
-                  );
-                })}
-              </Box>
+              <Typography
+                key={i}
+                variant="caption"
+                sx={{
+                  position: "absolute",
+                  top: `${topPercent}px`,
+                  fontSize: "0.7rem",
+                  color: "#555",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {label}
+              </Typography>
             );
           })}
         </Box>
+
+        {days.map((day, idx) => {
+          return (
+            <Box key={idx} flex="1 1 0" minWidth={0}>
+              {Array.from({ length: 24 }, (_, hour) => {
+                const slotId = `day-${day.getFullYear()}-${
+                  day.getMonth() + 1
+                }-${day.getDate()}-hour-${hour}`;
+
+                return (
+                  <React.Fragment key={slotId}>
+                    <Droppable key={slotId} droppableId={slotId}>
+                      {(provided, snapshot) => (
+                        <Box
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                          sx={{
+                            height: "50px",
+                            overflowX: "hidden",
+                            borderTop: "1px solid rgb(191, 191, 191)",
+                            alignItems: "center",
+                            boxSizing: "border-box",
+                            borderRight:
+                              idx < 6 ? "1px solid rgb(191, 191, 191)" : "none",
+                            backgroundColor: snapshot.isDraggingOver
+                              ? "#d7e1fc"
+                              : "#fff",
+                            opacity: !isPastDay(day) ? 1 : 0.6,
+                            transition: "background-color 0.2s ease",
+                            display: "flex",
+                            flexDirection: "column",
+                            px: 0.5,
+                            "&:hover": {
+                              backgroundColor: "#f0f0f0",
+                              cursor: "pointer",
+                            },
+                          }}
+                        >
+                          {(mealPool?.[slotId] || []).map((meal) => (
+                            <Box
+                              key={meal.id}
+                              display="flex"
+                              alignItems="center"
+                              gap={1}
+                              width="100%"
+                            >
+                              <Tooltip
+                                title={
+                                  <>
+                                    <Typography fontWeight="bold">
+                                      {meal.title}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                      Description: {meal.description || "-"}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                      Time: {meal.cooking_time || "-"}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                      Portions: {meal.portions || "-"}
+                                    </Typography>
+                                  </>
+                                }
+                                arrow
+                              >
+                                <Paper
+                                  sx={{
+                                    pl: 0.5,
+                                    height: "20px",
+                                    backgroundColor: "#ffcdd2",
+                                    borderRadius: 1,
+                                    fontSize: "0.7rem",
+                                    cursor: "grab",
+                                    flexGrow: 1,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    textOverflow: "ellipsis",
+                                    "&:hover": {
+                                      backgroundColor: "#ef9a9a",
+                                    },
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      whiteSpace: "nowrap",
+                                      flex: 1,
+                                      pr: 0,
+                                    }}
+                                  >
+                                    {meal.title}
+                                  </Box>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() =>
+                                      onRemoveMeal(slotId, meal.id)
+                                    }
+                                  >
+                                    <Close fontSize="small" />
+                                  </IconButton>
+                                </Paper>
+                              </Tooltip>
+                            </Box>
+                          ))}
+                          {provided.placeholder}
+                        </Box>
+                      )}
+                    </Droppable>
+                  </React.Fragment>
+                );
+              })}
+            </Box>
+          );
+        })}
       </Box>
     </Box>
   );
