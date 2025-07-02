@@ -109,7 +109,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   };
 
   return (
-    <Box>
+    <Box sx={{ pb: 6 }}>
       <Box
         sx={{
           position: "sticky",
@@ -256,7 +256,9 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                             transition: "background-color 0.2s ease",
                             display: "flex",
                             flexDirection: "column",
-                            px: 0.5,
+                            px: 0.2,
+                            py: 0.2,
+                            gap: 0.5,
                             "&:hover": {
                               backgroundColor: "#f0f0f0",
                               cursor: "pointer",
