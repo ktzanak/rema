@@ -84,6 +84,14 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
     return checkDate < todayNoTime;
   };
 
+  const isPastSlot = (date, hour) => {
+    const now = new Date();
+    const slotDate = new Date(date);
+    slotDate.setHours(hour, 0, 0, 0);
+
+    return slotDate < now;
+  };
+
   const getIngredientsCurrentWeek = () => {
     const ingredientsCurrentWeek = [];
     days.forEach((day) => {
@@ -93,14 +101,16 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
             day.getMonth() + 1
           }-${day.getDate()}-hour-${i}`;
           const meals = mealPool?.[slotId] || [];
-          meals.forEach((meal) => {
-            if (meal.id) {
-              const ingredientNames = meal.ingredients.map(
-                (ing) => ing.ingredient
-              );
-              ingredientsCurrentWeek.push(...ingredientNames);
-            }
-          });
+          if (!isPastSlot(day, i)) {
+            meals.forEach((meal) => {
+              if (meal.id) {
+                const ingredientNames = meal.ingredients.map(
+                  (ing) => ing.ingredient
+                );
+                ingredientsCurrentWeek.push(...ingredientNames);
+              }
+            });
+          }
         });
       }
     });
@@ -297,7 +307,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                             backgroundColor: snapshot.isDraggingOver
                               ? "#d7e1fc"
                               : "#fff",
-                            opacity: !isPastDay(day) ? 1 : 0.6,
+                            opacity: !isPastSlot(day, hour) ? 1 : 0.6,
                             transition: "background-color 0.2s ease",
                             display: "flex",
                             flexDirection: "column",
