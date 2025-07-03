@@ -78,7 +78,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   const getIngredientsCurrentWeek = () => {
     const ingredientsCurrentWeek = [];
     days.forEach((day) => {
-      {
+      if (!isPastDay(day)) {
         Array.from({ length: 24 }, (_, i) => {
           const slotId = `day-${day.getFullYear()}-${
             day.getMonth() + 1
@@ -171,7 +171,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                 variant="body2"
                 align="center"
                 sx={{
-                  fontWeight: "bold",
+                  fontWeight: "600",
                   color: isToday(day)
                     ? "#1976d2"
                     : isPastDay(day)
