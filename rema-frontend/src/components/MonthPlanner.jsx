@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import {
   Paper,
@@ -45,6 +45,15 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   const baseDate = new Date(today);
   baseDate.setDate(baseDate.getDate() + weekOffset * 7);
   const currentWeekStart = getStartOfWeek(baseDate);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // update every 1 minute
+
+    return () => clearInterval(interval);
+  }, []);
 
   const days = Array.from({ length: 7 }, (_, i) => {
     const day = new Date(currentWeekStart);
@@ -231,7 +240,40 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
 
         {days.map((day, idx) => {
           return (
-            <Box key={idx} flex="1 1 0" minWidth={0}>
+            <Box
+              key={idx}
+              flex="1 1 0"
+              minWidth={0}
+              sx={{ position: "relative" }}
+            >
+              {isToday(day) && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: `${
+                      (currentTime.getHours() * 60 + currentTime.getMinutes()) *
+                      (50 / 60)
+                    }px`,
+                    left: 0,
+                    right: 0,
+                    height: "2px",
+                    backgroundColor: "red",
+                    zIndex: 10,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "-4px",
+                      left: "-5px",
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: "red",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </Box>
+              )}
               {Array.from({ length: 24 }, (_, hour) => {
                 const slotId = `day-${day.getFullYear()}-${
                   day.getMonth() + 1
