@@ -579,3 +579,54 @@ export const foodQuote = async (req, res) => {
     res.json({ quote: getFallback() });
   }
 };
+
+//add meal to calendar
+export const addtocalendar = async (req, res) => {
+  const { recipe_id, meal_date } = req.body;
+  try {
+    await pool.query(
+      `INSERT INTO calendar_meals (recipe_id, meal_date)
+       VALUES (?, ?)
+       ON DUPLICATE KEY UPDATE recipe_id = VALUES(recipe_id)`,
+      [recipe_id, meal_date]
+    );
+    res.status(200).json({ message: "Recipe added to calendar." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to add recipe to calendar." });
+  }
+};
+
+//delete meal from calendar
+export const deletefromcalendar = async (req, res) => {
+  const { recipe_id, meal_date } = req.body;
+  try {
+    await pool.query(
+      `DELETE FROM calendar_meals
+       WHERE recipe_id = ? AND meal_date = ?`,
+      [recipe_id, meal_date]
+    );
+    res.status(200).json({ message: "Recipe removed from calendar." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to remove recipe from calendar." });
+  }
+};
+
+//list the monthly calendar meals
+export const listmonthlycalendarmeals = async (req, res) => {
+  const { year, month } = req.params;
+  try {
+    const [rows] = await pool.query(
+      `SELECT cp.id, cp.meal_date, r.*
+       FROM calendar_meals cp
+       JOIN recipes r ON cp.recipe_id = r.id
+       WHERE YEAR(cp.meal_date) = ? AND MONTH(cp.meal_date) = ?`,
+      [year, month]
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve calendar." });
+  }
+};
