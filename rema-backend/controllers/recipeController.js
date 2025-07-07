@@ -582,13 +582,13 @@ export const foodQuote = async (req, res) => {
 
 //add meal to calendar
 export const addtocalendar = async (req, res) => {
-  const { recipe_id, meal_date } = req.body;
+  const { recipe_id, meal_date, meal_time } = req.body;
   try {
     await pool.query(
-      `INSERT INTO calendar_meals (recipe_id, meal_date)
-       VALUES (?, ?)
+      `INSERT INTO calendar_meals (recipe_id, meal_date, meal_time)
+       VALUES (?, ?, ?)
        ON DUPLICATE KEY UPDATE recipe_id = VALUES(recipe_id)`,
-      [recipe_id, meal_date]
+      [recipe_id, meal_date, meal_time]
     );
     res.status(200).json({ message: "Recipe added to calendar." });
   } catch (error) {
@@ -599,12 +599,12 @@ export const addtocalendar = async (req, res) => {
 
 //delete meal from calendar
 export const deletefromcalendar = async (req, res) => {
-  const { recipe_id, meal_date } = req.body;
+  const { recipe_id, meal_date, meal_time } = req.body;
   try {
     await pool.query(
       `DELETE FROM calendar_meals
-       WHERE recipe_id = ? AND meal_date = ?`,
-      [recipe_id, meal_date]
+       WHERE recipe_id = ? AND meal_date = ? AND meal_time = ?`,
+      [recipe_id, meal_date, meal_time]
     );
     res.status(200).json({ message: "Recipe removed from calendar." });
   } catch (error) {
@@ -618,10 +618,11 @@ export const listmonthlycalendarmeals = async (req, res) => {
   const { year, month } = req.params;
   try {
     const [rows] = await pool.query(
-      `SELECT cp.id, cp.meal_date, r.*
-       FROM calendar_meals cp
-       JOIN recipes r ON cp.recipe_id = r.id
-       WHERE YEAR(cp.meal_date) = ? AND MONTH(cp.meal_date) = ?`,
+      `SELECT cm.id, cm.meal_date, cm.meal_time, r.*
+       FROM calendar_meals cm
+       JOIN recipes r ON cm.recipe_id = r.id
+       WHERE YEAR(cm.meal_date) = ? AND MONTH(cm.meal_date) = ?
+       ORDER BY cm.meal_date, cm.meal_time`,
       [year, month]
     );
     res.status(200).json(rows);
