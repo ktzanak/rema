@@ -9,7 +9,7 @@ import {
   foodQuote,
   addtocalendar,
   deletefromcalendar,
-  listmonthlycalendarmeals,
+  listcalendarmeals,
 } from "../controllers/recipeController.js";
 
 const router = express.Router();
@@ -37,6 +37,6 @@ router.get("/hasOpenaiKey", (req, res) => {
 });
 router.post("/addtocalendar", addtocalendar);
 router.delete("/deletefromcalendar/:recipeid", deletefromcalendar);
-router.get("/listmonthlycalendarmeals/:year/:month", listmonthlycalendarmeals);
+router.get("/listcalendarmeals", listcalendarmeals);
 
 export default router;

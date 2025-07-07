@@ -613,8 +613,8 @@ export const deletefromcalendar = async (req, res) => {
   }
 };
 
-//list the monthly calendar meals
-export const listmonthlycalendarmeals = async (req, res) => {
+//list the calendar meals
+export const listcalendarmeals = async (req, res) => {
   const { year, month } = req.params;
   try {
     const [rows] = await pool.query(
