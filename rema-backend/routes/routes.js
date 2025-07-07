@@ -7,6 +7,9 @@ import {
   raterecipe,
   askai,
   foodQuote,
+  addtocalendar,
+  deletefromcalendar,
+  listmonthlycalendarmeals,
 } from "../controllers/recipeController.js";
 
 const router = express.Router();
@@ -32,5 +35,8 @@ router.get("/hasOpenaiKey", (req, res) => {
     res.json({ ok: false });
   }
 });
+router.post("/addtocalendar", addtocalendar);
+router.delete("/deletefromcalendar/:recipeid", deletefromcalendar);
+router.get("/listmonthlycalendarmeals/:year/:month", listmonthlycalendarmeals);
 
 export default router;
