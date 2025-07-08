@@ -21,6 +21,10 @@ function getStartOfWeek(date) {
   return start;
 }
 
+function pad2(num) {
+  return num.toString().padStart(2, "0");
+}
+
 const monthNames = [
   "January",
   "February",
@@ -97,9 +101,10 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
     days.forEach((day) => {
       if (!isPastDay(day)) {
         Array.from({ length: 24 }, (_, i) => {
-          const slotId = `day-${day.getFullYear()}-${
+          const slotId = `day-${day.getFullYear()}-${pad2(
             day.getMonth() + 1
-          }-${day.getDate()}-hour-${i}`;
+          )}-${pad2(day.getDate())}-hour-${pad2(i)}`;
+
           const meals = mealPool?.[slotId] || [];
           if (!isPastSlot(day, i)) {
             meals.forEach((meal) => {
@@ -285,9 +290,9 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                 </Box>
               )}
               {Array.from({ length: 24 }, (_, hour) => {
-                const slotId = `day-${day.getFullYear()}-${
+                const slotId = `day-${day.getFullYear()}-${pad2(
                   day.getMonth() + 1
-                }-${day.getDate()}-hour-${hour}`;
+                )}-${pad2(day.getDate())}-hour-${pad2(hour)}`;
 
                 return (
                   <React.Fragment key={slotId}>
