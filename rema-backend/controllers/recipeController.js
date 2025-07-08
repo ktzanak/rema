@@ -615,15 +615,11 @@ export const deletefromcalendar = async (req, res) => {
 
 //list the calendar meals
 export const listcalendarmeals = async (req, res) => {
-  const { year, month } = req.params;
   try {
     const [rows] = await pool.query(
       `SELECT cm.id, cm.meal_date, cm.meal_time, r.*
        FROM calendar_meals cm
-       JOIN recipes r ON cm.recipe_id = r.id
-       WHERE YEAR(cm.meal_date) = ? AND MONTH(cm.meal_date) = ?
-       ORDER BY cm.meal_date, cm.meal_time`,
-      [year, month]
+       JOIN recipes r ON cm.recipe_id = r.id`
     );
     res.status(200).json(rows);
   } catch (error) {
