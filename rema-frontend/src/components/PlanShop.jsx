@@ -45,7 +45,7 @@ export default function PlanShop() {
       );
       if (!response.ok) throw new Error("Failed to fetch calendar meals");
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       const grouped = {};
       data.forEach(({ recipe_id, meal_date, meal_time, recipe }) => {
         const key = `day-${meal_date}-${meal_time}`;
@@ -137,6 +137,7 @@ export default function PlanShop() {
   }, [filteredRecipes, page, rowsPerPage]);
 
   const handleDragEnd = (result) => {
+    let mealToSave = null;
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -155,17 +156,18 @@ export default function PlanShop() {
     }
     const mealDate = match[1];
     const mealTime = match[2];
+    console.log(mealPool);
+    if (
+      source.droppableId === "recipeList" &&
+      destination.droppableId.startsWith("day-")
+    ) {
+      setMealPool((prev) => {
+        const updated = { ...prev };
 
-    setMealPool((prev) => {
-      const updated = { ...prev };
-
-      if (
-        source.droppableId === "recipeList" &&
-        destination.droppableId.startsWith("day-")
-      ) {
         if (!updated[destination.droppableId])
           updated[destination.droppableId] = [];
 
+        // Check if meal already exists in that hour slot
         const alreadyExists = updated[destination.droppableId].some(
           (meal) => meal.id === droppedRecipe.id
         );
@@ -175,13 +177,15 @@ export default function PlanShop() {
             0,
             droppedRecipe
           );
+          mealToSave = droppedRecipe;
         }
-        saveMeal(droppedRecipe.id, mealDate, mealTime);
+        console.log(updated);
         return updated;
+      });
+      if (mealToSave) {
+        saveMeal(mealToSave.id, mealDate, mealTime);
       }
-
-      return prev;
-    });
+    }
   };
 
   const handleRemoveMeal = (dayId, mealId) => {
