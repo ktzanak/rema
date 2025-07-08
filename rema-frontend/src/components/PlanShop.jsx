@@ -37,8 +37,66 @@ export default function PlanShop() {
     }
   };
 
+  const fetchCalendarMeals = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/listcalendarmeals"
+      );
+      if (!response.ok) throw new Error("Failed to fetch calendar meals");
+      const data = await response.json();
+
+      const grouped = {};
+      data.forEach(({ recipe_id, meal_date, meal_time, recipe }) => {
+        const key = `day-${meal_date}-${meal_time}`;
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(recipe);
+      });
+      setMealPool(grouped);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  async function saveMeal(recipeId, mealDate, mealTime) {
+    try {
+      const response = await fetch("http://localhost:8000/api/addtocalendar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipe_id: recipeId,
+          meal_date: mealDate,
+          meal_time: mealTime,
+        }),
+      });
+      if (!response.ok) throw new Error("Failed to save meal");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function deleteMeal(recipeId, mealDate, mealTime) {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/deletefromcalendar",
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            recipe_id: recipeId,
+            meal_date: mealDate,
+            meal_time: mealTime,
+          }),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to delete meal");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
     fetchRecipes();
+    fetchCalendarMeals();
   }, []);
 
   const handleChangePage = (newPage) => {
@@ -87,6 +145,16 @@ export default function PlanShop() {
     );
     if (!droppedRecipe) return;
 
+    const match = destination.droppableId.match(
+      /^day-(\d{4}-\d{2}-\d{2})-hour-(\d{2})$/
+    );
+    if (!match) {
+      console.error("Invalid droppableId format:", destination.droppableId);
+      return;
+    }
+    const mealDate = match[1];
+    const mealTime = `${match[2]}:00:00`;
+
     setMealPool((prev) => {
       const updated = { ...prev };
 
@@ -106,6 +174,7 @@ export default function PlanShop() {
             0,
             droppedRecipe
           );
+          saveMeal(droppedRecipe.id, mealDate, mealTime);
         }
 
         return updated;
@@ -119,6 +188,13 @@ export default function PlanShop() {
           updated[source.droppableId] = updated[source.droppableId].filter(
             (meal) => meal.id.toString() !== draggableId
           );
+          // Delete from DB here:
+          const srcMatch = source.droppableId.match(
+            /^day-(\d{4}-\d{2}-\d{2})-hour-(\d{2})$/
+          );
+          if (srcMatch) {
+            deleteMeal(draggableId, srcMatch[1], `${match[2]}:00:00`);
+          }
         }
 
         if (!updated[destination.droppableId])
@@ -128,7 +204,7 @@ export default function PlanShop() {
           0,
           droppedRecipe
         );
-
+        saveMeal(droppedRecipe.id, mealDate, mealTime);
         return updated;
       }
 
@@ -137,11 +213,19 @@ export default function PlanShop() {
   };
 
   const handleRemoveMeal = (dayId, mealId) => {
+    const match = dayId.match(/^day-(\d{4}-\d{2}-\d{2})-hour-(\d{2})$/);
+    if (!match) {
+      console.error("Invalid dayId format:", dayId);
+      return;
+    }
+    const mealDate = match[1];
+    const mealTime = `${match[2]}:00:00`;
     setMealPool((prev) => {
       const updated = { ...prev };
       updated[dayId] = updated[dayId].filter((meal) => meal.id !== mealId);
       return updated;
     });
+    deleteMeal(mealId, mealDate, mealTime);
   };
 
   return (
