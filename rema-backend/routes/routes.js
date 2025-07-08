@@ -36,7 +36,10 @@ router.get("/hasOpenaiKey", (req, res) => {
   }
 });
 router.post("/addtocalendar", addtocalendar);
-router.delete("/deletefromcalendar/:recipeid", deletefromcalendar);
+router.delete(
+  "/deletefromcalendar/:recipeid/:meal_date/:meal_time",
+  deletefromcalendar
+);
 router.get("/listcalendarmeals", listcalendarmeals);
 
 export default router;

@@ -599,7 +599,7 @@ export const addtocalendar = async (req, res) => {
 
 //delete meal from calendar
 export const deletefromcalendar = async (req, res) => {
-  const { recipe_id, meal_date, meal_time } = req.body;
+  const { recipe_id, meal_date, meal_time } = req.params;
   try {
     await pool.query(
       `DELETE FROM calendar_meals
