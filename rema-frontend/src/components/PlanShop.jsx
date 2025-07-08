@@ -31,6 +31,7 @@ export default function PlanShop() {
         throw new Error("Failed to fetch recipes");
       }
       const data = await response.json();
+
       setRecipes(data);
     } catch (error) {
       console.error("Error fetching meal pool:", error);
@@ -44,7 +45,7 @@ export default function PlanShop() {
       );
       if (!response.ok) throw new Error("Failed to fetch calendar meals");
       const data = await response.json();
-
+      console.log(data);
       const grouped = {};
       data.forEach(({ recipe_id, meal_date, meal_time, recipe }) => {
         const key = `day-${meal_date}-${meal_time}`;
@@ -153,7 +154,7 @@ export default function PlanShop() {
       return;
     }
     const mealDate = match[1];
-    const mealTime = `${match[2]}:00:00`;
+    const mealTime = match[2];
 
     setMealPool((prev) => {
       const updated = { ...prev };
@@ -174,36 +175,7 @@ export default function PlanShop() {
             0,
             droppedRecipe
           );
-          saveMeal(droppedRecipe.id, mealDate, mealTime);
         }
-
-        return updated;
-      }
-
-      if (
-        source.droppableId.startsWith("day-") &&
-        destination.droppableId.startsWith("day-")
-      ) {
-        if (updated[source.droppableId]) {
-          updated[source.droppableId] = updated[source.droppableId].filter(
-            (meal) => meal.id.toString() !== draggableId
-          );
-          // Delete from DB here:
-          const srcMatch = source.droppableId.match(
-            /^day-(\d{4}-\d{2}-\d{2})-hour-(\d{2})$/
-          );
-          if (srcMatch) {
-            deleteMeal(draggableId, srcMatch[1], `${match[2]}:00:00`);
-          }
-        }
-
-        if (!updated[destination.droppableId])
-          updated[destination.droppableId] = [];
-        updated[destination.droppableId].splice(
-          destination.index,
-          0,
-          droppedRecipe
-        );
         saveMeal(droppedRecipe.id, mealDate, mealTime);
         return updated;
       }
