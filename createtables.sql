@@ -59,7 +59,7 @@ CREATE TABLE ratings (
 CREATE TABLE calendar_meals (
     id INT AUTO_INCREMENT PRIMARY KEY,
     recipe_id INT NOT NULL,
-    meal_date DATE NOT NULL,
-    meal_time TIME NOT NULL,
+    meal_date VARCHAR(255) NOT NULL,
+    meal_time VARCHAR(255) NOT NULL,
     FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
 );
