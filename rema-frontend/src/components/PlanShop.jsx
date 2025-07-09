@@ -47,11 +47,12 @@ export default function PlanShop() {
       const data = await response.json();
       //console.log(data);
       const grouped = {};
-      data.forEach(({ recipe_id, meal_date, meal_time, recipe }) => {
-        const key = `day-${meal_date}-${meal_time}`;
+      data.forEach(({ id, meal_date, meal_time, recipe }) => {
+        const key = `day-${meal_date}-hour-${meal_time}`;
         if (!grouped[key]) grouped[key] = [];
         grouped[key].push(recipe);
       });
+      //console.log(grouped);
       setMealPool(grouped);
     } catch (err) {
       console.error(err);
@@ -172,6 +173,7 @@ export default function PlanShop() {
           );
           mealToSave = droppedRecipe;
         }
+        //console.log(updated);
         return updated;
       });
       if (mealToSave) {
