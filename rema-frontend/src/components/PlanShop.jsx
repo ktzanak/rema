@@ -78,15 +78,9 @@ export default function PlanShop() {
   async function deleteMeal(recipeId, mealDate, mealTime) {
     try {
       const response = await fetch(
-        "http://localhost:8000/api/deletefromcalendar",
+        `http://localhost:8000/api/deletefromcalendar/${recipeId}/${mealDate}/${mealTime}`,
         {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            recipe_id: recipeId,
-            meal_date: mealDate,
-            meal_time: mealTime,
-          }),
         }
       );
       if (!response.ok) throw new Error("Failed to delete meal");
@@ -156,7 +150,6 @@ export default function PlanShop() {
     }
     const mealDate = match[1];
     const mealTime = match[2];
-    console.log(mealPool);
     if (
       source.droppableId === "recipeList" &&
       destination.droppableId.startsWith("day-")
@@ -179,7 +172,6 @@ export default function PlanShop() {
           );
           mealToSave = droppedRecipe;
         }
-        console.log(updated);
         return updated;
       });
       if (mealToSave) {
@@ -195,7 +187,7 @@ export default function PlanShop() {
       return;
     }
     const mealDate = match[1];
-    const mealTime = `${match[2]}:00:00`;
+    const mealTime = match[2];
     setMealPool((prev) => {
       const updated = { ...prev };
       updated[dayId] = updated[dayId].filter((meal) => meal.id !== mealId);
