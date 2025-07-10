@@ -68,10 +68,12 @@ export default function ShoppingListPdf(dateAndIngredients) {
               <Image style={styles.image} src={bwLogo} />
             </Text>
             <View style={styles.inlinetop2}>
-              <Text style={styles.title}>Shopping list</Text>
+              <Text style={styles.title}>Weekly Shopping List</Text>
               <Text style={styles.textdate}>
                 <Text style={{ fontFamily: "Times-Bold" }}>Date: </Text>
                 {dateAndIngredients.todaydate}
+                <Text style={{ fontFamily: "Times-Bold" }}>Week: </Text>
+                {dateAndIngredients.weekDate}
               </Text>
             </View>
           </View>
