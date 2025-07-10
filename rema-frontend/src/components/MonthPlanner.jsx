@@ -25,6 +25,12 @@ function pad2(num) {
   return num.toString().padStart(2, "0");
 }
 
+function formatWeekDate(date) {
+  return `${pad2(date.getDate())}.${pad2(
+    date.getMonth() + 1
+  )}.${date.getFullYear()}`;
+}
+
 const monthNames = [
   "January",
   "February",
@@ -49,6 +55,9 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
   const baseDate = new Date(today);
   baseDate.setDate(baseDate.getDate() + weekOffset * 7);
   const currentWeekStart = getStartOfWeek(baseDate);
+  const currentWeekEnd = new Date(currentWeekStart);
+  currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
+
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -108,6 +117,7 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
           const meals = mealPool?.[slotId] || [];
           if (!isPastSlot(day, i)) {
             meals.forEach((meal) => {
+              //console.log(meal);
               if (meal.id) {
                 const ingredientNames = meal.ingredients.map(
                   (ing) => ing.ingredient
@@ -130,10 +140,17 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
       today.getMonth() + 1
     }.${today.getFullYear()}`;
     const fileName = "ReMa_shopping_list_" + formatteddate1 + ".pdf";
+    const startDateFormatted = formatWeekDate(currentWeekStart);
+    const endDateFormatted = formatWeekDate(currentWeekEnd);
+    const weekDate = startDateFormatted + " - " + endDateFormatted;
 
     const ingredients = getIngredientsCurrentWeek();
     const blob = await pdf(
-      <ShoppingListPdf todaydate={formatteddate2} ingredients={ingredients} />
+      <ShoppingListPdf
+        todaydate={formatteddate2}
+        ingredients={ingredients}
+        weekDate={weekDate}
+      />
     ).toBlob();
     saveAs(blob, fileName);
   };
