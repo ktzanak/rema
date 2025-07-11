@@ -38,6 +38,12 @@ export default function ShoppingListPdf(dateAndIngredients) {
       minWidth: 435,
       maxWidth: 435,
     },
+    textweek: {
+      fontSize: 12,
+      marginVertical: -10,
+      minWidth: 435,
+      maxWidth: 435,
+    },
     inlinetop1: {
       flexDirection: "row",
       justifyContent: "space-evenly",
@@ -72,6 +78,8 @@ export default function ShoppingListPdf(dateAndIngredients) {
               <Text style={styles.textdate}>
                 <Text style={{ fontFamily: "Times-Bold" }}>Date: </Text>
                 {dateAndIngredients.todaydate}
+              </Text>
+              <Text style={styles.textweek}>
                 <Text style={{ fontFamily: "Times-Bold" }}>Week: </Text>
                 {dateAndIngredients.weekDate}
               </Text>
