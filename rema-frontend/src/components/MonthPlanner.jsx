@@ -117,7 +117,6 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
           const meals = mealPool?.[slotId] || [];
           if (!isPastSlot(day, i)) {
             meals.forEach((meal) => {
-              //console.log(meal);
               if (meal.id) {
                 const ingredientNames = meal.ingredients.map(
                   (ing) => ing.ingredient

@@ -46,7 +46,7 @@ export default function PlanShop() {
       if (!response.ok) throw new Error("Failed to fetch calendar meals");
       const data = await response.json();
       const grouped = {};
-      data.forEach(({ meal_date, meal_time, ...recipe }) => {
+      data.forEach(({ meal_date, meal_time, recipe }) => {
         const key = `day-${meal_date}-hour-${meal_time}`;
         if (!grouped[key]) grouped[key] = [];
         grouped[key].push(recipe);
