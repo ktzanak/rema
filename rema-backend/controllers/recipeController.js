@@ -617,11 +617,98 @@ export const deletefromcalendar = async (req, res) => {
 export const listcalendarmeals = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      `SELECT cm.id, cm.meal_date, cm.meal_time, r.*
-       FROM calendar_meals cm
-       JOIN recipes r ON cm.recipe_id = r.id`
+      `SELECT 
+        cm.id,
+        cm.meal_date,
+        cm.meal_time,
+        rec.id AS recipe_id,
+        rec.title,
+        rec.description,
+        rec.cooking_time,
+        rec.portions,
+        rec.created_at,
+        ing.id AS ingredient_id,
+        ing.ingredient,
+        ins.id AS instruction_id,
+        ins.step_number,
+        ins.instruction,
+        cat.id AS category_id,
+        cat.category,
+        tag.id AS tag_id,
+        tag.tag,
+        rat.id AS rating_id,
+        rat.rating
+      FROM calendar_meals cm
+      JOIN recipes rec ON cm.recipe_id = rec.id
+      LEFT JOIN ingredients ing ON rec.id = ing.recipe_id
+      LEFT JOIN instructions ins ON rec.id = ins.recipe_id
+      LEFT JOIN recipe_categories rc ON rec.id = rc.recipe_id
+      LEFT JOIN categories cat ON rc.category_id = cat.id
+      LEFT JOIN recipe_tags rt ON rec.id = rt.recipe_id
+      LEFT JOIN tags tag ON rt.tag_id = tag.id
+      LEFT JOIN ratings rat ON rec.id = rat.recipe_id
+      ORDER BY cm.meal_date, cm.meal_time `
     );
-    res.status(200).json(rows);
+
+    const mealMap = new Map();
+
+    for (const row of rows) {
+      const key = `${row.id}`;
+
+      if (!mealMap.has(key)) {
+        mealMap.set(key, {
+          id: row.id,
+          meal_date: row.meal_date,
+          meal_time: row.meal_time,
+          recipe: {
+            id: row.recipe_id,
+            title: row.title,
+            description: row.description,
+            cooking_time: row.cooking_time,
+            portions: row.portions,
+            created_at: row.created_at,
+            ingredients: [],
+            instructions: [],
+            tags: [],
+            category: row.category,
+            rating: row.rating !== null ? Number(row.rating) : null,
+          },
+        });
+      }
+
+      const recipe = mealMap.get(key).recipe;
+
+      if (
+        row.ingredient_id &&
+        !recipe.ingredients.some((i) => i.id === row.ingredient_id)
+      ) {
+        recipe.ingredients.push({
+          id: row.ingredient_id,
+          ingredient: row.ingredient,
+        });
+      }
+
+      if (
+        row.instruction_id &&
+        !recipe.instructions.some((i) => i.id === row.instruction_id)
+      ) {
+        recipe.instructions.push({
+          id: row.instruction_id,
+          step_number: row.step_number,
+          instruction: row.instruction,
+        });
+      }
+
+      if (row.tag_id && !recipe.tags.some((t) => t.id === row.tag_id)) {
+        recipe.tags.push({
+          id: row.tag_id,
+          tag: row.tag,
+        });
+      }
+    }
+
+    const calendarMeals = Array.from(mealMap.values());
+    res.status(200).json(calendarMeals);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to retrieve calendar." });
