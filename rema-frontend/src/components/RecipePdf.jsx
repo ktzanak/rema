@@ -8,7 +8,7 @@ import {
 } from "@react-pdf/renderer";
 import bwLogo from "../assets/bw_remalogo.png";
 
-function PdfDocu(recipeinfoingredientsinstructions) {
+function RecipePdf(recipeinfoingredientsinstructions) {
   const styles = StyleSheet.create({
     page: { backgroundColor: "white", margin: 10, fontFamily: "Times-Roman" },
     section: { color: "black", textAlign: "center" },
@@ -159,4 +159,4 @@ function PdfDocu(recipeinfoingredientsinstructions) {
     </Document>
   );
 }
-export default PdfDocu;
+export default RecipePdf;

@@ -6,6 +6,10 @@ import {
   updaterecipe,
   raterecipe,
   askai,
+  foodQuote,
+  addtocalendar,
+  deletefromcalendar,
+  listcalendarmeals,
 } from "../controllers/recipeController.js";
 
 const router = express.Router();
@@ -16,6 +20,14 @@ router.delete("/deleterecipe/:recipeid", deleterecipe);
 router.put("/updaterecipe/:recipeid", updaterecipe);
 router.post("/raterecipe/:recipeid", raterecipe);
 router.post("/askai/:recipeid", askai);
+router.get("/hasFoodQuotesKey", (req, res) => {
+  if (process.env.QUOTES_API_KEY && process.env.QUOTES_API_KEY.trim() !== "") {
+    res.json({ ok: true });
+  } else {
+    res.json({ ok: false });
+  }
+});
+router.get("/foodQuote", foodQuote);
 router.get("/hasOpenaiKey", (req, res) => {
   if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim() !== "") {
     res.json({ ok: true });
@@ -23,5 +35,11 @@ router.get("/hasOpenaiKey", (req, res) => {
     res.json({ ok: false });
   }
 });
+router.post("/addtocalendar", addtocalendar);
+router.delete(
+  "/deletefromcalendar/:recipeid/:meal_date/:meal_time",
+  deletefromcalendar
+);
+router.get("/listcalendarmeals", listcalendarmeals);
 
 export default router;

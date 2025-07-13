@@ -1,0 +1,27 @@
+/* fullscreen overlay for intro */
+.introOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: white;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoSmall {
+  width: 120px;
+  height: 106px;
+  margin-bottom: 1rem;
+}
+
+.animatedTitle {
+  font-family: monospace, monospace;
+  font-weight: bold;
+  font-size: 2.5rem; /* roughly 40px */
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 4px solid black;
+  padding-right: 0.5rem;
+}

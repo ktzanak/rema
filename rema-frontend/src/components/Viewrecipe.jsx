@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
-import PdfDocu from "./PdfDocu";
+import RecipePdf from "./RecipePdf";
 import styles from "../css/viewrecipe.module.css";
 import { Rating } from "@mui/material";
 
@@ -19,7 +19,7 @@ export default function ViewRecipe({ open, onClose, recipe }) {
   const downloadPdf = async () => {
     const fileName = "ReMa_recipe.pdf";
     const blob = await pdf(
-      <PdfDocu
+      <RecipePdf
         recipeinfo={{
           title: recipe.title,
           cooking_time: recipe.cooking_time,

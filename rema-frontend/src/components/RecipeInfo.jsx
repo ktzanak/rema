@@ -121,7 +121,8 @@ export default function RecipeInfo({
                 <option value="">Select... (optional)</option>
                 <option value="Appetizer">Appetizer</option>
                 <option value="Sauce">Sauce</option>
-                <option value="Main course">Main course</option>
+                <option value="Side Dish">Side Dish</option>
+                <option value="Main Dish">Main Dish</option>
                 <option value="Dessert">Dessert</option>
                 <option value="Drink">Drink</option>
                 <option value="Other">Other</option>
