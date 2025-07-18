@@ -34,11 +34,16 @@ export default function ListRecipes() {
 
   useEffect(() => {
     const checkAvailability = async () => {
+      if (!navigator.onLine) {
+        setAiAvailable(false);
+        return;
+      }
+
       try {
-        if (!navigator.onLine) {
-          setAiAvailable(false);
-          return;
-        }
+        const response = await fetch("https://httpbin.org/get", {
+          method: "HEAD",
+        });
+        if (!response.ok) throw new Error("Internet not reachable");
 
         const res = await fetch("http://localhost:8000/api/hasOpenaiKey");
         const data = await res.json();
