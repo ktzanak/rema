@@ -21,6 +21,7 @@ import {
   Button,
   TextField,
   Rating,
+  Tooltip,
 } from "@mui/material";
 
 export default function ListRecipes() {
@@ -247,14 +248,25 @@ export default function ListRecipes() {
                     </Button>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => handleOpenDialog(recipe, "askai")}
-                      disabled={!aiAvailable}
+                    <Tooltip
+                      title={
+                        !aiAvailable
+                          ? "Internet access and OpenAI key are required for this feature"
+                          : ""
+                      }
+                      arrow
                     >
-                      AI
-                    </Button>
+                      <span>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => handleOpenDialog(recipe, "askai")}
+                          disabled={!aiAvailable}
+                        >
+                          AI
+                        </Button>
+                      </span>
+                    </Tooltip>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
                     <Button
