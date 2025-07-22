@@ -39,16 +39,18 @@ export default function ListRecipes() {
         setAiAvailable(false);
         return;
       }
-
       try {
-        const response = await fetch("https://httpbin.org/get", {
-          method: "HEAD",
-        });
-        if (!response.ok) throw new Error("Internet not reachable");
+        const resp = await fetch("http://localhost:8000/api/ping-internet");
+        const dat = await resp.json();
 
         const res = await fetch("http://localhost:8000/api/hasOpenaiKey");
         const data = await res.json();
-        setAiAvailable(data.ok);
+
+        if (data.ok && dat.online) {
+          setAiAvailable(true);
+        } else {
+          setAiAvailable(false);
+        }
       } catch (error) {
         console.error("Error checking AI availability:", error);
         setAiAvailable(false);
