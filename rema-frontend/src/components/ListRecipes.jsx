@@ -34,6 +34,7 @@ export default function ListRecipes() {
   const [aiAvailable, setAiAvailable] = useState(false);
 
   useEffect(() => {
+    //It checks if there is internet access and an openAI key in the env file for the AI feature
     const checkAvailability = async () => {
       if (!navigator.onLine) {
         setAiAvailable(false);
