@@ -19,6 +19,14 @@ router.post("/addrecipe", addrecipe);
 router.delete("/deleterecipe/:recipeid", deleterecipe);
 router.put("/updaterecipe/:recipeid", updaterecipe);
 router.post("/raterecipe/:recipeid", raterecipe);
+router.get("/ping-internet", async (req, res) => {
+  try {
+    const response = await fetch("https://www.google.com", { method: "HEAD" });
+    res.json({ online: response.ok });
+  } catch (err) {
+    res.json({ online: false });
+  }
+});
 router.post("/askai/:recipeid", askai);
 router.get("/hasFoodQuotesKey", (req, res) => {
   if (process.env.QUOTES_API_KEY && process.env.QUOTES_API_KEY.trim() !== "") {
