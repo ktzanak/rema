@@ -327,20 +327,8 @@ export default function PlanShop() {
                                 >
                                   <Box>
                                     <Typography
-                                      variant={
-                                        snapshot.isDragging
-                                          ? "body2"
-                                          : "subtitle1"
-                                      }
+                                      variant="subtitle1"
                                       fontWeight="bold"
-                                      sx={{
-                                        fontSize: snapshot.isDragging
-                                          ? "0.7rem"
-                                          : "inherit",
-                                        color: snapshot.isDragging
-                                          ? "#000"
-                                          : "inherit",
-                                      }}
                                     >
                                       {recipe.title}
                                     </Typography>
