@@ -66,6 +66,35 @@ export default function Home() {
           </div>
         </div>
       </motion.div>
+      <div
+        style={{
+          marginTop: "2rem",
+          padding: "1rem",
+          borderRadius: "8px",
+        }}
+      >
+        <h5 style={{ margin: "0 0 0.5rem 0" }}>User Tips</h5>
+        <ul
+          style={{
+            margin: 0,
+            paddingLeft: "1.2rem",
+            color: "#555",
+            fontSize: "1rem",
+          }}
+        >
+          <li>
+            Drag and drop recipes to your meal planner for easy scheduling.
+          </li>
+          <li>
+            Search recipes by ingredient, tag, or category using the search bar.
+          </li>
+          <li>Click "View" on any recipe to see details and instructions.</li>
+          <li>
+            Generate a shopping list for your planned meals with one click.
+          </li>
+          <li>Use the calendar to organize meals by day and time.</li>
+        </ul>
+      </div>
     </div>
   );
 }
