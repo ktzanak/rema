@@ -146,10 +146,6 @@ export default function PlanShop() {
     const sourceMatch = source.droppableId.match(
       /^day-(\d{4}-\d{2}-\d{2})-hour-(\d{2})$/
     );
-    /*if (!match) {
-      console.error("Invalid droppableId format:", destination.droppableId);
-      return;
-    }*/
     const mealDate = destMatch?.[1];
     const mealTime = destMatch?.[2];
     if (source.droppableId === "recipeList" && destMatch) {
@@ -331,56 +327,74 @@ export default function PlanShop() {
                                 >
                                   <Box>
                                     <Typography
-                                      variant="subtitle1"
+                                      variant={
+                                        snapshot.isDragging
+                                          ? "body2"
+                                          : "subtitle1"
+                                      }
                                       fontWeight="bold"
+                                      sx={{
+                                        fontSize: snapshot.isDragging
+                                          ? "0.7rem"
+                                          : "inherit",
+                                        color: snapshot.isDragging
+                                          ? "#000"
+                                          : "inherit",
+                                      }}
                                     >
                                       {recipe.title}
                                     </Typography>
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: "0.5rem",
-                                        color: "gray",
-                                      }}
-                                    >
-                                      <Typography
-                                        variant="body2"
-                                        fontWeight="bold"
+                                    {!snapshot.isDragging && (
+                                      <Box
+                                        sx={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          gap: "0.5rem",
+                                          color: "gray",
+                                        }}
                                       >
-                                        Rating:
+                                        <Typography
+                                          variant="body2"
+                                          fontWeight="bold"
+                                        >
+                                          Rating:
+                                        </Typography>
+                                        <Rating
+                                          name={`readonly-rating-${recipe.id}`}
+                                          value={recipe.rating}
+                                          precision={0.1}
+                                          size="small"
+                                          readOnly
+                                        />
+                                        <Typography variant="body2">
+                                          (
+                                          {recipe.rating?.toFixed(1) ||
+                                            "No rating"}
+                                          )
+                                        </Typography>
+                                      </Box>
+                                    )}
+                                    {!snapshot.isDragging && (
+                                      <Typography variant="body2" color="gray">
+                                        <strong>Time:</strong>{" "}
+                                        {recipe.cooking_time || "-"} |{" "}
+                                        <strong>Portions:</strong>{" "}
+                                        {recipe.portions || "-"}
                                       </Typography>
-                                      <Rating
-                                        name={`readonly-rating-${recipe.id}`}
-                                        value={recipe.rating}
-                                        precision={0.1}
-                                        size="small"
-                                        readOnly
-                                      />
-                                      <Typography variant="body2">
-                                        (
-                                        {recipe.rating?.toFixed(1) ||
-                                          "No rating"}
-                                        )
-                                      </Typography>
-                                    </Box>
-                                    <Typography variant="body2" color="gray">
-                                      <strong>Time:</strong>{" "}
-                                      {recipe.cooking_time || "-"} |{" "}
-                                      <strong>Portions:</strong>{" "}
-                                      {recipe.portions || "-"}
-                                    </Typography>
+                                    )}
                                   </Box>
-                                  <Button
-                                    variant="contained"
-                                    color="warning"
-                                    size="small"
-                                    onClick={() =>
-                                      handleOpenDialog(recipe, "view")
-                                    }
-                                  >
-                                    View
-                                  </Button>
+                                  {!snapshot.isDragging && (
+                                    <Button
+                                      variant="contained"
+                                      color="warning"
+                                      size="small"
+                                      onClick={() =>
+                                        handleOpenDialog(recipe, "view")
+                                      }
+                                    >
+                                      View
+                                    </Button>
+                                  )}
                                 </Box>
                                 {index !== displayedRecipes.length - 1 &&
                                   !snapshot.isDragging && (
