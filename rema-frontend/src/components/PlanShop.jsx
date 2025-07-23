@@ -140,19 +140,19 @@ export default function PlanShop() {
     );
     if (!droppedRecipe) return;
 
-    const match = destination.droppableId.match(
+    const destMatch = destination.droppableId.match(
       /^day-(\d{4}-\d{2}-\d{2})-hour-(\d{2})$/
     );
-    if (!match) {
+    const sourceMatch = source.droppableId.match(
+      /^day-(\d{4}-\d{2}-\d{2})-hour-(\d{2})$/
+    );
+    /*if (!match) {
       console.error("Invalid droppableId format:", destination.droppableId);
       return;
-    }
-    const mealDate = match[1];
-    const mealTime = match[2];
-    if (
-      source.droppableId === "recipeList" &&
-      destination.droppableId.startsWith("day-")
-    ) {
+    }*/
+    const mealDate = destMatch?.[1];
+    const mealTime = destMatch?.[2];
+    if (source.droppableId === "recipeList" && destMatch) {
       setMealPool((prev) => {
         const updated = { ...prev };
 
@@ -176,6 +176,45 @@ export default function PlanShop() {
       if (mealToSave) {
         saveMeal(mealToSave.id, mealDate, mealTime);
       }
+    } else if (
+      sourceMatch &&
+      destMatch &&
+      source.droppableId !== destination.droppableId
+    ) {
+      const sourceDate = sourceMatch[1];
+      const sourceTime = sourceMatch[2];
+
+      setMealPool((prev) => {
+        const updated = { ...prev };
+
+        // Remove from source
+        if (updated[source.droppableId]) {
+          updated[source.droppableId] = updated[source.droppableId].filter(
+            (meal) => meal.id !== droppedRecipe.id
+          );
+        }
+
+        // Add to destination
+        if (!updated[destination.droppableId]) {
+          updated[destination.droppableId] = [];
+        }
+
+        const alreadyExists = updated[destination.droppableId].some(
+          (meal) => meal.id === droppedRecipe.id
+        );
+
+        if (!alreadyExists) {
+          updated[destination.droppableId].splice(
+            destination.index,
+            0,
+            droppedRecipe
+          );
+        }
+
+        return updated;
+      });
+      deleteMeal(droppedRecipe.id, sourceDate, sourceTime);
+      saveMeal(droppedRecipe.id, mealDate, mealTime);
     }
   };
 
