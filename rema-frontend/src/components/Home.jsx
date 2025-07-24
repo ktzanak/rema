@@ -155,8 +155,11 @@ export default function Home() {
                   listStyle: "disc",
                 }}
               >
-                <li>Browse and edit your saved recipes.</li>
-                <li>Create healthier versions of your recipes by asking AI.</li>
+                <li>Browse, edit and rate your saved recipes.</li>
+                <li>
+                  Create healthier versions of your recipes using the AI
+                  feature.
+                </li>
                 <li>
                   Search by title, description, ingredient, tag, or category.
                 </li>
