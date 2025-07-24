@@ -68,7 +68,7 @@ export default function Home() {
       </motion.div>
       <div
         style={{
-          marginTop: "2rem",
+          marginTop: "1rem",
           padding: "1.5rem",
           borderRadius: "12px",
           display: "flex",
@@ -78,8 +78,8 @@ export default function Home() {
       >
         <h5
           style={{
-            margin: "0 0 2.5rem 0",
-            fontSize: "1.8rem",
+            margin: "0 0 1.5rem 0",
+            fontSize: "1.5rem",
             fontWeight: 700,
             textAlign: "center",
             color: "#111",
@@ -89,24 +89,28 @@ export default function Home() {
           User Tips
         </h5>
 
-        <div style={{ width: "100%", maxWidth: 800 }}>
+        <div style={{ width: "100%", maxWidth: 1100 }}>
           <div
             style={{
               display: "flex",
               justifyContent: "center",
-              gap: "2.5rem",
-              marginBottom: "2.5rem",
+              gap: "8rem",
+              marginBottom: "1.5rem",
+              width: "100%",
             }}
           >
             <div
               style={{
                 borderRadius: "10px",
                 padding: "0.5rem 1rem",
-                minWidth: "160px",
+                flex: "none",
+                minWidth: "260px",
+                maxWidth: "450px",
                 textAlign: "center",
                 fontWeight: 700,
-                fontSize: "1.3rem",
+                fontSize: "1.2rem",
                 color: "#222",
+                boxSizing: "border-box",
               }}
             >
               New recipe
@@ -120,19 +124,24 @@ export default function Home() {
                   listStyle: "disc",
                 }}
               >
-                <li>Create your own recipes with ingredients and steps.</li>
-                <li>Add tags and categories for easy searching.</li>
+                <li>
+                  Create your own recipes with ingredients and instructions.
+                </li>
+                <li>Add tags and categories for easier searching.</li>
               </ul>
             </div>
             <div
               style={{
                 borderRadius: "10px",
                 padding: "0.5rem 1rem",
-                minWidth: "160px",
+                flex: "none",
+                minWidth: "260px",
+                maxWidth: "450px",
                 textAlign: "center",
                 fontWeight: 700,
-                fontSize: "1.3rem",
+                fontSize: "1.2rem",
                 color: "#222",
+                boxSizing: "border-box",
               }}
             >
               My recipes
@@ -147,7 +156,10 @@ export default function Home() {
                 }}
               >
                 <li>Browse and edit your saved recipes.</li>
-                <li>Search by ingredient, tag, or category.</li>
+                <li>Create healthier versions of your recipes by asking AI.</li>
+                <li>
+                  Search by title, description, ingredient, tag, or category.
+                </li>
               </ul>
             </div>
           </div>
@@ -180,8 +192,12 @@ export default function Home() {
                 }}
               >
                 <li>Drag and drop recipes to your meal planner.</li>
-                <li>Generate a shopping list for your planned meals.</li>
                 <li>Organize meals by day and time using the calendar.</li>
+                <li>Move meals between different days and time slots.</li>
+                <li>
+                  Generate a pdf with the weekly shopping list for your planned
+                  meals.
+                </li>
               </ul>
             </div>
           </div>
