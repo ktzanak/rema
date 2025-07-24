@@ -69,31 +69,123 @@ export default function Home() {
       <div
         style={{
           marginTop: "2rem",
-          padding: "1rem",
-          borderRadius: "8px",
+          padding: "1.5rem",
+          borderRadius: "12px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <h5 style={{ margin: "0 0 0.5rem 0" }}>User Tips</h5>
-        <ul
+        <h5
           style={{
-            margin: 0,
-            paddingLeft: "1.2rem",
-            color: "#555",
-            fontSize: "1rem",
+            margin: "0 0 2.5rem 0",
+            fontSize: "1.8rem",
+            fontWeight: 700,
+            textAlign: "center",
+            color: "#111",
+            letterSpacing: "1px",
           }}
         >
-          <li>
-            Drag and drop recipes to your meal planner for easy scheduling.
-          </li>
-          <li>
-            Search recipes by ingredient, tag, or category using the search bar.
-          </li>
-          <li>Click "View" on any recipe to see details and instructions.</li>
-          <li>
-            Generate a shopping list for your planned meals with one click.
-          </li>
-          <li>Use the calendar to organize meals by day and time.</li>
-        </ul>
+          User Tips
+        </h5>
+
+        <div style={{ width: "100%", maxWidth: 800 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "2.5rem",
+              marginBottom: "2.5rem",
+            }}
+          >
+            <div
+              style={{
+                borderRadius: "10px",
+                padding: "0.5rem 1rem",
+                minWidth: "160px",
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: "1.3rem",
+                color: "#222",
+              }}
+            >
+              New recipe
+              <ul
+                style={{
+                  margin: "1rem 0 0 0",
+                  paddingLeft: "1.2rem",
+                  color: "#555",
+                  fontSize: "1.05rem",
+                  textAlign: "left",
+                  listStyle: "disc",
+                }}
+              >
+                <li>Create your own recipes with ingredients and steps.</li>
+                <li>Add tags and categories for easy searching.</li>
+              </ul>
+            </div>
+            <div
+              style={{
+                borderRadius: "10px",
+                padding: "0.5rem 1rem",
+                minWidth: "160px",
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: "1.3rem",
+                color: "#222",
+              }}
+            >
+              My recipes
+              <ul
+                style={{
+                  margin: "1rem 0 0 0",
+                  paddingLeft: "1.2rem",
+                  color: "#555",
+                  fontSize: "1.05rem",
+                  textAlign: "left",
+                  listStyle: "disc",
+                }}
+              >
+                <li>Browse and edit your saved recipes.</li>
+                <li>Search by ingredient, tag, or category.</li>
+              </ul>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                borderRadius: "10px",
+                padding: "0.5rem 1rem",
+                minWidth: "200px",
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: "1.3rem",
+                color: "#222",
+              }}
+            >
+              Plan &amp; Shop
+              <ul
+                style={{
+                  margin: "1rem 0 0 0",
+                  paddingLeft: "1.2rem",
+                  color: "#555",
+                  fontSize: "1.05rem",
+                  textAlign: "left",
+                  listStyle: "disc",
+                }}
+              >
+                <li>Drag and drop recipes to your meal planner.</li>
+                <li>Generate a shopping list for your planned meals.</li>
+                <li>Organize meals by day and time using the calendar.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
