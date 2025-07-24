@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Droppable } from "@hello-pangea/dnd";
+import { Droppable, Draggable } from "@hello-pangea/dnd";
 import {
   Paper,
   Typography,
@@ -341,75 +341,85 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                             },
                           }}
                         >
-                          {(mealPool?.[slotId] || []).map((meal) => (
-                            <Box
+                          {(mealPool?.[slotId] || []).map((meal, index) => (
+                            <Draggable
                               key={meal.id}
-                              display="flex"
-                              alignItems="center"
-                              gap={1}
-                              width="100%"
+                              draggableId={meal.id.toString()}
+                              index={index}
                             >
-                              <Tooltip
-                                title={
-                                  <>
-                                    <Typography fontWeight="bold">
-                                      {meal.title}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                      Description: {meal.description || "-"}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                      Time: {meal.cooking_time || "-"}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                      Portions: {meal.portions || "-"}
-                                    </Typography>
-                                  </>
-                                }
-                                arrow
-                              >
-                                <Paper
-                                  sx={{
-                                    pl: 0.5,
-                                    height: "20px",
-                                    backgroundColor: "#ffcdd2",
-                                    borderRadius: 1,
-                                    fontSize: "0.7rem",
-                                    cursor: "grab",
-                                    flexGrow: 1,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    overflow: "hidden",
-                                    whiteSpace: "nowrap",
-                                    textOverflow: "ellipsis",
-                                    "&:hover": {
-                                      backgroundColor: "#ef9a9a",
-                                    },
-                                  }}
+                              {(provided, snapshot) => (
+                                <Box
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  display="flex"
+                                  alignItems="center"
+                                  gap={1}
+                                  width="100%"
                                 >
-                                  <Box
-                                    sx={{
-                                      overflow: "hidden",
-                                      textOverflow: "ellipsis",
-                                      whiteSpace: "nowrap",
-                                      flex: 1,
-                                      pr: 0,
-                                    }}
-                                  >
-                                    {meal.title}
-                                  </Box>
-                                  <IconButton
-                                    size="small"
-                                    onClick={() =>
-                                      onRemoveMeal(slotId, meal.id)
+                                  <Tooltip
+                                    title={
+                                      <>
+                                        <Typography fontWeight="bold">
+                                          {meal.title}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                          Description: {meal.description || "-"}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                          Time: {meal.cooking_time || "-"}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                          Portions: {meal.portions || "-"}
+                                        </Typography>
+                                      </>
                                     }
+                                    arrow
                                   >
-                                    <Close fontSize="small" />
-                                  </IconButton>
-                                </Paper>
-                              </Tooltip>
-                            </Box>
+                                    <Paper
+                                      sx={{
+                                        pl: 0.5,
+                                        height: "20px",
+                                        backgroundColor: "#ffcdd2",
+                                        borderRadius: 1,
+                                        fontSize: "0.7rem",
+                                        cursor: "grab",
+                                        flexGrow: 1,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        overflow: "hidden",
+                                        whiteSpace: "nowrap",
+                                        textOverflow: "ellipsis",
+                                        "&:hover": {
+                                          backgroundColor: "#ef9a9a",
+                                        },
+                                      }}
+                                    >
+                                      <Box
+                                        sx={{
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                          whiteSpace: "nowrap",
+                                          flex: 1,
+                                          pr: 0,
+                                        }}
+                                      >
+                                        {meal.title}
+                                      </Box>
+                                      <IconButton
+                                        size="small"
+                                        onClick={() =>
+                                          onRemoveMeal(slotId, meal.id)
+                                        }
+                                      >
+                                        <Close fontSize="small" />
+                                      </IconButton>
+                                    </Paper>
+                                  </Tooltip>
+                                </Box>
+                              )}
+                            </Draggable>
                           ))}
                           {provided.placeholder}
                         </Box>

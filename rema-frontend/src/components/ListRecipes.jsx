@@ -21,6 +21,7 @@ import {
   Button,
   TextField,
   Rating,
+  Tooltip,
 } from "@mui/material";
 
 export default function ListRecipes() {
@@ -33,16 +34,24 @@ export default function ListRecipes() {
   const [aiAvailable, setAiAvailable] = useState(false);
 
   useEffect(() => {
+    //It checks if there is internet access and an openAI key in the env file for the AI feature
     const checkAvailability = async () => {
+      if (!navigator.onLine) {
+        setAiAvailable(false);
+        return;
+      }
       try {
-        if (!navigator.onLine) {
-          setAiAvailable(false);
-          return;
-        }
+        const resp = await fetch("http://localhost:8000/api/ping-internet");
+        const dat = await resp.json();
 
         const res = await fetch("http://localhost:8000/api/hasOpenaiKey");
         const data = await res.json();
-        setAiAvailable(data.ok);
+
+        if (data.ok && dat.online) {
+          setAiAvailable(true);
+        } else {
+          setAiAvailable(false);
+        }
       } catch (error) {
         console.error("Error checking AI availability:", error);
         setAiAvailable(false);
@@ -242,14 +251,25 @@ export default function ListRecipes() {
                     </Button>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => handleOpenDialog(recipe, "askai")}
-                      disabled={!aiAvailable}
+                    <Tooltip
+                      title={
+                        !aiAvailable
+                          ? "Internet access and OpenAI key are required for this feature"
+                          : ""
+                      }
+                      arrow
                     >
-                      AI
-                    </Button>
+                      <span>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => handleOpenDialog(recipe, "askai")}
+                          disabled={!aiAvailable}
+                        >
+                          AI
+                        </Button>
+                      </span>
+                    </Tooltip>
                   </TableCell>
                   <TableCell align="center" sx={{ width: "8%" }}>
                     <Button

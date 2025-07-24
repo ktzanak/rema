@@ -66,6 +66,146 @@ export default function Home() {
           </div>
         </div>
       </motion.div>
+      <div
+        style={{
+          marginTop: "1rem",
+          padding: "1.5rem",
+          borderRadius: "12px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h5
+          style={{
+            margin: "0 0 1.5rem 0",
+            fontSize: "1.5rem",
+            fontWeight: 700,
+            textAlign: "center",
+            color: "#111",
+            letterSpacing: "1px",
+          }}
+        >
+          User Tips
+        </h5>
+
+        <div style={{ width: "100%", maxWidth: 1100 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "8rem",
+              marginBottom: "1.5rem",
+              width: "100%",
+            }}
+          >
+            <div
+              style={{
+                borderRadius: "10px",
+                padding: "0.5rem 1rem",
+                flex: "none",
+                minWidth: "260px",
+                maxWidth: "450px",
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: "1.2rem",
+                color: "#222",
+                boxSizing: "border-box",
+              }}
+            >
+              New recipe
+              <ul
+                style={{
+                  margin: "1rem 0 0 0",
+                  paddingLeft: "1.2rem",
+                  color: "#555",
+                  fontSize: "1.05rem",
+                  textAlign: "left",
+                  listStyle: "disc",
+                }}
+              >
+                <li>
+                  Create your own recipes with ingredients and instructions.
+                </li>
+                <li>Add tags and categories for easier searching.</li>
+              </ul>
+            </div>
+            <div
+              style={{
+                borderRadius: "10px",
+                padding: "0.5rem 1rem",
+                flex: "none",
+                minWidth: "260px",
+                maxWidth: "450px",
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: "1.2rem",
+                color: "#222",
+                boxSizing: "border-box",
+              }}
+            >
+              My recipes
+              <ul
+                style={{
+                  margin: "1rem 0 0 0",
+                  paddingLeft: "1.2rem",
+                  color: "#555",
+                  fontSize: "1.05rem",
+                  textAlign: "left",
+                  listStyle: "disc",
+                }}
+              >
+                <li>Browse, edit and rate your saved recipes.</li>
+                <li>
+                  Create healthier versions of your recipes using the AI
+                  feature.
+                </li>
+                <li>
+                  Search by title, description, ingredient, tag, or category.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                borderRadius: "10px",
+                padding: "0.5rem 1rem",
+                minWidth: "200px",
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: "1.3rem",
+                color: "#222",
+              }}
+            >
+              Plan &amp; Shop
+              <ul
+                style={{
+                  margin: "1rem 0 0 0",
+                  paddingLeft: "1.2rem",
+                  color: "#555",
+                  fontSize: "1.05rem",
+                  textAlign: "left",
+                  listStyle: "disc",
+                }}
+              >
+                <li>Drag and drop recipes to your meal planner.</li>
+                <li>Organize meals by day and time using the calendar.</li>
+                <li>Move meals between different days and time slots.</li>
+                <li>
+                  Generate a pdf with the weekly shopping list for your planned
+                  meals.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
