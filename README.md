@@ -4,7 +4,7 @@ A simple React application for creating recipes. <br>
 It can be used for any type of recipe, main courses, cocktails, desserts and many more!
 
 1. Clone the repository
-2. Copy-paste the .env.dev to .env and edit it by setting `SQL_SCRIPT= absolute path of the createtables.sql`
+2. Copy-paste the .env.dev to .env and edit it by setting `SQL_SCRIPT= <absolute path of the createtables.sql>`
 3. In case you have an OPENAI_API_KEY you can also include it in the .env and get healthier variations of your recipes using the AI feature.
 4. Simply run:<br>
    docker compose build --no-cache<br>
