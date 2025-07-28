@@ -23,7 +23,7 @@ COPY --from=build-stage /app/rema-frontend/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
-#For devcontainer
+#For development
 #FROM node:lts-alpine
 #RUN set -ex && \
 #    apk add --no-cache \
