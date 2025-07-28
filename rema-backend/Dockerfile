@@ -16,7 +16,7 @@ EXPOSE 8000
 USER node
 
 #For production
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
 
 #For development
-#CMD ["npm","run","dev"]
+CMD ["npm","run","dev"]
