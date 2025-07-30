@@ -12,7 +12,7 @@ It can be used for any type of recipe, main courses, cocktails, desserts and man
    docker compose build --no-cache<br>
    docker compose up -d
 
-Open your browser and go to http://localhost:8080/add
+Open your browser and go to http://localhost:8080/
 
 ## How to contribute
 
@@ -20,8 +20,8 @@ In case you want to contribute to development, make sure to:
 
 1. change the Dockerfile of the frontend service - uncomment the section "For development" and comment the section "For production"
 2. change the Dockerfile of the backend service - uncomment the section "For development" and comment the section "For production"
-3. change the docker-compose.yml - uncomment the volumes sections of backend and frontend and change the ports of the frontend service from 8080:80 to 8080:8080
-4. rebuild and reopen in container in vscode (ctrl + shift + P)
+3. change the docker-compose.yml - uncomment the volumes sections of backend and frontend services and change the ports of the frontend service from 8080:80 to 8080:8080
+4. open vscode and select rebuild and reopen in container (ctrl + shift + P)
 5. open your browser and go to http://localhost:8080/ - changes in your code are now reflected at the ui
 
 ## License
