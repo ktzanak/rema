@@ -16,7 +16,7 @@ Open your browser and go to http://localhost:8080/
 
 ## How to contribute
 
-In case you want to contribute to development, make sure to:
+In case you want to contribute to development, make sure to clone the develop branch that contains the following changes:
 
 1. change the Dockerfile of the frontend service - uncomment the section "For development" and comment the section "For production"
 2. change the Dockerfile of the backend service - uncomment the section "For development" and comment the section "For production"
