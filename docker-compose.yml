@@ -40,9 +40,9 @@ services:
         condition: service_healthy
     ports:
       - 8000:8000
-    volumes: # uncomment only for development (real time changes)
-      - ./rema-backend:/app/rema-backend
-      - /app/rema-backend/node_modules
+    #volumes: # uncomment volumes only for development (real time changes)
+    #  - ./rema-backend:/app/rema-backend
+    #  - /app/rema-backend/node_modules
     user: "node"
     networks:
       - customnetwork
@@ -57,10 +57,10 @@ services:
     depends_on:
       - backend
     ports:
-      - 8080:8080 # change the port to 8080:8080 for development (real time changes) and 8080:80 for production
-    volumes: # uncomment only for development (real time changes)
-      - ./rema-frontend:/app/rema-frontend
-      - /app/rema-frontend/node_modules
+      - 8080:80 # change the port to 8080:8080 for development (real time changes) and 8080:80 for production
+    #volumes: # uncomment volumes only for development (real time changes)
+    #  - ./rema-frontend:/app/rema-frontend
+    #  - /app/rema-frontend/node_modules
     networks:
       - customnetwork
 
