@@ -8,11 +8,10 @@ It can be used for any type of recipe, main courses, cocktails, desserts and man
 1. Clone the repository (master or develop)
 2. Copy-paste the .env.dev to .env and edit it by setting `SQL_SCRIPT= <absolute path of the createtables.sql>`
 3. In case you have an OPENAI_API_KEY you can also include it in the .env and get healthier versions of your recipes using the AI feature.
-4. Simply run:<br>
-   docker compose build --no-cache<br>
-   docker compose up -d
-
-Open your browser and go to http://localhost:8080/
+4. Simply go inside the rema folder and run:<br>
+   docker compose build (only the first time)<br>
+   docker compose up -d (for daily use)
+5. Open your browser and go to http://localhost:8080/
 
 ## How to contribute
 

@@ -33,17 +33,17 @@
   align-items: center;
   padding: 0 16px;
   text-decoration: none;
-  color: #333;
+  color: #4d4d4d;
   font-weight: bold;
   font-size: 1em;
   border-bottom: 3px solid transparent;
   transition: border-bottom 0.2s ease-in-out, color 0.2s;
   cursor: pointer;
 }
-
-.navLink:hover {
+.navLink:hover,
+.activeNavLink {
   border-bottom: 3px solid #4d4d4d;
-  color: #000;
+  color: #4d4d4d;
 }
 
 .logoLink {

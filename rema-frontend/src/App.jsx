@@ -10,6 +10,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./css/app.css";
@@ -27,7 +28,7 @@ function AnimatedRoutes() {
         transition={{ duration: 0.4 }}
       >
         <Routes location={location}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/add" element={<AddRecipe />} />
           <Route path="/list" element={<ListRecipes />} />

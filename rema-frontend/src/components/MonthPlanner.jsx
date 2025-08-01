@@ -186,6 +186,26 @@ export default function MonthPlanner({ mealPool, onRemoveMeal }) {
                 ? `${monthNames[firstMonth]} ${days[3].getFullYear()}`
                 : `${monthNames[firstMonth]} – ${monthNames[lastMonth]} ${yearDisplayed}`}
             </Typography>
+            <Button
+              onClick={() => setWeekOffset(0)}
+              sx={{
+                ml: 4,
+                border: "1px solid black",
+                borderRadius: "50px",
+                backgroundColor: "white",
+                color: "black",
+                textTransform: "none",
+                fontWeight: 500,
+                fontSize: "0.9rem",
+                height: "30px",
+                px: 2,
+                "&:hover": {
+                  backgroundColor: "#edededff",
+                },
+              }}
+            >
+              Today
+            </Button>
           </Box>
 
           <Button
