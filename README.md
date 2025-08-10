@@ -1,9 +1,9 @@
 # ReMa
 
-## How to use
+Welcome to ReMa - a simple application for creating recipes! <br>
+It is built with React.js, Node.js and a MySQL database, and can be used for any type of recipe, including main courses, cocktails, desserts and many more!
 
-A simple React application for creating recipes. <br>
-It can be used for any type of recipe, main courses, cocktails, desserts and many more!
+## How to use
 
 1. Clone the repository (master or develop)
 2. Copy-paste the .env.dev to .env and edit it by setting `SQL_SCRIPT= <absolute path of the createtables.sql>`
